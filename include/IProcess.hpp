@@ -11,7 +11,7 @@
 class IProcess {
 	virtual std::vector<bool>	&&isBusy() const = 0;
 	virtual bool				isFull () const = 0;
-	virtual bool				feed(std::string) = 0;
+	virtual bool				feed(std::string const &) = 0;
 	
 };
 
