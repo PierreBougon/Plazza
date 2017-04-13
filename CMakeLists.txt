@@ -3,7 +3,9 @@ project(cpp_plazza)
 
 set(CMAKE_CXX_STANDARD 14)
 
-file(GLOB SOURCE_FILES
+include_directories(include)
+
+file(GLOB_RECURSE SOURCE_FILES
         "include/*.hpp"
         "src/*.cpp")
 
