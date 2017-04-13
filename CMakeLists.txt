@@ -3,7 +3,8 @@ project(cpp_plazza)
 
 set(CMAKE_CXX_STANDARD 14)
 
-include_directories(include)
+include_directories(include
+        include/cipher)
 
 file(GLOB_RECURSE SOURCE_FILES
         "include/*.hpp"
