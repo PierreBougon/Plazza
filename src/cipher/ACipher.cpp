@@ -15,7 +15,7 @@ namespace plazza
 
     void ACipher::generateKey()
     {
-        for (int i = 0; i < _keySize; ++i)
+        for (size_t i = 0; i < _keySize; ++i)
         {
             _key.push_back(static_cast<Byte>(std::rand() % 256));
         }

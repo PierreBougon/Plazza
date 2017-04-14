@@ -9,7 +9,7 @@
 #include <string>
 
 class IProcess {
-	virtual std::vector<bool>	&&isBusy() const = 0;
+	virtual std::vector<bool>	isBusy() const = 0;
 	virtual bool				isFull () const = 0;
 	virtual bool				feed(std::string const &) = 0;
 	
