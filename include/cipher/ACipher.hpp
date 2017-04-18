@@ -39,7 +39,7 @@ namespace plazza
     protected:
         /// Size of the key in byte
         size_t                  _keySize;
-        /// The key stores randomly _keySize std::bitset<8> which is the definition of a byte
+        /// The key stores randomly _keySize bytes
         std::vector<Byte>       _key;
     };
 }
