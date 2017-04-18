@@ -19,6 +19,7 @@ PROJECT_NAME	=	Plazza
 # Main sources
 
 SRC_MAIN	=	main.cpp				\
+                Parser.cpp \
 
 # Cipher sources
 
