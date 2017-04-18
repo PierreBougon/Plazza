@@ -15,7 +15,7 @@ namespace plazza {
         std::string buffer;
         std::regex expression;
         std::regex_constants::match_flag_type flags;
-        Parser();
+        Parser() = delete;
 
     public:
         virtual ~Parser();
