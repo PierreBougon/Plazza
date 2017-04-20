@@ -8,11 +8,16 @@
 #include <vector>
 #include <string>
 
-class IProcess {
-	virtual std::vector<bool>	isBusy() const = 0;
-	virtual bool				isFull () const = 0;
-	virtual bool				feed(std::string const &) = 0;
-	
-};
 
+namespace plazza {
+
+	class IProcess {
+		virtual std::vector<bool> isBusy() const = 0;
+
+		virtual bool isFull() const = 0;
+
+		virtual bool feed(std::string const &) = 0;
+
+	};
+}
 #endif //CPP_PLAZZA_PROCESSES_HPP

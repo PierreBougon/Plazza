@@ -5,8 +5,11 @@
 #ifndef CPP_PLAZZA_ICONDITIONALVARIABLE_HPP
 #define CPP_PLAZZA_ICONDITIONALVARIABLE_HPP
 
-class IConditionVariable {
+namespace plazza {
 
-};
+    class IConditionVariable {
+
+    };
+}
 
 #endif //CPP_PLAZZA_ICONDITIONALVARIABLE_HPP

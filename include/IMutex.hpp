@@ -5,8 +5,10 @@
 #ifndef CPP_PLAZZA_MUTEX_HPP
 #define CPP_PLAZZA_MUTEX_HPP
 
-class IMutex {
+namespace plazza {
 
-};
+    class IMutex {
 
+    };
+}
 #endif //CPP_PLAZZA_MUTEX_HPP

@@ -17,7 +17,7 @@ PROJECT_NAME	=
 
 # Compilation definitions
 
-CXXFLAGS	=	-std=c++14 -W -Wall -Wextra
+CXXFLAGS	=	-std=c++14 -W -Wall -Wextra -fpic
 ifeq ($(RELEASE), YES)
 CXXFLAGS	+=	-Werror
 else
@@ -39,6 +39,7 @@ endif
 CXX		=	g++
 
 LDFLAGS	=
+
 
 ifeq ($(DLL), YES)
 CXX	+= -shared

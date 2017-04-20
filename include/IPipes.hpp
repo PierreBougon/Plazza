@@ -5,8 +5,10 @@
 #ifndef CPP_PLAZZA_IPIPES_HPP
 #define CPP_PLAZZA_IPIPES_HPP
 
-class IPipes {
+namespace plazza {
 
-};
+    class IPipes {
 
+    };
+}
 #endif //CPP_PLAZZA_IPIPES_HPP
