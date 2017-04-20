@@ -38,7 +38,7 @@ int main(int ac, char **av) {
     str -= cipher;
     std::cout << "3 : " << str << std::endl;*/
 
-    plazza::FileParser parser;
+    /*plazza::FileParser parser;
 
     parser.open(av[1]);
     std::vector<std::string> res = parser.getEmails();
@@ -59,5 +59,5 @@ int main(int ac, char **av) {
     for (int i = 0; i < res.size(); ++i) {
         std::cout << " ip : " << res[i] << std::endl;
     }
-    return 0;
+    return 0;*/
 }

@@ -7,7 +7,7 @@
 #include <mutex>
 #include "Worker.hpp"
 
-void Worker::operator()() {
+void plazza::ThreadPool::Worker::operator()() {
 	std::string task;
 	while (true) {
 		// Creation d'une scope pour release la mutex en sortie de scope
@@ -21,11 +21,11 @@ void Worker::operator()() {
 			if (PoolRef.shouldStop()) //
 				return;
 			// recupere une task et l'enleve de le queue
-			task = PoolRef.getTasks().front();
-			PoolRef.popFrontTask();
+			task = PoolRef.getFrontTask();
 		}
 		//Partie execution
 		std::cout << task << std::endl;
 		sleep(1);
 	}
 }
+plazza::ThreadPool::Worker::Worker(plazza::ThreadPool &s, size_t index)  : PoolRef(s), workerIndex(index) {}
