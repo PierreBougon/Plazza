@@ -1,11 +1,11 @@
 ##
 ## Makefile for Makefile in /home/bougon_p/rendu/TEK2/cpp_plazza
-## 
+##
 ## Made by bougon_p
 ## Login   <bougon_p@epitech.net>
-## 
+##
 ## Started on  Sat Apr 15 00:37:20 2017 bougon_p
-## Last update Sat Apr 15 00:48:46 2017 bougon_p
+## Last update Thu Apr 20 12:10:18 2017 
 ##
 
 ## Include colors and basic commands
@@ -19,8 +19,9 @@ PROJECT_NAME	=	Plazza
 # Main sources
 
 SRC_MAIN	=	main.cpp				\
-                Parser.cpp \
-
+			Parser.cpp \
+			ThreadPool.cpp \
+			Worker.cpp
 # Cipher sources
 
 CIPHER_DIR	=	cipher/
@@ -37,7 +38,7 @@ OBJ 		=   	$(SRC:.cpp=.o)
 
 NAME   		=      	plazza
 
-INC     	=       -Iinclude -Iinclude/cipher
+INC     	=       -Iinclude -Iinclude/cipher -pthread
 
 ## Core rules
 

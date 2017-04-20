@@ -1,11 +1,22 @@
+//#include <iostream>
+//#include <cipher/ICipher.hpp>
+//#include <cipher/XORCipher.hpp>
+//#include <cipher/CaesarCipher.hpp>
+//#include <chrono>
+//#include <Parser.hpp>
 #include <iostream>
-#include <cipher/ICipher.hpp>
-#include <cipher/XORCipher.hpp>
-#include <cipher/CaesarCipher.hpp>
-#include <chrono>
-#include <Parser.hpp>
+#include "ThreadPool.hpp"
+#include <unistd.h>
 
 int main(int ac, char **av) {
+	if (ac != 2) {
+		std::cerr << "WHAT ABOUT GO FUCK YOURSELF" << std::endl;
+		return (1);
+	}
+	ThreadPool *toto;
+	toto = new ThreadPool(atoi(av[1]));
+	getchar();
+	delete toto;
 /*
     std::cout << "Hello, World!" << std::endl;
 	while (1) {
@@ -22,6 +33,7 @@ int main(int ac, char **av) {
     str -= cipher;
     std::cout << "3 : " << str << std::endl;*/
 
+/*
     plazza::Parser emailParser = plazza::Parser::Email;
     plazza::Parser phoneParser = plazza::Parser::PhoneNumber;
     plazza::Parser ip = plazza::Parser::IPAddress;
@@ -48,4 +60,5 @@ int main(int ac, char **av) {
         std::cout << " ip : " << res[i] << std::endl;
     }
     return 0;
+*/
 }
