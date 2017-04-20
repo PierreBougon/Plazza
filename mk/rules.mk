@@ -17,6 +17,9 @@ endif
 		@$(eval DLL=NO)
 		@$(eval CXXFLAGS= -std=c++14 -W -Wall -Wextra)
 
+ui:     $(OBJ_UI)
+		g++ -o $(NAME) $(OBJ_UI) $(INC) $(LDFLAGS)
+
 all:		$(NAME)
 
 clean:
