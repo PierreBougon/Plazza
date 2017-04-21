@@ -24,8 +24,12 @@ MAIN	    =	main.cpp				\
 				Worker.cpp
 
 MAIN_UI  	=	mainUI.cpp \
+                PlazzaUI.cpp \
+                UIAddedFile.cpp \
 
 SRC_ALL	    =	FileParser.cpp \
+				ThreadPool.cpp \
+				Worker.cpp
 
 # Cipher sources
 
