@@ -20,8 +20,6 @@ PROJECT_NAME	=	Plazza
 # Main sources
 
 MAIN	    =	main.cpp				\
-				ThreadPool.cpp \
-				Worker.cpp
 
 MAIN_UI  	=	mainUI.cpp \
                 PlazzaUI.cpp \
