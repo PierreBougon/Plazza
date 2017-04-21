@@ -20,6 +20,7 @@ PROJECT_NAME	=	Plazza
 # Main sources
 
 MAIN	    =	main.cpp \
+                CmdParser.cpp \
 
 MAIN_UI  	=	mainUI.cpp \
                 PlazzaUI.cpp \
@@ -27,7 +28,8 @@ MAIN_UI  	=	mainUI.cpp \
 
 SRC_ALL	    =	FileParser.cpp \
 				ThreadPool.cpp \
-				Worker.cpp
+				Worker.cpp \
+				PlazzaError.cpp \
 
 # Cipher sources
 

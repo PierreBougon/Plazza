@@ -20,7 +20,6 @@ namespace plazza {
 		ThreadPool(int numberOfThreads);
 		~ThreadPool();
 
-	protected:
 		std::vector<std::thread> &getThreadList();
 		std::mutex &getQueueMutex();
 		std::condition_variable &getConditionVariable();
