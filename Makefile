@@ -19,14 +19,15 @@ PROJECT_NAME	=	Plazza
 
 # Main sources
 
-MAIN	    =	main.cpp				\
-				Parser.cpp \
-				ThreadPool.cpp \
-				Worker.cpp
+MAIN	    =	main.cpp \
 
 MAIN_UI  	=	mainUI.cpp \
+                PlazzaUI.cpp \
+                UIAddedFile.cpp \
 
 SRC_ALL	    =	FileParser.cpp \
+				ThreadPool.cpp \
+				Worker.cpp
 
 # Cipher sources
 
@@ -54,7 +55,7 @@ NAME   		=      	plazza
 
 INC     	=       -Iinclude -Iinclude/cipher -I ~/Qt5.8.0/5.8/gcc_64/include \
 
-LDFLAGS		+=	-Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets
+LDFLAGS		+= -lpthread -Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets
 
 ## Core rules
 

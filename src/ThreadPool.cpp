@@ -52,15 +52,19 @@ std::vector<std::thread> &ThreadPool::getThreadList() {
 void ThreadPool::popFrontTask() {
 	tasks.pop();
 }
+
 std::queue<std::string> &ThreadPool::getTasks() {
 	return tasks;
 }
+
 void ThreadPool::setTasks(const std::queue<std::string> &tasks) {
 	this->tasks = tasks;
 }
+
 bool ThreadPool::shouldStop() const {
 	return stop;
 }
+
 void ThreadPool::setStop(bool stop) {
 	this->stop = stop;
 }
