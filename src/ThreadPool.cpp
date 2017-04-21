@@ -36,12 +36,9 @@ plazza::ThreadPool::~ThreadPool() {
 }
 
 void plazza::ThreadPool::enqueue(std::string line) {
-	// La scope est la pour appeler le destructeur du unique_lock et au final unlock la mutex
-	{
-		std::unique_lock<std::mutex> lock(queue_mutex);
-		tasks.push(line);
-	}
-	
+	std::unique_lock<std::mutex> lock(queue_mutex);
+	tasks.push(line);
+	lock.unlock();
 	conditionVariable.notify_one();
 }
 
@@ -72,6 +69,7 @@ std::mutex &plazza::ThreadPool::getQueueMutex() {
 std::condition_variable &plazza::ThreadPool::getConditionVariable() {
 	return conditionVariable;
 }
+
 size_t plazza::ThreadPool::getNumberOfThreads() const {
 	return ThreadList.size();
 }

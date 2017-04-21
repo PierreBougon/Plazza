@@ -18,8 +18,8 @@ int main(int ac, char **av) {
 		std::cerr << "WHAT ABOUT GO FUCK YOURSELF" << std::endl;
 		return (1);
 	}
-	ThreadPool *toto;
-	toto = new ThreadPool(atoi(av[1]));
+	plazza::ThreadPool *toto;
+	toto = new plazza::ThreadPool(atoi(av[1]));
 	getchar();
 	delete toto;
 /*

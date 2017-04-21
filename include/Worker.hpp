@@ -8,7 +8,6 @@
 #include "ThreadPool.hpp"
 
 namespace plazza {
-	namespace ThreadPool {
 		class Worker {
 		public:
 			Worker(ThreadPool &s, size_t index);
@@ -17,7 +16,6 @@ namespace plazza {
 			size_t		workerIndex;
 			ThreadPool &PoolRef;
 		};
-	}
 }
 
 #endif //CPP_PLAZZA_WORKER_HPP
