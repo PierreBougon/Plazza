@@ -7,12 +7,16 @@
 
 #include "ThreadPool.hpp"
 
-class Worker {
-public:
-	Worker(ThreadPool &s) : PoolRef(s) {};
-	void operator()();
-private:
-	ThreadPool &PoolRef;
-};
+namespace plazza {
+
+    class Worker {
+    public:
+        Worker(ThreadPool &s) : PoolRef(s) {};
+        void operator()();
+
+    private:
+        ThreadPool &PoolRef;
+    };
+}
 
 #endif //CPP_PLAZZA_WORKER_HPP

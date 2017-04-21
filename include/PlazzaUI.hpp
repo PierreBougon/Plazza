@@ -21,7 +21,6 @@ namespace plazza {
 
     class PlazzaUI {
 
-
         QApplication app;
         QMainWindow mainWindow;
         QPushButton buttonAddFile;
@@ -42,6 +41,5 @@ namespace plazza {
         PlazzaUI(int ac, char **av);
         const QApplication &getApp() const;
     };
-
 }
 #endif //CPP_PLAZZA_PLAZZAUI_HPP

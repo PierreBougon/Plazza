@@ -7,7 +7,7 @@
 #include <mutex>
 #include "Worker.hpp"
 
-void Worker::operator()() {
+void plazza::Worker::operator()() {
 	std::string task;
 	while (true) {
 		// Creation d'une scope pour release la mutex en sortie de scope

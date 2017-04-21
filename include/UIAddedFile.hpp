@@ -20,17 +20,11 @@ namespace plazza {
 
     public:
         virtual ~UIAddedFile();
-
         UIAddedFile(QLabel *label, QCheckBox *phone, QCheckBox *email, QCheckBox *ip);
-
         const QLabel &getLabel() const;
-
         const QCheckBox &getPhone() const;
-
         const QCheckBox &getEmail() const;
-
         const QCheckBox &getIp() const;
-
     };
 }
 
