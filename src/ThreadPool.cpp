@@ -6,9 +6,9 @@
 #include "ThreadPool.hpp"
 #include "Worker.hpp"
 
-plazza::ThreadPool::ThreadPool(int numberOfThreads) : stop(false) {
-	for(int i = 0; i < numberOfThreads; ++i) {
-		ThreadList.push_back(std::thread(Worker(*this)));
+plazza::ThreadPool::ThreadPool(size_t numberOfThreads) : stop(false) {
+	for(size_t i = 0; i < numberOfThreads; ++i) {
+		ThreadList.push_back(std::thread(Worker(*this, i)));
 	}
 	enqueue("test01");
 	enqueue("test02");
@@ -30,36 +30,28 @@ plazza::ThreadPool::~ThreadPool() {
 	stop = true;
 	conditionVariable.notify_all();
 	
-	for (int i = 0; i < ThreadList.size(); ++i) {
+	for(size_t i = 0; i < ThreadList.size(); ++i) {
 		ThreadList[i].join();
 	}
 }
 
-void plazza::ThreadPool::enqueue(std::string line)
-{
-	// La scope est la pour appeler le destructeur du unique_lock et au final unlock la mutex
-	{
-		std::unique_lock<std::mutex> lock(queue_mutex);
-		tasks.push(line);
-	}
-	
+void plazza::ThreadPool::enqueue(std::string line) {
+	std::unique_lock<std::mutex> lock(queue_mutex);
+	tasks.push(line);
+	lock.unlock();
 	conditionVariable.notify_one();
 }
 
-std::vector<std::thread> &plazza::ThreadPool::getThreadList() {
-	return ThreadList;
-}
-
-void plazza::ThreadPool::popFrontTask() {
+std::string plazza::ThreadPool::getFrontTask() {
+	std::string ret;
+	ret = tasks.front();
+	
 	tasks.pop();
+	return (ret);
 }
 
 std::queue<std::string> &plazza::ThreadPool::getTasks() {
 	return tasks;
-}
-
-void plazza::ThreadPool::setTasks(const std::queue<std::string> &tasks) {
-	this->tasks = tasks;
 }
 
 bool plazza::ThreadPool::shouldStop() const {
@@ -76,4 +68,8 @@ std::mutex &plazza::ThreadPool::getQueueMutex() {
 
 std::condition_variable &plazza::ThreadPool::getConditionVariable() {
 	return conditionVariable;
+}
+
+size_t plazza::ThreadPool::getNumberOfThreads() const {
+	return ThreadList.size();
 }

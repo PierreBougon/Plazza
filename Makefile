@@ -36,17 +36,17 @@ SRC_ALL	    =	FileParser.cpp \
 CIPHER_DIR	=	cipher/
 
 SRC_CIPHER	+=	$(CIPHER_DIR)ICipher.cpp	\
-			$(CIPHER_DIR)ACipher.cpp	\
-			$(CIPHER_DIR)CaesarCipher.cpp	\
-			$(CIPHER_DIR)XORCipher.cpp	\
+				$(CIPHER_DIR)ACipher.cpp	\
+				$(CIPHER_DIR)CaesarCipher.cpp	\
+				$(CIPHER_DIR)XORCipher.cpp	\
 
-SRC		= 	$(addprefix src/, $(SRC_ALL))
-SRC		+= 	$(addprefix src/, $(SRC_CIPHER))
-SRC		+= 	$(addprefix src/, $(MAIN))
+SRC		= 	    $(addprefix src/, $(SRC_ALL))
+SRC		+= 	    $(addprefix src/, $(SRC_CIPHER))
+SRC		+= 	    $(addprefix src/, $(MAIN))
 
-SRC_UI	= 	$(addprefix src/, $(SRC_ALL))
-SRC_UI	+= 	$(addprefix src/, $(SRC_CIPHER))
-SRC_UI	+= 	$(addprefix src/, $(MAIN_UI))
+SRC_UI	=    	$(addprefix src/, $(SRC_ALL))
+SRC_UI	+=  	$(addprefix src/, $(SRC_CIPHER))
+SRC_UI	+=  	$(addprefix src/, $(MAIN_UI))
 
 
 OBJ 		=   	$(SRC:.cpp=.o)
@@ -57,7 +57,7 @@ NAME   		=      	plazza
 
 INC     	=       -Iinclude -Iinclude/cipher -I ~/Qt5.8.0/5.8/gcc_64/include \
 
-LDFLAGS		+= -lpthread -Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets
+LDFLAGS		+=      -Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets -pthread
 
 ## Core rules
 

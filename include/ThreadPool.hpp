@@ -14,22 +14,20 @@
 #include "IConditionVariable.hpp"
 
 namespace plazza {
-	//TODO check const
 	class ThreadPool {
 	public:
-		ThreadPool(int numberOfThreads);
+		ThreadPool(size_t numberOfThreads);
 		~ThreadPool();
-
+		size_t getNumberOfThreads() const;
 		std::vector<std::thread> &getThreadList();
 		std::mutex &getQueueMutex();
 		std::condition_variable &getConditionVariable();
 		bool shouldStop() const;
 		void setStop(bool stop);
-		void popFrontTask();
-		std::queue<std::string> &getTasks();
-		void setTasks(const std::queue<std::string> &tasks);
-		void enqueue(std::string line);
 
+		std::string getFrontTask();
+		std::queue<std::string> &getTasks();
+		void enqueue(std::string line);
 	private:
 		std::vector<std::thread> ThreadList;
 		std::queue<std::string> tasks;
@@ -38,4 +36,5 @@ namespace plazza {
 		bool stop;
 	};
 }
+
 #endif //CPP_PLAZZA_THREADPOOL_HPP
