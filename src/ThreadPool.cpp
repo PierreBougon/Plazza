@@ -6,7 +6,7 @@
 #include "ThreadPool.hpp"
 #include "Worker.hpp"
 
-plazza::ThreadPool::ThreadPool(size_t numberOfThreads) : stop(false) {
+plazza::ThreadPool::ThreadPool(size_t numberOfThreads) : stop(false), areThreadsFree(numberOfThreads) {
 	for(size_t i = 0; i < numberOfThreads; ++i) {
 		ThreadList.push_back(std::thread(Worker(*this, i)));
 	}
@@ -50,10 +50,6 @@ std::string plazza::ThreadPool::getFrontTask() {
 	return (ret);
 }
 
-std::queue<std::string> &plazza::ThreadPool::getTasks() {
-	return tasks;
-}
-
 bool plazza::ThreadPool::shouldStop() const {
 	return stop;
 }
@@ -72,4 +68,11 @@ std::condition_variable &plazza::ThreadPool::getConditionVariable() {
 
 size_t plazza::ThreadPool::getNumberOfThreads() const {
 	return ThreadList.size();
+}
+
+std::vector<bool, std::allocator<bool>> &plazza::ThreadPool::getAreThreadsFree() {
+	return areThreadsFree;
+}
+bool plazza::ThreadPool::hasWork() const {
+	return (tasks.size() != 0);
 }

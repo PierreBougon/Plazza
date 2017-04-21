@@ -12,24 +12,32 @@
 #include <condition_variable>
 #include "IMutex.hpp"
 #include "IConditionVariable.hpp"
+#include "IMutex.hpp"
+
 
 namespace plazza {
 	class ThreadPool {
 	public:
+		//CTOR DTOR
 		ThreadPool(size_t numberOfThreads);
 		~ThreadPool();
-	protected:
-	public:
+		
+		//Setters
+		void setStop(bool stop);
+		
+		//Getters
 		size_t getNumberOfThreads() const;
 		std::mutex &getQueueMutex();
 		std::condition_variable &getConditionVariable();
-		bool shouldStop() const;
-		void setStop(bool stop);
-		
 		std::string getFrontTask();
-		std::queue<std::string> &getTasks();
+		std::vector<bool, std::allocator<bool>> &getAreThreadsFree();
+		bool shouldStop() const;
+		bool hasWork() const;
+		
+		//Utils
 		void enqueue(std::string line);
 	private:
+		std::vector<bool> areThreadsFree;
 		std::vector<std::thread> ThreadList;
 		std::queue<std::string> tasks;
 		std::mutex queue_mutex;

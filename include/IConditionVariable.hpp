@@ -8,7 +8,6 @@
 namespace plazza {
 
     class IConditionVariable {
-
     };
 }
 
