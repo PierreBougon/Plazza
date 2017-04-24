@@ -29,6 +29,9 @@ namespace plazza {
 		size_t getNumberOfThreads() const;
 		std::mutex &getQueueMutex();
 		std::condition_variable &getConditionVariable();
+		bool shouldStop() const;
+		void setStop(bool stop);
+		
 		std::string getFrontTask();
 		std::vector<bool, std::allocator<bool>> &getAreThreadsFree();
 		bool shouldStop() const;

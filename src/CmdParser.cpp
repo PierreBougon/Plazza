@@ -3,11 +3,15 @@
 //
 
 #include <algorithm>
+#include <iostream>
+#include <PlazzaError.hpp>
 #include "CmdParser.hpp"
 
 plazza::CmdParser::~CmdParser() {
 
 }
+
+plazza::CmdParser::CmdParser() {}
 
 void plazza::CmdParser::feed(std::string const &str) {
 
@@ -21,10 +25,82 @@ void plazza::CmdParser::feed(std::string const &str) {
 }
 
 std::unique_ptr<plazza::ast_node> plazza::CmdParser::parse() {
-    std::unique_ptr<ast_node> root = std::make_unique<ast_node>(ast_node(nullptr));
-    return root;
+    std::unique_ptr<ast_node> root = std::make_unique<ast_node>(ast_node(std::vector<std::unique_ptr<ast_node>>(0)));
+    root->type = ASTNodeType::ROOT;
+    root->value = "root";
+    std::string str;
+    while (!stream.eof()) {
+        std::unique_ptr<ast_node> node = std::make_unique<ast_node>(
+                ast_node(std::vector<std::unique_ptr<ast_node>>(0)));
+        node->type = ASTNodeType::CMD;
+        node->value = "CMD";
+        addNodeFile(node);
+        if (!stream.eof())
+            root->children.push_back(std::move(node));
+    }
+    addNode(root, ASTNodeType::END_CMD, "END");
+    return std::move(root);
 }
 
 void plazza::CmdParser::reset() {
     stream.clear();
 }
+
+void plazza::CmdParser::addNode(std::unique_ptr<plazza::ast_node> &root, plazza::ASTNodeType type,
+                                std::string const &value) {
+    std::unique_ptr<ast_node> node = std::make_unique<ast_node>(ast_node(std::vector<std::unique_ptr<ast_node>>(0)));
+    node->type = type;
+    node->value = value;
+    root->children.push_back(std::move(node));
+}
+
+void plazza::CmdParser::addNodeFile(std::unique_ptr<plazza::ast_node> &node) {
+
+    std::string str;
+    while (!stream.eof()) {
+        int input_char = stream.get();
+        if (input_char == ' ' && str != "") {
+            addNode(node, ASTNodeType::FILE, str);
+            str.clear();
+        } else if (input_char == 'P') {
+            addNode(node, "PHONE_NUMBER");
+            break;
+        } else if (input_char == 'E') {
+            addNode(node, "EMAIL_ADDRESS");
+            break;
+        } else if (input_char == 'I') {
+            addNode(node, "IP_ADDRESS");
+            break;
+        } else if (isprint(input_char) && !isblank(input_char)) {
+            str += input_char;
+        }
+    }
+    if (!str.empty()) {
+        throw plazza::CmdParserError("Unknown Command starting with " + str);
+    }
+}
+
+void plazza::CmdParser::addNode(std::unique_ptr<plazza::ast_node> &root, std::string const &cmp) {
+    std::string str;
+    int input_char = stream.get();
+
+    str += cmp[0];
+    while (!stream.eof() && input_char != ';' && input_char != '\n') {
+        str += input_char;
+        input_char = stream.get();
+    }
+    if (str != cmp)
+        throw plazza::CmdParserError("Unknown Command starting with " + str);
+    addNode(root, ASTNodeType::CMD, str);
+    addNode(root, ASTNodeType::END_CMD, ";");
+}
+
+void plazza::CmdParser::dumpTree(plazza::ast_node *root) {
+    if (root) {
+        std::cout << root->type << " " << root->value << std::endl;
+        for (int i = 0; i < root->children.size(); ++i) {
+            dumpTree(root->children[i].get());
+        }
+    }
+}
+
