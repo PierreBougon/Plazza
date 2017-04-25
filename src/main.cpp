@@ -77,6 +77,8 @@ int main(int ac, char **av) {
         std::cout << " ip : " << res[i] << std::endl;
     }
 
+    /*
+
     // Server side
     plazza::network::Server server(10);
     server.run();
@@ -85,6 +87,9 @@ int main(int ac, char **av) {
     plazza::network::Client::getInstance().Init(4242, "localhost");
     plazza::network::Client::getInstance().connect();
     plazza::network::Client::getInstance().run();
+
+*/
+
     return 0;
 }
 #endif
