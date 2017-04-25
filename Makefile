@@ -5,7 +5,7 @@
 ## Login   <bougon_p@epitech.net>
 ##
 ## Started on  Sat Apr 15 00:37:20 2017 bougon_p
-## Last update Tue Apr 25 18:41:43 2017 bougon_p
+## Last update Tue Apr 25 22:36:41 2017 bougon_p
 ##
 
 ## Include colors and basic commands
@@ -56,6 +56,8 @@ NAME   		=      	plazza
 INC     	=       -Iinclude -Iinclude/cipher -I /home/${USER}/Qt5.8.0/5.8/gcc_64/include
 
 LDFLAGS		+=	-Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets -lpthread
+
+CXXFLAGS	+=	-pthread -fPIC
 
 ## Core rules
 

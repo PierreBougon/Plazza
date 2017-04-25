@@ -17,7 +17,7 @@ PROJECT_NAME	=
 
 # Compilation definitions
 
-CXXFLAGS	=	-std=c++14 -W -Wall -Wextra -pthread -fpic
+CXXFLAGS	=	-std=c++14 -W -Wall -Wextra
 ifeq ($(RELEASE), YES)
 CXXFLAGS	+=	-Werror
 else
