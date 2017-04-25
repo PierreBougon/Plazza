@@ -17,15 +17,14 @@ endif
 		@$(eval DLL=NO)
 		@$(eval CXXFLAGS= -std=c++14 -W -Wall -Wextra)
 
-ui:     $(OBJ_UI)
-		g++ -o $(NAME) $(OBJ_UI) $(INC) $(LDFLAGS)
-
 all:		$(NAME)
 
 clean:
 		@$(ECHO)
 		@$(ECHO) "$(BOLD_WHITE) [$(RED)RM$(BOLD_WHITE)] $(NAME) Obejcts files$(CLEAR)"
 		@$(RM) $(OBJ)
+#clean ui objects
+		@$(RM) $(OBJ_UI)
 
 fclean:     	clean
 		@$(ECHO) "$(BOLD_WHITE) [$(RED)RM$(BOLD_WHITE)] $(NAME) Binary file$(CLEAR)\n"

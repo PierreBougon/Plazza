@@ -5,7 +5,7 @@
 ## Login   <bougon_p@epitech.net>
 ##
 ## Started on  Sat Apr 15 00:37:20 2017 bougon_p
-## Last update Wed Apr 19 18:24:16 2017 Sauvau Mathieu
+## Last update Thu Apr 20 16:43:05 2017 bougon_p
 ##
 
 ## Include colors and basic commands
@@ -19,14 +19,14 @@ PROJECT_NAME	=	Plazza
 
 # Main sources
 
-MAIN	    =	main.cpp \
+MAIN	    	=	main.cpp \
                 CmdParser.cpp \
 
-MAIN_UI  	=	mainUI.cpp \
+MAIN_UI		=	mainUI.cpp \
                 PlazzaUI.cpp \
                 UIAddedFile.cpp \
 
-SRC_ALL	    =	FileParser.cpp \
+SRC_ALL	    	=	FileParser.cpp \
 				ThreadPool.cpp \
 				Worker.cpp \
 				PlazzaError.cpp \
@@ -44,21 +44,43 @@ SRC		= 	    $(addprefix src/, $(SRC_ALL))
 SRC		+= 	    $(addprefix src/, $(SRC_CIPHER))
 SRC		+= 	    $(addprefix src/, $(MAIN))
 
-SRC_UI	=    	$(addprefix src/, $(SRC_ALL))
-SRC_UI	+=  	$(addprefix src/, $(SRC_CIPHER))
-SRC_UI	+=  	$(addprefix src/, $(MAIN_UI))
+SRC_UI		=	$(SRC)
+SRC_UI		+= 	$(addprefix src/, $(MAIN_UI))
 
 
 OBJ 		=   	$(SRC:.cpp=.o)
 OBJ_UI 		=   	$(SRC_UI:.cpp=.o)
 
-
 NAME   		=      	plazza
 
-INC     	=       -Iinclude -Iinclude/cipher -I ~/Qt5.8.0/5.8/gcc_64/include \
+INC     	=       -Iinclude -Iinclude/cipher -I /home/${USER}/Qt5.8.0/5.8/gcc_64/include
 
-LDFLAGS		+=      -Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets -pthread
+LDFLAGS		+=	-Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets-pthread
 
 ## Core rules
 
 include mk/rules.mk
+
+compileui:	$(OBJ_UI)
+		@$(ECHO)
+		@$(ECHO) "$(BLUE) Compiled with : $(BOLD_WHITE)$(CXX)$(CLEAR)"
+		@$(ECHO) "$(BLUE) Flags used \t  : $(BOLD_WHITE)$(CXXFLAGS)$(CLEAR)"
+		@$(ECHO) "$(BLUE) Dependencies  :$(BOLD_WHITE)$(LDFLAGS)$(CLEAR)"
+		@$(ECHO)
+		@$(ECHO) "$(BLUE) ==== $(BOLD_WHITE) $(PROJECT_NAME)  Compiled $(BLUE) ==== \
+$(CLEAR)\n\n"
+ifeq ($(STATIC), YES)
+		@$(LINKER) -o $(NAME) $(OBJ)
+else
+		@$(CXX) $(OBJ) -o $(NAME) $(INC) $(LDFLAGS)
+endif
+		@$(eval PROJECT_NAME=)
+		@$(eval LDFLAGS=)
+		@$(eval DLL=NO)
+		@$(eval CXXFLAGS= -std=c++14 -W -Wall -Wextra)
+
+ui:
+		@$(eval INC+= -I /home/${USER}/Qt5.8.0/5.8/gcc_64/include)
+		@$(eval LDFLAGS+= -Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets)
+		@$(eval CXXFLAGS+= -D UI)
+		@make -s  compileui
