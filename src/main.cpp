@@ -1,9 +1,8 @@
-//#include <iostream>
-//#include <cipher/ICipher.hpp>
-//#include <cipher/XORCipher.hpp>
-//#include <cipher/CaesarCipher.hpp>
-//#include <chrono>
-//#include <Parser.hpp>
+#include <iostream>
+#include <cipher/ICipher.hpp>
+#include <cipher/XORCipher.hpp>
+#include <cipher/CaesarCipher.hpp>
+#include <chrono>
 #include <iostream>
 #include "ThreadPool.hpp"
 #include <unistd.h>
@@ -12,8 +11,12 @@
 #include <cipher/CaesarCipher.hpp>
 #include <chrono>
 #include <FileParser.hpp>
+#include <network/Client.hpp>
+#include <network/Server.hpp>
+#include <CmdParser.hpp>
 #include <CmdParser.hpp>
 
+#ifndef UI
 int main(int ac, char **av) {
     /*if (ac != 2) {
         std::cerr << "WHAT ABOUT GO FUCK YOURSELF" << std::endl;
@@ -39,7 +42,7 @@ int main(int ac, char **av) {
     str -= cipher;
     std::cout << "3 : " << str << std::endl;*/
 
-    /*   plazza::FileParser parser;
+       plazza::FileParser parser;
 
        parser.open(av[1]);
        std::vector<std::string> res = parser.getEmails();
@@ -59,7 +62,7 @@ int main(int ac, char **av) {
        res = parser.getIps();
        for (int i = 0; i < res.size(); ++i) {
            std::cout << " ip : " << res[i] << std::endl;
-       }*/
+       }
 
     plazza::CmdParser cmdParser;
 
@@ -67,5 +70,21 @@ int main(int ac, char **av) {
     std::unique_ptr<plazza::ast_node> root = cmdParser.parse();
 
     cmdParser.dumpTree(root.get());
+    res.clear();
+    std::cout << std::endl;
+    res = parser.getIps();
+    for (int i = 0; i < res.size(); ++i) {
+        std::cout << " ip : " << res[i] << std::endl;
+    }
+
+    // Server side
+    plazza::network::Server server(10);
+    server.run();
+
+    // Client side
+    plazza::network::Client::getInstance().Init(4242, "localhost");
+    plazza::network::Client::getInstance().connect();
+    plazza::network::Client::getInstance().run();
     return 0;
 }
+#endif
