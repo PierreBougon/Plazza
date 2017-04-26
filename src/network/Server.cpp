@@ -105,6 +105,7 @@ void plazza::network::Server::refreshEvents(pollfd *listEvents)
 
 plazza::network::Server::~Server()
 {
+    stop();
 }
 
 void plazza::network::Server::wait()
