@@ -4,10 +4,10 @@
 
 #include <PlazzaUI.hpp>
 
-#ifdef UI
+//#ifdef UI
 int main(int ac, char **av)
 {
     plazza::PlazzaUI ui(ac, av);
     return ui.getApp().exec();
 }
-#endif
+//#endif

@@ -44,6 +44,7 @@ std::string plazza::network::Packet::serialize() const
 {
     std::string serialized;
 
+
     // TODO
     return std::move(serialized);
 }

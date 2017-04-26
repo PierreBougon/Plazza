@@ -135,3 +135,32 @@ void plazza::CmdParser::checkIntegrity(plazza::ast_node *node) {
 size_t plazza::CmdParser::getNbCmd() {
     return nbCmd;
 }
+
+void plazza::CmdParser::_getCommand(plazza::ast_node *node, std::vector<plazza::command> &cmd) {
+
+    if (node && node->type == ASTNodeType::CMD && node->value == "CMD") {
+        cmd.push_back(command(node->children[0]->value, convertCmd(node->children[1]->value)));
+    }
+}
+
+std::vector<plazza::command> plazza::CmdParser::getCommands(plazza::ast_node *root) {
+
+    std::vector<plazza::command> cmd;
+
+    if (root) {
+        for (int i = 0; i < root->children.size(); ++i) {
+            _getCommand(root->children[i].get(), cmd);
+        }
+    }
+    return cmd;
+}
+
+plazza::Information plazza::CmdParser::convertCmd(std::string const &cmd) {
+    if (cmd == "IP_ADDRESS")
+        return IP_ADDRESS;
+    else if (cmd == "EMAIL_ADDRESS")
+        return EMAIL_ADDRESS;
+    else if (cmd == "PHONE_NUMBER")
+        return PHONE_NUMBER;
+    return NONE;
+}

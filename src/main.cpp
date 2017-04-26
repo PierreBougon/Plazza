@@ -32,6 +32,10 @@ int main(int ac, char **av) {
             cmdParser.checkIntegrity(root.get());
 			std::cout << cmdParser.getNbCmd() << std::endl;
 			
+//            cmdParser.dumpTree(root.get());
+            std::vector<plazza::command> cmd = cmdParser.getCommands(root.get());
+
+        //std::cout << cmdParser.getNbCmd() << std::endl;
         } catch (plazza::CmdParserError error) {
             std::cout << error.what() << std::endl;
         }
