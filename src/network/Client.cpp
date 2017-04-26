@@ -12,11 +12,6 @@ plazza::network::Client::Client() : TCPClient(0, "")
 {
 }
 
-void plazza::network::Client::onReceive(const plazza::network::Packet &packet)
-{
-    // TODO
-}
-
 void plazza::network::Client::Init(uint16_t port, std::string const &host)
 {
     _port = port;

@@ -29,8 +29,6 @@ namespace plazza
             // Use this method as the constructor
             void Init(uint16_t port, std::string const &host);
             virtual ~Client();
-
-            void onReceive(const network::Packet &packet) override;
         };
     }
 }
