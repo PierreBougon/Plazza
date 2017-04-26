@@ -22,7 +22,11 @@ namespace plazza
 
             void            connect();
             void            run();
-            void            bind(std::function<void(const Packet &)> const &onReceive);
+            template <class Function>
+            void            bind(Function &&onReceive)
+            {
+                _onReceive = onReceive;
+            }
 
             void send(const network::Packet &packet, sock_t socket) override;
             Packet receive(sock_t socket) override;
