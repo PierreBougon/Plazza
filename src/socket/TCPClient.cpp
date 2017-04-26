@@ -79,6 +79,6 @@ plazza::network::TCPClient::~TCPClient()
 
 }
 
-void plazza::network::TCPClient::setOnReceive(const std::function<void(const plazza::network::Packet &)> &onReceive) {
+void plazza::network::TCPClient::bind(auto onReceive) {
     TCPClient::onReceive = onReceive;
 }
