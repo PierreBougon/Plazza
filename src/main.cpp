@@ -14,7 +14,7 @@
 
 #ifndef UI
 int main(int ac, char **av) {
-
+	//plazza::ProcessHandler processHandler;
     plazza::CmdParser cmdParser;
     std::string buffer;
 
@@ -28,19 +28,17 @@ int main(int ac, char **av) {
         cmdParser.feed(buffer);
         try {
             std::unique_ptr<plazza::ast_node> root = cmdParser.parse();
-//          mdParser.dumpTree(root.get());
+			cmdParser.dumpTree(root.get());
             cmdParser.checkIntegrity(root.get());
-//          std::cout << cmdParser.getNbCmd() << std::endl;
-
+			std::cout << cmdParser.getNbCmd() << std::endl;
+			
         } catch (plazza::CmdParserError error) {
             std::cout << error.what() << std::endl;
         }
     }
 
-    /*if (ac != 2) {
-        std::cerr << "WHAT ABOUT GO FUCK YOURSELF" << std::endl;
-        return (1);
-    }
+
+	/*
     plazza::ThreadPool *toto;
     toto = new plazza::ThreadPool(atoi(av[1]));
     getchar();
