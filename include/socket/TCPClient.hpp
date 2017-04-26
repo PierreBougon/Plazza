@@ -25,8 +25,7 @@ namespace plazza
 
             void send(const network::Packet &packet, sock_t socket) override;
             Packet receive(sock_t socket) override;
-
-            void setOnReceive(const std::function<void(const Packet &)> &onReceive);
+            void bind(auto onReceive);
 
         protected:
             bool                   _running;
