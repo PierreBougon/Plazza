@@ -28,10 +28,11 @@ int main(int ac, char **av) {
         cmdParser.feed(buffer);
         try {
             std::unique_ptr<plazza::ast_node> root = cmdParser.parse();
-//          mdParser.dumpTree(root.get());
             cmdParser.checkIntegrity(root.get());
-//          std::cout << cmdParser.getNbCmd() << std::endl;
+//            cmdParser.dumpTree(root.get());
+            std::vector<plazza::command> cmd = cmdParser.getCommands(root.get());
 
+        //std::cout << cmdParser.getNbCmd() << std::endl;
         } catch (plazza::CmdParserError error) {
             std::cout << error.what() << std::endl;
         }

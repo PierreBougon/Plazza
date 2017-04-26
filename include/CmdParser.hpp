@@ -24,6 +24,13 @@ namespace plazza {
         PHONE_NUMBER,
         EMAIL_ADDRESS,
         IP_ADDRESS,
+        NONE,
+    };
+
+    struct command {
+        command(std::string const &file, Information information) : file(file), information(information) {}
+        std::string file;
+        Information information;
     };
 
     struct ast_node {
@@ -43,6 +50,9 @@ namespace plazza {
         void addNodeFile(std::unique_ptr<ast_node> &root);
         void checkCmdIntegrity(ast_node *node);
         std::string trim(std::string const &str);
+        Information convertCmd(std::string const &cmd);
+        void _getCommand(ast_node *root, std::vector<command> &cmd);
+
     public:
         virtual ~CmdParser();
         CmdParser();
@@ -52,6 +62,7 @@ namespace plazza {
         void reset();
         void dumpTree(ast_node *node);
         size_t getNbCmd();
+        std::vector<command> getCommands(ast_node *root);
     };
 }
 

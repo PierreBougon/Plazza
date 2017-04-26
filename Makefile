@@ -19,14 +19,14 @@ PROJECT_NAME	=	Plazza
 
 # Main sources
 
-MAIN	    	=	main.cpp \
+MAIN	    =	main.cpp \
 	                CmdParser.cpp \
 
 MAIN_UI		=	mainUI.cpp \
 			PlazzaUI.cpp \
 			UIAddedFile.cpp \
 
-SRC_ALL	    	=	FileParser.cpp \
+SRC_ALL	    =	FileParser.cpp \
 			ThreadPool.cpp \
 			Worker.cpp \
 			PlazzaError.cpp \
@@ -44,8 +44,9 @@ SRC		= 	$(addprefix src/, $(SRC_ALL))
 SRC		+=	$(addprefix src/, $(SRC_CIPHER))
 SRC		+= 	$(addprefix src/, $(MAIN))
 
-SRC_UI		=	$(SRC)
-SRC_UI		+= 	$(addprefix src/, $(MAIN_UI))
+SRC_UI	= 	$(addprefix src/, $(SRC_ALL))
+SRC_UI	+=	$(addprefix src/, $(SRC_CIPHER))
+SRC_UI	+= 	$(addprefix src/, $(MAIN_UI))
 
 
 OBJ 		=   	$(SRC:.cpp=.o)
@@ -72,9 +73,9 @@ ui:		$(OBJ_UI)
 		@$(ECHO) "$(BLUE) ==== $(BOLD_WHITE) $(PROJECT_NAME)  Compiled $(BLUE) ==== \
 $(CLEAR)\n\n"
 ifeq ($(STATIC), YES)
-		@$(LINKER) -o $(NAME) $(OBJ)
+		@$(LINKER) -o $(NAME) $(OBJ_UI)
 else
-		@$(CXX) $(OBJ) -o $(NAME) $(INC) $(LDFLAGS)
+		@$(CXX) $(OBJ_UI) -o $(NAME) $(INC) $(LDFLAGS)
 endif
 		@$(eval PROJECT_NAME=)
 		@$(eval LDFLAGS=)
