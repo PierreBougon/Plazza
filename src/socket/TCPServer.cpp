@@ -39,7 +39,9 @@ plazza::network::TCPServer::~TCPServer()
 
 void plazza::network::TCPServer::send(const network::Packet &packet, sock_t socket)
 {
-    if (::send(socket, &packet, BUFFER_SIZE, 0) == -1)
+    std::string data = packet.serialize();
+
+    if (::send(socket, data.c_str(), data.size(), 0) == -1)
     {
         removeClient(socket);
     }
