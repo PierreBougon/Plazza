@@ -5,6 +5,14 @@
 #include <vector>
 #include "ProcessHandler.hpp"
 
-plazza::ProcessHandler(size_t numberOfThread, std::vector<command> commandList) {
+plazza::ProcessHandler::ProcessHandler(bool isClient, size_t numberOfThreads, std::vector<plazza::command> commandList) {
+
+}
+
+plazza::ProcessHandler::~ProcessHandler() {
+
+}
+
+void plazza::ProcessHandler::feed(const std::vector<plazza::command> commandList) {
 
 }

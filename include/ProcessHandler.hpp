@@ -5,14 +5,15 @@
 #ifndef CPP_PLAZZA_PROCESSHANDLER_HPP
 #define CPP_PLAZZA_PROCESSHANDLER_HPP
 
+#include "IProcessHandler.hpp"
+#include "CmdParser.hpp"
 
 namespace plazza {
 	class ProcessHandler : public IProcessHandler {
 	public:
-		ProcessHandler(size_t numberOfThreads, std::vector <command> commandList);
+		ProcessHandler(bool isClient, size_t numberOfThreads, std::vector <command> commandList = {});
 		~ProcessHandler();
 		virtual void feed(const std::vector <command> commandList);
-		
 	};
 }
 

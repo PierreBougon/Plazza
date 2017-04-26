@@ -11,37 +11,41 @@
 #include <CmdParser.hpp>
 #include <CmdParser.hpp>
 #include <PlazzaError.hpp>
+#include <ProcessHandler.hpp>
 
 #ifndef UI
 int main(int ac, char **av) {
-	//plazza::ProcessHandler processHandler;
-    plazza::CmdParser cmdParser;
-    std::string buffer;
-
-    if (ac != 2 || std::stoi(av[1]) <= 0) {
-        std::cerr << "usage : ./plazza nb_thread_per_process" << std::endl;
-        return (1);
-    }
-
-    while (getline(std::cin, buffer)) {
-        cmdParser.reset();
-        cmdParser.feed(buffer);
-        try {
-            std::unique_ptr<plazza::ast_node> root = cmdParser.parse();
+	bool isClient;
+	plazza::CmdParser cmdParser;
+	std::string buffer;
+	
+	if (ac < 2 || std::stoi(av[1]) <= 0) {
+		std::cerr << "usage : ./plazza nb_thread_per_process" << std::endl;
+		return (1);
+	}
+	if (av[2] && av[2] == "--client")
+		isClient = true;
+	while (getline(std::cin, buffer)) {
+		cmdParser.reset();
+		cmdParser.feed(buffer);
+		try {
+			std::unique_ptr<plazza::ast_node> root = cmdParser.parse();
 			cmdParser.dumpTree(root.get());
-            cmdParser.checkIntegrity(root.get());
+			cmdParser.checkIntegrity(root.get());
+			std::vector<plazza::command> cmd = cmdParser.getCommands(root.get());
+			for(size_t i = 0; i < cmd.size(); i++) {
+				std::cout << cmd.at(i).file << " " << cmd.at(i).information << std::endl;
+			}
+			
 			std::cout << cmdParser.getNbCmd() << std::endl;
 			
-//            cmdParser.dumpTree(root.get());
-            std::vector<plazza::command> cmd = cmdParser.getCommands(root.get());
-
-        //std::cout << cmdParser.getNbCmd() << std::endl;
-        } catch (plazza::CmdParserError error) {
-            std::cout << error.what() << std::endl;
-        }
-    }
-
-
+			//std::cout << cmdParser.getNbCmd() << std::endl;
+		} catch (plazza::CmdParserError error) {
+			std::cout << error.what() << std::endl;
+		}
+	}
+	
+	
 	/*
     plazza::ThreadPool *toto;
     toto = new plazza::ThreadPool(atoi(av[1]));
@@ -62,29 +66,29 @@ int main(int ac, char **av) {
     std::cout << "2 : " << str << std::endl;
     str -= cipher;
     std::cout << "3 : " << str << std::endl;*/
+	
+	/*plazza::FileParser parser;
 
-       /*plazza::FileParser parser;
+	parser.open(av[1]);
+	std::vector<std::string> res = parser.getEmails();
+	for (int i = 0; i < res.size(); ++i) {
+		std::cout << " email : " << res[i] << std::endl;
+	}
 
-       parser.open(av[1]);
-       std::vector<std::string> res = parser.getEmails();
-       for (int i = 0; i < res.size(); ++i) {
-           std::cout << " email : " << res[i] << std::endl;
-       }
+	res.clear();
+	std::cout << std::endl;
+	res = parser.getPhones();
+	for (int i = 0; i < res.size(); ++i) {
+		std::cout << " phone : " << res[i] << std::endl;
+	}
 
-       res.clear();
-       std::cout << std::endl;
-       res = parser.getPhones();
-       for (int i = 0; i < res.size(); ++i) {
-           std::cout << " phone : " << res[i] << std::endl;
-       }
-
-       res.clear();
-       std::cout << std::endl;
-       res = parser.getIps();
-       for (int i = 0; i < res.size(); ++i) {
-           std::cout << " ip : " << res[i] << std::endl;
-       }
+	res.clear();
+	std::cout << std::endl;
+	res = parser.getIps();
+	for (int i = 0; i < res.size(); ++i) {
+		std::cout << " ip : " << res[i] << std::endl;
+	}
 */
-    return 0;
+	return 0;
 }
 #endif
