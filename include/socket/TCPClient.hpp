@@ -22,16 +22,16 @@ namespace plazza
 
             void            connect();
             void            run();
+            void            bind(std::function<void(const Packet &)> const &onReceive);
 
             void send(const network::Packet &packet, sock_t socket) override;
             Packet receive(sock_t socket) override;
-            void bind(auto onReceive);
 
         protected:
-            bool                   _running;
-            std::thread            _thread;
-            std::mutex             _mutex;
-            std::function<void(const Packet &)> onReceive;
+            bool                                _running;
+            std::thread                         _thread;
+            std::mutex                          _mutex;
+            std::function<void(const Packet &)> _onReceive;
 
         private:
             void _core();

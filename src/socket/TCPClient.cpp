@@ -69,16 +69,17 @@ void plazza::network::TCPClient::_core()
     while (_running)
     {
         packet = receive(_socket);
-        onReceive(packet);
+        _onReceive(packet);
     }
     _mutex.unlock();
 }
 
+void plazza::network::TCPClient::bind(std::function<void(const Packet &)> const &onReceive)
+{
+    TCPClient::_onReceive = onReceive;
+}
+
 plazza::network::TCPClient::~TCPClient()
 {
-
 }
 
-void plazza::network::TCPClient::bind(auto onReceive) {
-    TCPClient::onReceive = onReceive;
-}
