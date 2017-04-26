@@ -23,7 +23,7 @@ namespace plazza
             void            connect();
             void            run();
 
-            void send(const network::Packet &packet, sock_t socket) override;
+            void send(const network::Packet &packet, sock_t socket = _socket) override;
             Packet receive(sock_t socket) override;
 
             void setOnReceive(const std::function<void(const Packet &)> &onReceive);

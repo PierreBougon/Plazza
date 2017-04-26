@@ -15,7 +15,13 @@ plazza::Process::~Process() {
 
 }
 void plazza::Process::addNewTask(const plazza::network::Packet &packet) {
-	CmdParser parser;
+	std::string data;
 	
-	parser.feed(packet.data);
+	if (tasks.size() == threadPool.getNumberOfThreads() * 2) {;//TODO RENVOYER UN PACKET D'ERREUR
+		plazza::network::Packet outputPacket(plazza::network::StatusCode::INTERNAL_SERVER_ERROR);
+		plazza::network::Client().send(outputPacket);
+	}
+	std::string first = packet.data.substr(0, packet.data.find(" "));
+	std::string second = packet.data.substr(packet.data.find(" ") + 1, packet.data.size());
+	command cmd(first, static_cast<plazza::Information>(std::stoi(second)));
 }
