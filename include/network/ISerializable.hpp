@@ -13,7 +13,7 @@ public:
     virtual ~ISerializable(){}
 
     virtual std::string serialize() const = 0;
-    virtual bool deserialize(std::string const &serialized) const = 0;
+    virtual bool deserialize(std::string const &serialized) = 0;
 };
 
 #endif // !CPP_PLAZZA_SERIALIZABLE_HPP_

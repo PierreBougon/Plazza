@@ -27,7 +27,7 @@ namespace plazza
             std::string                     data;
 
             std::string     serialize() const override;
-            bool            deserialize(std::string const &serialized) const override;
+            bool            deserialize(std::string const &serialized) override;
 
 
             // Basic packet

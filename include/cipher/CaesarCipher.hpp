@@ -6,7 +6,7 @@
 #define CPP_PLAZZA_CAESER_HPP_
 
 
-#include "ACipher.hpp"
+#include "cipher/ACipher.hpp"
 
 namespace plazza
 {

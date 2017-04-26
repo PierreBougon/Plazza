@@ -12,19 +12,25 @@ plazza::network::TCPClient::TCPClient(uint16_t port, const std::string &hostname
 
 Packet plazza::network::TCPClient::receive(sock_t socket)
 {
-    network::Packet recvPacket;
-    char buf[BUFFER_SIZE];
+    network::Packet inputPacket;
+    std::string     data;
+    char            buf[BUFFER_SIZE];
+    ssize_t         ret;
 
-
-    // TODO loop to recv
-    if (::recv(_socket, buf, BUFFER_SIZE, 0) < 0)
-        throw network::SocketError("Cannot receive from socket");
-    std::string data(buf);
-    recvPacket.deserialize(data);
-    return std::move(recvPacket);
+    while (true)
+    {
+        ret = ::recv(socket, buf, BUFFER_SIZE, 0);
+        if (ret == -1)
+            throw SocketError("Cannot receive");
+        else if (ret == 0)
+            break;
+        data += buf;
+    }
+    inputPacket.deserialize(data);
+    return std::move(inputPacket);
 }
 
-void plazza::network::TCPClient::send(const plazza::network::Packet &packet, plazza::network::sock_t socket) const
+void plazza::network::TCPClient::send(const plazza::network::Packet &packet, plazza::network::sock_t socket)
 {
     std::string data = packet.serialize();
 
@@ -32,7 +38,6 @@ void plazza::network::TCPClient::send(const plazza::network::Packet &packet, pla
         throw network::SocketError("Cannot send to the socket");
 }
 
-// TODO move this to client
 void plazza::network::TCPClient::connect()
 {
     _server = gethostbyname(_hostname.c_str());
@@ -71,4 +76,8 @@ void plazza::network::TCPClient::_core()
 plazza::network::TCPClient::~TCPClient()
 {
 
+}
+
+void plazza::network::TCPClient::setOnReceive(const std::function<void(const plazza::network::Packet &)> &onReceive) {
+    TCPClient::onReceive = onReceive;
 }

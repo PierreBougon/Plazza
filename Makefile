@@ -31,6 +31,13 @@ SRC_ALL	    =	FileParser.cpp \
 			Worker.cpp \
 			PlazzaError.cpp \
 
+
+NETWORK_DIR	    = network/
+
+NETWORK	    = $(NETWORK_DIR)Packet.cpp \
+              $(NETWORK_DIR)PacketHeader.cpp \
+              $(NETWORK_DIR)StatusCode.cpp \
+
 # Cipher sources
 
 CIPHER_DIR	=	cipher/
@@ -43,10 +50,12 @@ SRC_CIPHER	+=	$(CIPHER_DIR)ICipher.cpp	\
 SRC		= 	$(addprefix src/, $(SRC_ALL))
 SRC		+=	$(addprefix src/, $(SRC_CIPHER))
 SRC		+= 	$(addprefix src/, $(MAIN))
+SRC		+= 	$(addprefix src/, $(NETWORK))
 
 SRC_UI	= 	$(addprefix src/, $(SRC_ALL))
 SRC_UI	+=	$(addprefix src/, $(SRC_CIPHER))
 SRC_UI	+= 	$(addprefix src/, $(MAIN_UI))
+SRC_UI	+= 	$(addprefix src/, $(NETWORK))
 
 
 OBJ 		=   	$(SRC:.cpp=.o)
@@ -54,7 +63,7 @@ OBJ_UI 		=   	$(SRC_UI:.cpp=.o)
 
 NAME   		=      	plazza
 
-INC     	=       -Iinclude -Iinclude/cipher -I /home/${USER}/Qt5.8.0/5.8/gcc_64/include
+INC     	=       -Iinclude -I /home/${USER}/Qt5.8.0/5.8/gcc_64/include
 
 LDFLAGS		+=	-Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets -lpthread
 

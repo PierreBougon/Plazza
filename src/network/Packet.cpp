@@ -2,17 +2,19 @@
 // Created by Pierre Bougon on 23/04/17.
 //
 
+#include <PlazzaError.hpp>
+#include <iostream>
 #include "network/Packet.hpp"
 
 namespace plazza
 {
     namespace network
     {
-        const Packet OK = Packet(StatusCode::OK);
-        const Packet BAD_REQUEST = Packet(StatusCode::BAD_REQUEST);
-        const Packet INTERNAL_SERVER_ERROR = Packet(StatusCode::INTERNAL_SERVER_ERROR);
-        const Packet ACCEPTED = Packet(StatusCode::ACCEPTED);
-        const Packet FORBIDDEN = Packet(StatusCode::FORBIDDEN);
+        const Packet Packet::OK(StatusCode::OK);
+        const Packet Packet::BAD_REQUEST = Packet(StatusCode::BAD_REQUEST);
+        const Packet Packet::INTERNAL_SERVER_ERROR = Packet(StatusCode::INTERNAL_SERVER_ERROR);
+        const Packet Packet::ACCEPTED = Packet(StatusCode::ACCEPTED);
+        const Packet Packet::FORBIDDEN = Packet(StatusCode::FORBIDDEN);
     }
 }
 
@@ -44,15 +46,37 @@ std::string plazza::network::Packet::serialize() const
 {
     std::string serialized;
 
-
-    // TODO
+    serialized += "header=";
+    serialized += std::to_string(header.MAGIC_NUMBER);
+    serialized += ";";
+    serialized += "status_code=";
+    serialized += std::to_string(statusCode.code);
+    serialized += ";";
+    serialized += "data=";
+    serialized += data;
+    serialized += ";";
     return std::move(serialized);
 }
 
-bool plazza::network::Packet::deserialize(std::string const &serialized) const
+bool plazza::network::Packet::deserialize(std::string const &serialized)
 {
-    //TODO
-    return false;
+    std::string copy = serialized;
+
+    std::string first = copy.substr(0, copy.find(";"));
+    std::string second = first.substr(copy.find("=") + 1, first.size());
+    copy.erase(0, copy.find(";") + 1);
+
+    if (header.MAGIC_NUMBER != std::stoi(second))
+        return (false);
+    first = copy.substr(0, copy.find(";"));
+    second = first.substr(copy.find("=") + 1, first.size());
+    copy.erase(0, copy.find(";") + 1);
+    statusCode.code = std::stoi(second);
+    first = copy.substr(0, copy.find(";"));
+    second = first.substr(copy.find("=") + 1, first.size());
+    copy.erase(0, copy.find(";") + 1);
+    data = second;
+    return (true);
 }
 
 

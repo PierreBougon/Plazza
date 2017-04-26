@@ -5,7 +5,7 @@
 #ifndef CPP_PLAZZA_XORCIPHER_HPP_
 #define CPP_PLAZZA_XORCIPHER_HPP_
 
-#include "ACipher.hpp"
+#include "cipher/ACipher.hpp"
 
 namespace plazza
 {

@@ -9,7 +9,6 @@
 
 plazza::network::Server::Server() : TCPServer(), _running(false)
 {
-
 }
 
 plazza::network::Server::Server(size_t maxClient) : TCPServer(maxClient), _running(false)
@@ -85,12 +84,12 @@ void plazza::network::Server::checkIncomingConnections()
 
 plazza::network::Packet plazza::network::Server::processPacket(const plazza::network::Packet &packet)
 {
+    //TODO
     return plazza::network::Packet();
 }
 
 plazza::network::Server::~Server()
 {
-
 }
 
 

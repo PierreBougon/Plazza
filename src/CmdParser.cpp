@@ -104,24 +104,24 @@ void plazza::CmdParser::addNode(std::unique_ptr<plazza::ast_node> &root, std::st
 void plazza::CmdParser::dumpTree(plazza::ast_node *root) {
 	if (root) {
 		std::cout << root->type << " " << root->value << std::endl;
-		for(size_t i = 0; i < root->children.size(); ++i) {
+		for (size_t i = 0; i < root->children.size(); ++i) {
 			dumpTree(root->children[i].get());
 		}
 	}
 }
 
 void plazza::CmdParser::checkCmdIntegrity(plazza::ast_node *node) {
-	
-	if (node && node->type == ASTNodeType::CMD && node->value == "CMD") {
-		if (node->children.size() != 3)
-			throw plazza::CmdParserError("Wrong command format - usage : file COMMAND");
-		if (node->children[0]->type != ASTNodeType::FILE)
-			throw plazza::CmdParserError("Missing File to parse");
-		if (node->children[1]->type != ASTNodeType::CMD)
-			throw plazza::CmdParserError("Missing Command to parse the file");
-		if (node->children[2]->type != ASTNodeType::END_CMD)
-			throw plazza::CmdParserError("Command ill terminated");
-	}
+
+    if (node && node->type == ASTNodeType::CMD && node->value == "CMD") {
+        if (node->children.size() < 3)
+            throw plazza::CmdParserError("Wrong command format - usage : file COMMAND");
+        if (node->children[0]->type != ASTNodeType::FILE)
+            throw plazza::CmdParserError("Missing File to parse");
+        if (node->children[node->children.size() - 2]->type != ASTNodeType::CMD)
+            throw plazza::CmdParserError("Missing Command to parse the file");
+        if (node->children[node->children.size() - 1]->type != ASTNodeType::END_CMD)
+            throw plazza::CmdParserError("Command ill terminated");
+    }
 }
 
 void plazza::CmdParser::checkIntegrity(plazza::ast_node *node) {
@@ -137,10 +137,13 @@ size_t plazza::CmdParser::getNbCmd() {
 }
 
 void plazza::CmdParser::_getCommand(plazza::ast_node *node, std::vector<plazza::command> &cmd) {
-	
-	if (node && node->type == ASTNodeType::CMD && node->value == "CMD") {
-		cmd.push_back(command(node->children[0]->value, convertCmd(node->children[1]->value)));
-	}
+
+    if (node && node->type == ASTNodeType::CMD && node->value == "CMD") {
+        for (size_t i = 0; i < node->children.size() - 2; ++i) {
+            if (node->children[i]->type == ASTNodeType::FILE)
+                cmd.push_back(command(node->children[i]->value, convertCmd(node->children[node->children.size() - 2]->value)));
+        }
+    }
 }
 
 std::vector<plazza::command> plazza::CmdParser::getCommands() {

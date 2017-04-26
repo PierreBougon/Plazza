@@ -49,29 +49,29 @@ int main(int ac, char **av) {
     std::cout << "2 : " << str << std::endl;
     str -= cipher;
     std::cout << "3 : " << str << std::endl;*/
-	
-	/*plazza::FileParser parser;
 
-	parser.open(av[1]);
-	std::vector<std::string> res = parser.getEmails();
-	for (int i = 0; i < res.size(); ++i) {
-		std::cout << " email : " << res[i] << std::endl;
-	}
+       /*plazza::FileParser parser;
 
-	res.clear();
-	std::cout << std::endl;
-	res = parser.getPhones();
-	for (int i = 0; i < res.size(); ++i) {
-		std::cout << " phone : " << res[i] << std::endl;
-	}
+       parser.open(av[1]);
+       std::vector<std::string> res = parser.getEmails();
+       for (int i = 0; i < res.size(); ++i) {
+           std::cout << " email : " << res[i] << std::endl;
+       }
 
-	res.clear();
-	std::cout << std::endl;
-	res = parser.getIps();
-	for (int i = 0; i < res.size(); ++i) {
-		std::cout << " ip : " << res[i] << std::endl;
-	}
+       res.clear();
+       std::cout << std::endl;
+       res = parser.getPhones();
+       for (int i = 0; i < res.size(); ++i) {
+           std::cout << " phone : " << res[i] << std::endl;
+       }
+
+       res.clear();
+       std::cout << std::endl;
+       res = parser.getIps();
+       for (int i = 0; i < res.size(); ++i) {
+           std::cout << " ip : " << res[i] << std::endl;
+       }
 */
-	return 0;
+    return 0;
 }
 #endif

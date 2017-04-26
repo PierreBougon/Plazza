@@ -24,11 +24,12 @@ namespace plazza
 
             virtual ~TCPServer();
 
-            void send(const network::Packet &packet, sock_t socket) const override;
+            void send(const network::Packet &packet, sock_t socket) override;
             Packet receive(sock_t socket) override;
 
             bool addClient();
             bool removeClient(size_t pos);
+            bool removeClient(sock_t socket);
 
             virtual void run() = 0;
 
@@ -39,6 +40,7 @@ namespace plazza
 
         private:
             void initServer();
+            int findClient(sock_t socket) const;
         };
     }
 }
