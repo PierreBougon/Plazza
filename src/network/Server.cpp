@@ -2,9 +2,10 @@
 // Created by Pierre Bougon on 20/04/17.
 //
 
-#include <tools/Logger.hpp>
+#include <unistd.h>
 #include <poll.h>
-#include <exceptions/ServerError.hpp>
+#include "tools/Logger.hpp"
+#include "exceptions/ServerError.hpp"
 #include "network/Server.hpp"
 
 plazza::network::Server::Server() : TCPServer(), _running(false)
@@ -104,5 +105,19 @@ void plazza::network::Server::refreshEvents(pollfd *listEvents)
 
 plazza::network::Server::~Server()
 {
+}
+
+void plazza::network::Server::wait()
+{
+    _mutex.lock();
+    _mutex.unlock();
+}
+
+void plazza::network::Server::stop()
+{
+    if (!_thread.joinable())
+        return;
+    _running = false;
+    _thread.join();
 }
 

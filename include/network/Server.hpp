@@ -9,6 +9,7 @@
 #include <thread>
 #include <mutex>
 #include <poll.h>
+#include <atomic>
 #include "socket/TCPServer.hpp"
 
 namespace plazza
@@ -24,12 +25,13 @@ namespace plazza
             virtual ~Server();
 
             void run() override;
+            void wait();
+            void stop();
 
         private:
-            bool            _running;
-            std::thread     _thread;
-            std::mutex      _mutex;
-
+            std::atomic<bool>   _running;
+            std::thread         _thread;
+            std::mutex          _mutex;
 
         private:
             void _core();
