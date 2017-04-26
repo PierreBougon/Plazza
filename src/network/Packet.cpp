@@ -44,7 +44,9 @@ std::string plazza::network::Packet::serialize() const
 {
     std::string serialized;
 
-
+    serialized += "header=";
+    serialized += header.MAGIC_NUMBER;
+    serialized += ";";
     // TODO
     return std::move(serialized);
 }
