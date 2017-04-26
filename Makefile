@@ -5,7 +5,7 @@
 ## Login   <bougon_p@epitech.net>
 ##
 ## Started on  Sat Apr 15 00:37:20 2017 bougon_p
-## Last update Tue Apr 25 22:36:41 2017 bougon_p
+## Last update Wed Apr 26 13:47:54 2017 bougon_p
 ##
 
 ## Include colors and basic commands
@@ -63,7 +63,7 @@ CXXFLAGS	+=	-pthread -fPIC
 
 include mk/rules.mk
 
-compileui:	$(OBJ_UI)
+ui:		$(OBJ_UI)
 		@$(ECHO)
 		@$(ECHO) "$(BLUE) Compiled with : $(BOLD_WHITE)$(CXX)$(CLEAR)"
 		@$(ECHO) "$(BLUE) Flags used \t  : $(BOLD_WHITE)$(CXXFLAGS)$(CLEAR)"
@@ -80,9 +80,3 @@ endif
 		@$(eval LDFLAGS=)
 		@$(eval DLL=NO)
 		@$(eval CXXFLAGS= -std=c++14 -W -Wall -Wextra)
-
-ui:
-		@$(eval INC+= -I /home/${USER}/Qt5.8.0/5.8/gcc_64/include)
-		@$(eval LDFLAGS+= -Wl,-rpath=/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -L/home/${USER}/Qt5.8.0/5.8/gcc_64/lib -lQt5Gui -lQt5Core -lQt5Widgets)
-		@$(eval CXXFLAGS+= -D UI)
-		@make -s  compileui
