@@ -12,6 +12,6 @@ plazza::network::ClientError::ClientError(const char *msg) : runtime_error(msg)
 {
 }
 
-plazza::network::ClientError::~Client() throw()
+plazza::network::ClientError::~ClientError() throw()
 {
 }

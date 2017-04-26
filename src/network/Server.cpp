@@ -18,7 +18,7 @@ plazza::network::Server::Server(size_t maxClient) : TCPServer(maxClient), _runni
 
 void plazza::network::Server::run()
 {
-    if (_running)
+    if (_running || _thread.joinable())
     {
         Logger::log(Logger::Warning, "Server is already running");
         return;
@@ -26,22 +26,23 @@ void plazza::network::Server::run()
     // todo check out thread launching
 
     _mutex.lock();
-    _thread = std::thread(&_core);
+    _thread = std::thread(&Server::_core, this);
 }
 
 void plazza::network::Server::_core()
 {
     int ret = 0;
-    pollfd listEvent[_maxClient] = {0};
+    pollfd listEvent[_maxClient];
 
     while (_running)
     {
-        //refreshEvents();
+        refreshEvents(listEvent);
         ret = poll(listEvent, _maxClient, _timeout);
         switch (ret)
         {
             case -1:
                 //error on poll
+
                 Logger::log(Logger::Error, "Error occurred on poll");
                 _running = false;
                 break;
@@ -65,7 +66,7 @@ void plazza::network::Server::handleEvents(pollfd *listEvent)
     network::Packet outputPacket;
 
     checkIncomingConnections();
-    for (int i = 0; i < _maxClient; ++i)
+    for (size_t i = 0; i < _maxClient; ++i)
     {
         if (listEvent[i].revents & POLLIN)
         {
@@ -86,6 +87,19 @@ plazza::network::Packet plazza::network::Server::processPacket(const plazza::net
 {
     //TODO
     return plazza::network::Packet();
+}
+
+void plazza::network::Server::refreshEvents(pollfd *listEvents)
+{
+    // TODO opti
+    for (size_t i = 0; i < _maxClient; ++i)
+    {
+        if (i < _clientList.size())
+            listEvents[i].fd = _clientList[i];
+        else
+            listEvents[i].fd = -1;
+        listEvents[i].events = POLLIN;
+    }
 }
 
 plazza::network::Server::~Server()

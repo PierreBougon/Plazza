@@ -29,6 +29,15 @@ namespace plazza {
 
     struct command {
         command(std::string const &file = "", Information information = NONE) : file(file), information(information) {}
+
+        std::string toString() {
+            std::string string;
+
+            string += file;
+            string += " ";
+            string += std::to_string(information);
+            return (std::move(string));
+        }
         std::string file;
         Information information;
         plazza::command &operator=(const plazza::command &cpy);

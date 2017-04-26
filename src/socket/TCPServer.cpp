@@ -17,14 +17,14 @@ plazza::network::TCPServer::TCPServer(uint16_t port, size_t maxClient)
 }
 
 plazza::network::TCPServer::TCPServer(size_t maxClient)
-        : ASocket(), _maxClient(maxClient), _currentClient(0)
+        : ASocket(4242), _maxClient(maxClient), _currentClient(0)
 {
     initServer();
 }
 
 void plazza::network::TCPServer::initServer()
 {
-    if (bind(_socket, static_cast<sockaddr *>(&_servAddr), sizeof(_servAddr)) == -1)
+    if (bind(_socket, (sockaddr *)(&_servAddr), sizeof(_servAddr)) == -1)
         throw network::SocketError("Cannot bind the socket");
     listen(_socket, static_cast<int>(_maxClient));
 }
@@ -47,7 +47,7 @@ void plazza::network::TCPServer::send(const network::Packet &packet, sock_t sock
     }
 }
 
-Packet plazza::network::TCPServer::receive(sock_t socket)
+plazza::network::Packet plazza::network::TCPServer::receive(sock_t socket)
 {
     bool            completemode = false;
     network::Packet inputPacket;
@@ -84,7 +84,7 @@ bool plazza::network::TCPServer::addClient()
     if (_maxClient >= _currentClient)
         return false;
     clientSize = sizeof(clientAddr);
-    clientSocket = accept(_socket, static_cast<sockaddr *>(&clientAddr), &clientSize);
+    clientSocket = accept(_socket, (sockaddr *)(&clientAddr), &clientSize);
     if (clientSocket == -1)
         return false;
     _clientList.push_back(clientSocket);
