@@ -9,6 +9,7 @@
 plazza::Process::Process(size_t numberOfProcesses) : threadPool(numberOfProcesses) {
 	plazza::network::Client().getInstance().Init(4242, "localhost");
 	plazza::network::Client().getInstance().connect();
+	plazza::network::Client().getInstance().bind(&plazza::Process::addNewTask, this);
 }
 
 plazza::Process::~Process() {
