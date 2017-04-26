@@ -28,9 +28,10 @@ namespace plazza {
     };
 
     struct command {
-        command(std::string const &file, Information information) : file(file), information(information) {}
+        command(std::string const &file = "", Information information = NONE) : file(file), information(information) {}
         std::string file;
         Information information;
+        plazza::command &operator=(const plazza::command &cpy);
     };
 
     struct ast_node {

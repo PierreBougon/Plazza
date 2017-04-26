@@ -11,7 +11,7 @@
 namespace plazza {
 	class ProcessHandler : public IProcessHandler {
 	public:
-		ProcessHandler(bool isClient, int numberOfThreads);
+		ProcessHandler(bool isClient, size_t numberOfThreads);
 		~ProcessHandler();
 	};
 }

@@ -13,7 +13,7 @@
 namespace plazza {
 	class Process : public IProcess {
 	public:
-		Process(size_t);
+		Process(size_t numberOfThreads);
 		~Process();
 		
 		void	addNewTask(const plazza::network::Packet &packet);

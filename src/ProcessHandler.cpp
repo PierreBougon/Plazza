@@ -6,7 +6,7 @@
 #include <iostream>
 #include "ProcessHandler.hpp"
 
-plazza::ProcessHandler::ProcessHandler(bool isClient, int numberOfThreads) {
+plazza::ProcessHandler::ProcessHandler(bool isClient, size_t numberOfThreads) {
 	network::Server server(MAX_NUMBER_OF_CLIENT);
 	server.run();
 	std::cout << "server" << std::endl;
