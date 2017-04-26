@@ -10,7 +10,7 @@ plazza::FileParser::~FileParser() {
 }
 
 plazza::FileParser::FileParser() {
-    expressions["email"] = std::regex("([\\w-\\.]+)@((?:[\\w]+\\.)+)([a-zA-Z]{2,4})");
+    expressions["email"] = std::regex("([\\w-\\.]+)@((?:[\\w]+\\.)+)([a-zA-Z]{2,4})\\b");
     expressions["phone"] = std::regex("(?:(?:\\+|00)33|(\\b0))[ \\t]?[1-9](?:[ \\t]?\\d{2}){4}\\b");
     expressions["ip"] = std::regex("\\b(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\b");
 }

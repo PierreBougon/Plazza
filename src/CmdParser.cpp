@@ -11,17 +11,20 @@ plazza::CmdParser::~CmdParser() {
 
 }
 
-plazza::CmdParser::CmdParser() {}
+plazza::CmdParser::CmdParser() : nbCmd(0) {}
 
 void plazza::CmdParser::feed(std::string const &str) {
+    stream << trim(str) << std::endl;
+}
 
+std::string plazza::CmdParser::trim(std::string const &str) {
     std::string tmp;
     std::unique_copy(str.begin(), str.end(), std::back_insert_iterator<std::string>(tmp),
                      [](char a, char b) { return isspace(a) && isspace(b); });
     tmp.erase(tmp.begin(), std::find_if(tmp.begin(), tmp.end(), std::not1(std::ptr_fun<int, int>(std::isspace))));
     tmp.erase(std::find_if(tmp.rbegin(), tmp.rend(), std::not1(std::ptr_fun<int, int>(std::isspace))).base(),
               tmp.end());
-    stream << tmp << std::endl;
+    return tmp;
 }
 
 std::unique_ptr<plazza::ast_node> plazza::CmdParser::parse() {
@@ -43,6 +46,7 @@ std::unique_ptr<plazza::ast_node> plazza::CmdParser::parse() {
 }
 
 void plazza::CmdParser::reset() {
+    nbCmd = 0;
     stream.clear();
 }
 
@@ -89,18 +93,45 @@ void plazza::CmdParser::addNode(std::unique_ptr<plazza::ast_node> &root, std::st
         str += input_char;
         input_char = stream.get();
     }
+    str = trim(str);
     if (str != cmp)
         throw plazza::CmdParserError("Unknown Command starting with " + str);
     addNode(root, ASTNodeType::CMD, str);
+    ++nbCmd;
     addNode(root, ASTNodeType::END_CMD, ";");
 }
 
 void plazza::CmdParser::dumpTree(plazza::ast_node *root) {
     if (root) {
         std::cout << root->type << " " << root->value << std::endl;
-        for (int i = 0; i < root->children.size(); ++i) {
+        for (size_t i = 0; i < root->children.size(); ++i) {
             dumpTree(root->children[i].get());
         }
     }
 }
 
+void plazza::CmdParser::checkCmdIntegrity(plazza::ast_node *node) {
+
+    if (node && node->type == ASTNodeType::CMD && node->value == "CMD") {
+        if (node->children.size() != 3)
+            throw plazza::CmdParserError("Wrong command format - usage : file COMMAND");
+        if (node->children[0]->type != ASTNodeType::FILE)
+            throw plazza::CmdParserError("Missing File to parse");
+        if (node->children[1]->type != ASTNodeType::CMD)
+            throw plazza::CmdParserError("Missing Command to parse the file");
+        if (node->children[2]->type != ASTNodeType::END_CMD)
+            throw plazza::CmdParserError("Command ill terminated");
+    }
+}
+
+void plazza::CmdParser::checkIntegrity(plazza::ast_node *node) {
+    if (node && node->type == ASTNodeType::ROOT) {
+        for (size_t i = 0; i < node->children.size(); ++i) {
+            checkCmdIntegrity(node->children[i].get());
+        }
+    }
+}
+
+size_t plazza::CmdParser::getNbCmd() {
+    return nbCmd;
+}

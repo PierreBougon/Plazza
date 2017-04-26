@@ -14,6 +14,7 @@ namespace plazza {
 	public:
 		Process(size_t);
 		~Process();
+
 	private:
 		ThreadPool	threadPool;
 		FileParser	fileParser;

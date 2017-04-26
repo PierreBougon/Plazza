@@ -13,8 +13,8 @@
 namespace plazza {
 
     enum ASTNodeType {
-        CMD,
         ROOT,
+        CMD,
         FILE,
         END_CMD,
         END,
@@ -36,17 +36,22 @@ namespace plazza {
 
     class CmdParser {
 
+        size_t nbCmd;
         std::stringstream stream;
         void addNode(std::unique_ptr<ast_node> &root, ASTNodeType type, std::string const &value);
         void addNode(std::unique_ptr<ast_node> &root, std::string const & cmp);
         void addNodeFile(std::unique_ptr<ast_node> &root);
+        void checkCmdIntegrity(ast_node *node);
+        std::string trim(std::string const &str);
     public:
         virtual ~CmdParser();
         CmdParser();
         std::unique_ptr<ast_node> parse();
+        void checkIntegrity(ast_node *node);
         void feed(std::string const &str);
         void reset();
         void dumpTree(ast_node *node);
+        size_t getNbCmd();
     };
 }
 

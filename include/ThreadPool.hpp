@@ -14,7 +14,6 @@
 #include "IConditionVariable.hpp"
 #include "IMutex.hpp"
 
-
 namespace plazza {
 	class ThreadPool {
 	public:
