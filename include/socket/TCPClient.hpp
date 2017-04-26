@@ -20,10 +20,10 @@ namespace plazza
             TCPClient(uint16_t port, const std::string &hostname);
             virtual ~TCPClient();
 
-            virtual void    connect();
+            void            connect();
             void            run();
 
-            void send(const network::Packet &packet, sock_t socket) const override;
+            void send(const network::Packet &packet, sock_t socket) override;
             Packet receive(sock_t socket) override;
 
 
