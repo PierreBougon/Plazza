@@ -18,7 +18,7 @@ namespace plazza
             ServerError(const std::string &msg);
             ServerError(const char *msg);
 
-            virtual ~ServerError()() throw();
+            virtual ~ServerError() throw();
         };
     }
 }

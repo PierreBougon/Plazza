@@ -9,9 +9,11 @@ plazza::network::PacketHeader::PacketHeader()
 
 plazza::network::PacketHeader::PacketHeader(const plazza::network::PacketHeader &other)
 {
+    (void)other;
 }
 
 plazza::network::PacketHeader &plazza::network::PacketHeader::operator=(const plazza::network::PacketHeader &other)
 {
+    (void)other;
     return *this;
 }

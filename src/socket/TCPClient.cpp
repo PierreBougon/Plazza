@@ -7,12 +7,13 @@
 #include <tools/Logger.hpp>
 #include "socket/TCPClient.hpp"
 
-plazza::network::TCPClient::TCPClient(uint16_t port, const std::string &hostname) : ASocket(_port, _hostname)
+plazza::network::TCPClient::TCPClient(uint16_t port, const std::string &hostname) : ASocket(port, hostname)
 {}
 
-Packet plazza::network::TCPClient::receive(sock_t socket)
+plazza::network::Packet plazza::network::TCPClient::receive(sock_t socket)
 {
     network::Packet inputPacket;
+
     std::string     data;
     char            buf[BUFFER_SIZE];
     ssize_t         ret;
@@ -44,13 +45,13 @@ void plazza::network::TCPClient::connect()
     if (!_server)
         throw network::SocketError("No such host");
     std::memmove(_server->h_addr_list[0], &_servAddr.sin_addr.s_addr, static_cast<size_t >(_server->h_length));
-    if (::connect(_socket, static_cast<sockaddr *>(_servAddr), sizeof(_servAddr)) == -1)
+    if (::connect(_socket, (sockaddr *)(&_servAddr), sizeof(_servAddr)) == -1)
         throw network::SocketError("Cannot connect to server");
 }
 
 void plazza::network::TCPClient::run()
 {
-    if (_running)
+    if (_running || _thread.joinable())
     {
         Logger::log(Logger::Warning, "Client is already running");
         return;
@@ -58,7 +59,7 @@ void plazza::network::TCPClient::run()
     // todo check out thread launching
 
     _mutex.lock();
-    _thread = std::thread(&_core);
+    _thread = std::thread(&TCPClient::_core, this);
 }
 
 void plazza::network::TCPClient::_core()
