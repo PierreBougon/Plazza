@@ -2,7 +2,7 @@
 // Created by Pierre Bougon on 13/04/17.
 //
 
-#include "CaesarCipher.hpp"
+#include "cipher/CaesarCipher.hpp"
 
 plazza::Caesar::Caesar(size_t _keySize) : ACipher(_keySize)
 {}

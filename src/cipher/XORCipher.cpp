@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "XORCipher.hpp"
+#include "cipher/XORCipher.hpp"
 
 plazza::XORCipher::XORCipher(size_t _keySize) : ACipher(_keySize)
 {
