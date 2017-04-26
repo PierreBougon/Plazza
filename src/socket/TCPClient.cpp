@@ -12,7 +12,6 @@ plazza::network::TCPClient::TCPClient(uint16_t port, const std::string &hostname
 
 Packet plazza::network::TCPClient::receive(sock_t socket)
 {
-    bool            completemode = false;
     network::Packet inputPacket;
     std::string     data;
     char            buf[BUFFER_SIZE];
@@ -23,15 +22,8 @@ Packet plazza::network::TCPClient::receive(sock_t socket)
         ret = ::recv(socket, buf, BUFFER_SIZE, 0);
         if (ret == -1)
             throw SocketError("Cannot receive");
-        else if (ret == 0 && !completemode)
-        {
-            // Client disconnected
-            removeClient(socket);
-            break;
-        }
         else if (ret == 0)
             break;
-        completemode = true;
         data += buf;
     }
     inputPacket.deserialize(data);

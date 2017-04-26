@@ -39,7 +39,6 @@ namespace plazza
 
         private:
             void initServer();
-
             int findClient(sock_t socket) const;
         };
     }
