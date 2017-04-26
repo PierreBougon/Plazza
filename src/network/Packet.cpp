@@ -9,7 +9,7 @@ namespace plazza
 {
     namespace network
     {
-        const Packet OK = Packet(StatusCode::OK);
+        const Packet OK(StatusCode::OK);
         const Packet BAD_REQUEST = Packet(StatusCode::BAD_REQUEST);
         const Packet INTERNAL_SERVER_ERROR = Packet(StatusCode::INTERNAL_SERVER_ERROR);
         const Packet ACCEPTED = Packet(StatusCode::ACCEPTED);
