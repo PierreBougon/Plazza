@@ -11,9 +11,8 @@
 namespace plazza {
 	class ProcessHandler : public IProcessHandler {
 	public:
-		ProcessHandler(bool isClient, size_t numberOfThreads, std::vector <command> commandList = {});
+		ProcessHandler(bool isClient, int numberOfThreads);
 		~ProcessHandler();
-		virtual void feed(const std::vector <command> commandList);
 	};
 }
 

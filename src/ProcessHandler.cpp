@@ -2,17 +2,16 @@
 // Created by peau_c on 4/26/17.
 //
 
-#include <vector>
+#include <network/Server.hpp>
+#include <iostream>
 #include "ProcessHandler.hpp"
 
-plazza::ProcessHandler::ProcessHandler(bool isClient, size_t numberOfThreads, std::vector<plazza::command> commandList) {
-
+plazza::ProcessHandler::ProcessHandler(bool isClient, int numberOfThreads) {
+	network::Server server(MAX_NUMBER_OF_CLIENT);
+	server.run();
+	std::cout << "server" << std::endl;
 }
 
 plazza::ProcessHandler::~ProcessHandler() {
-
-}
-
-void plazza::ProcessHandler::feed(const std::vector<plazza::command> commandList) {
 
 }

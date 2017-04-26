@@ -10,7 +10,6 @@
 namespace plazza {
 	class IProcessHandler {
 	public:
-		virtual void feed(const std::vector<command> &commandList) = 0;
 	};
 }
 

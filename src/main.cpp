@@ -12,40 +12,23 @@
 #include <CmdParser.hpp>
 #include <PlazzaError.hpp>
 #include <ProcessHandler.hpp>
+#include <Process.hpp>
 
 #ifndef UI
 int main(int ac, char **av) {
-	bool isClient;
-	plazza::CmdParser cmdParser;
-	std::string buffer;
+	bool isClient = false;
 	
+	std::cout << ac << std::endl;
 	if (ac < 2 || std::stoi(av[1]) <= 0) {
 		std::cerr << "usage : ./plazza nb_thread_per_process" << std::endl;
 		return (1);
 	}
 	if (av[2] && av[2] == "--client")
 		isClient = true;
-	while (getline(std::cin, buffer)) {
-		cmdParser.reset();
-		cmdParser.feed(buffer);
-		try {
-			std::unique_ptr<plazza::ast_node> root = cmdParser.parse();
-			cmdParser.dumpTree(root.get());
-			cmdParser.checkIntegrity(root.get());
-			std::vector<plazza::command> cmd = cmdParser.getCommands(root.get());
-			for(size_t i = 0; i < cmd.size(); i++) {
-				std::cout << cmd.at(i).file << " " << cmd.at(i).information << std::endl;
-			}
-			
-			std::cout << cmdParser.getNbCmd() << std::endl;
-			
-			//std::cout << cmdParser.getNbCmd() << std::endl;
-		} catch (plazza::CmdParserError error) {
-			std::cout << error.what() << std::endl;
-		}
-	}
-	
-	
+	if (!isClient)
+		plazza::ProcessHandler(isClient, std::stoi(av[1]));
+	else
+	//	plazza::Process();
 	/*
     plazza::ThreadPool *toto;
     toto = new plazza::ThreadPool(atoi(av[1]));

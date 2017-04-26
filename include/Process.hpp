@@ -8,16 +8,19 @@
 #include "FileParser.hpp"
 #include "ThreadPool.hpp"
 #include "IProcess.hpp"
+#include "CmdParser.hpp"
 
 namespace plazza {
 	class Process : public IProcess {
 	public:
 		Process(size_t);
 		~Process();
-
+		
+		void	addNewTask(const plazza::network::Packet &packet);
 	private:
-		ThreadPool	threadPool;
-		FileParser	fileParser;
+		ThreadPool				threadPool;
+		FileParser				fileParser;
+		std::vector<command>	tasks;
 	};
 }
 

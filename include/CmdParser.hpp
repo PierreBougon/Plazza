@@ -62,7 +62,7 @@ namespace plazza {
         void reset();
         void dumpTree(ast_node *node);
         size_t getNbCmd();
-        std::vector<command> getCommands(ast_node *root);
+        std::vector<command> getCommands();
     };
 }
 
