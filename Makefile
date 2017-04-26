@@ -29,6 +29,8 @@ MAIN_UI		=	mainUI.cpp \
 SRC_ALL	    	=	FileParser.cpp \
 			ThreadPool.cpp \
 			Worker.cpp \
+			ProcessHandler.cpp \
+			Process.cpp \
 			PlazzaError.cpp \
 
 EXCEPT_DIR	=	exceptions/

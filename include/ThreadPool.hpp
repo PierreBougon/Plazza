@@ -13,6 +13,7 @@
 #include "IMutex.hpp"
 #include "IConditionVariable.hpp"
 #include "IMutex.hpp"
+#include "CmdParser.hpp"
 
 namespace plazza {
 	class ThreadPool {
@@ -30,16 +31,16 @@ namespace plazza {
 		std::condition_variable &getConditionVariable();
 		bool shouldStop() const;
 		
-		std::string getFrontTask();
+		command getFrontTask();
 		std::vector<bool, std::allocator<bool>> &getAreThreadsFree();
 		bool hasWork() const;
 		
-		//Utils
-		void enqueue(std::string line);
+		//Queueing
+		void enqueue(command line);
 	private:
 		std::vector<bool> areThreadsFree;
 		std::vector<std::thread> ThreadList;
-		std::queue<std::string> tasks;
+		std::queue<command> tasks;
 		std::mutex queue_mutex;
 		std::condition_variable conditionVariable;
 		bool stop;

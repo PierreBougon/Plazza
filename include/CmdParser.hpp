@@ -28,7 +28,7 @@ namespace plazza {
     };
 
     struct command {
-        command(std::string const &file, Information information) : file(file), information(information) {}
+        command(std::string const &file = "", Information information = NONE) : file(file), information(information) {}
 
         std::string toString() {
             std::string string;
@@ -40,6 +40,7 @@ namespace plazza {
         }
         std::string file;
         Information information;
+        plazza::command &operator=(const plazza::command &cpy);
     };
 
     struct ast_node {
@@ -71,7 +72,7 @@ namespace plazza {
         void reset();
         void dumpTree(ast_node *node);
         size_t getNbCmd();
-        std::vector<command> getCommands(ast_node *root);
+        std::vector<command> getCommands();
     };
 }
 

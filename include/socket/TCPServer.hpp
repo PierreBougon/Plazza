@@ -5,6 +5,7 @@
 #ifndef CPP_PLAZZA_TCPSERVER_HPP_
 #define CPP_PLAZZA_TCPSERVER_HPP_
 
+#define MAX_NUMBER_OF_CLIENT 1024
 
 #include <vector>
 #include <network/Packet.hpp>
@@ -19,7 +20,7 @@ namespace plazza
         public:
             TCPServer(uint16_t _port, size_t maxClient = 5);
             TCPServer(const TCPServer &other) = delete;
-            TCPServer(size_t maxClient = 5);
+            TCPServer(size_t maxClient = MAX_NUMBER_OF_CLIENT);
 
             virtual ~TCPServer();
 
