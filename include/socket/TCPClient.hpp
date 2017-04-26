@@ -26,17 +26,13 @@ namespace plazza
             void send(const network::Packet &packet, sock_t socket) override;
             Packet receive(sock_t socket) override;
 
-
-
-
-            /// Called when something is received from server
-            virtual void onReceive(const network::Packet &packet) = 0;
+            void setOnReceive(const std::function<void(const Packet &)> &onReceive);
 
         protected:
             bool                   _running;
             std::thread            _thread;
             std::mutex             _mutex;
-
+            std::function<void(const Packet &)> onReceive;
 
         private:
             void _core();
