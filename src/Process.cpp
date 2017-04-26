@@ -6,10 +6,11 @@
 #include "Process.hpp"
 #include "CmdParser.hpp"
 
-plazza::Process::Process(size_t numberOfProcesses) : threadPool(numberOfProcesses) {
-	plazza::network::Client().getInstance().Init(4242, "localhost");
-	plazza::network::Client().getInstance().connect();
-	plazza::network::Client().getInstance().bind(&plazza::Process::addNewTask, this);
+plazza::Process::Process(size_t numberOfProcesses) : threadPool(numberOfProcesses), client(plazza::network::Client().getInstance()){
+	client.Init(4242, "localhost");
+	client.connect();
+	std::function<void (const plazza::network::Packet&)> function;
+	client.bind(std::bind ((&plazza::Process::addNewTask), this, std::placeholders::_1));
 }
 
 plazza::Process::~Process() {

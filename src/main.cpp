@@ -30,7 +30,7 @@ int main(int ac, char **av) {
 		plazza::Process ChildProcess(nbThreads);
 	}
 	else {
-		plazza::ProcessHandler(isClient, nbThreads);
+		plazza::ProcessHandler ProcessHandler(isClient, nbThreads);
 	}
 	return 0;
 }

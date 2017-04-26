@@ -13,6 +13,8 @@ namespace plazza {
 	public:
 		ProcessHandler(bool isClient, size_t numberOfThreads);
 		~ProcessHandler();
+	private:
+		plazza::network::Server server;
 	};
 }
 

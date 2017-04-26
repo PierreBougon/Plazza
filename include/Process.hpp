@@ -18,6 +18,7 @@ namespace plazza {
 		
 		void	addNewTask(const plazza::network::Packet &packet);
 	private:
+		network::Client			&client;
 		ThreadPool				threadPool;
 		FileParser				fileParser;
 		std::vector<command>	tasks;
