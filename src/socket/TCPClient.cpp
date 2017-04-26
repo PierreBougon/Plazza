@@ -74,12 +74,10 @@ void plazza::network::TCPClient::_core()
     _mutex.unlock();
 }
 
-/*
 void plazza::network::TCPClient::bind(std::function<void(const Packet &)> const &onReceive)
 {
     TCPClient::_onReceive = onReceive;
 }
-*/
 
 plazza::network::TCPClient::~TCPClient()
 {
