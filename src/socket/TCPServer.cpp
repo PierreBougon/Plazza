@@ -6,6 +6,7 @@
 #include <poll.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <algorithm>
 #include "exceptions/SocketError.hpp"
 #include "socket/TCPServer.hpp"
 
@@ -36,19 +37,40 @@ plazza::network::TCPServer::~TCPServer()
     }
 }
 
-void plazza::network::TCPServer::send(const network::Packet &packet, sock_t socket) const
+void plazza::network::TCPServer::send(const network::Packet &packet, sock_t socket)
 {
-    if (::send(socket, &packet, Packet::size, 0) == -1)
+    if (::send(socket, &packet, BUFFER_SIZE, 0) == -1)
     {
-        // TODO close connection with client
+        removeClient(socket);
     }
 }
 
 Packet plazza::network::TCPServer::receive(sock_t socket)
 {
-    // TODO receive the whole network packet of the client
-    ASocket::receive(0);
-    return Packet();
+    bool            completemode = false;
+    network::Packet inputPacket;
+    std::string     data;
+    char            buf[BUFFER_SIZE];
+    ssize_t         ret;
+
+    while (true)
+    {
+        ret = ::recv(socket, buf, BUFFER_SIZE, 0);
+        if (ret == -1)
+            throw SocketError("Cannot receive");
+        else if (ret == 0 && !completemode)
+        {
+            // Client disconnected
+            removeClient(socket);
+            break;
+        }
+        else if (ret == 0)
+            break;
+        completemode = true;
+        data += buf;
+    }
+    inputPacket.deserialize(data);
+    return std::move(inputPacket);
 }
 
 bool plazza::network::TCPServer::addClient()
@@ -77,4 +99,22 @@ bool plazza::network::TCPServer::removeClient(size_t pos)
     close(_clientList[pos]);
     _clientList.erase(_clientList.begin() + pos);
     return true;
+}
+
+bool plazza::network::TCPServer::removeClient(plazza::network::sock_t socket)
+{
+    int pos;
+
+    if ((pos = findClient(socket)) != -1)
+        return removeClient(static_cast<size_t>(pos));
+    return false;
+}
+
+int plazza::network::TCPServer::findClient(plazza::network::sock_t socket) const
+{
+    std::vector<sock_t >::const_iterator it = std::find(_clientList.begin(), _clientList.end(), socket);
+
+    if (it == _clientList.end())
+        return -1;
+    return static_cast<int>(it - _clientList.begin());
 }
