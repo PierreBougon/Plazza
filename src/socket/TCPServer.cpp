@@ -7,6 +7,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <algorithm>
+#include <tools/Logger.hpp>
 #include "exceptions/SocketError.hpp"
 #include "socket/TCPServer.hpp"
 
@@ -72,6 +73,7 @@ plazza::network::Packet plazza::network::TCPServer::receive(sock_t socket)
         data += buf;
     }
     inputPacket.deserialize(data);
+    Logger::log(Logger::Debug, inputPacket.serialize());
     return std::move(inputPacket);
 }
 
