@@ -2,6 +2,7 @@
 // Created by Pierre Bougon on 23/04/17.
 //
 
+#include <PlazzaError.hpp>
 #include "network/Packet.hpp"
 
 namespace plazza
@@ -47,14 +48,34 @@ std::string plazza::network::Packet::serialize() const
     serialized += "header=";
     serialized += header.MAGIC_NUMBER;
     serialized += ";";
-    // TODO
+    serialized += "status_code=";
+    serialized += statusCode.code;
+    serialized += ";";
+    serialized += "data=";
+    serialized += data;
+    serialized += ";";
     return std::move(serialized);
 }
 
-bool plazza::network::Packet::deserialize(std::string const &serialized) const
+bool plazza::network::Packet::deserialize(std::string const &serialized)
 {
-    //TODO
-    return false;
+    std::string copy = serialized;
+
+    std::string first = copy.substr(0, copy.find(";"));
+    std::string second = first.substr(copy.find("="), first.size());
+    copy.erase(0, copy.find(";") + 1);
+
+    if (header.MAGIC_NUMBER != std::stoi(second))
+        return (false);
+    first = copy.substr(0, copy.find(";"));
+    second = first.substr(copy.find("="), first.size());
+    copy.erase(0, copy.find(";") + 1);
+    statusCode.code = std::stoi(second);
+    first = copy.substr(0, copy.find(";"));
+    second = first.substr(copy.find("="), first.size());
+    copy.erase(0, copy.find(";") + 1);
+    data = second;
+    return (true);
 }
 
 
