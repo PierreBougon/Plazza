@@ -8,6 +8,8 @@
 template <typename T>
 class Singleton
 {
+    T& operator=(const T&) = delete;
+
 public:
     static T &getInstance()
     {

@@ -77,7 +77,10 @@ SRC		+= 	$(addprefix src/, $(TOOLS))
 SRC_UI	= 	$(addprefix src/, $(SRC_ALL))
 SRC_UI	+=	$(addprefix src/, $(SRC_CIPHER))
 SRC_UI	+= 	$(addprefix src/, $(MAIN_UI))
+SRC_UI	+= 	$(addprefix src/, $(SOCKET))
 SRC_UI	+= 	$(addprefix src/, $(NETWORK))
+SRC_UI	+= 	$(addprefix src/, $(EXCEPT))
+SRC_UI	+= 	$(addprefix src/, $(TOOLS))
 
 
 OBJ 		=   	$(SRC:.cpp=.o)

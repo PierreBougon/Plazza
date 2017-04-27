@@ -73,7 +73,7 @@ plazza::network::Packet plazza::network::TCPServer::receive(sock_t socket)
         data += buf;
     }
     inputPacket.deserialize(data);
-    Logger::log(Logger::Debug, inputPacket.serialize());
+    Logger::log(Logger::DEBUG, inputPacket.serialize());
     return std::move(inputPacket);
 }
 
