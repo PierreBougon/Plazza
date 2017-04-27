@@ -42,7 +42,7 @@ namespace plazza
 
             // Static member data
             /// Timeout is set to 2 minutes
-            static constexpr size_t          _timeout = 2 * 60 * 10000;
+            static constexpr size_t          _timeout = 5;
 
             void refreshEvents(pollfd *listEvents);
         };
