@@ -6,7 +6,7 @@
 #include "ThreadPool.hpp"
 #include "Worker.hpp"
 
-plazza::ThreadPool::ThreadPool(size_t numberOfThreads) : stop(false), areThreadsFree(numberOfThreads) {
+plazza::ThreadPool::ThreadPool(size_t numberOfThreads) : areThreadsFree(numberOfThreads), stop(false) {
 	for(size_t i = 0; i < numberOfThreads; ++i) {
 		ThreadList.push_back(std::thread(Worker(*this, i)));
 	}

@@ -37,14 +37,14 @@ int main(int ac, char **av) {
 
 //		std::vector<plazza::command> commands = cmdParser.getCommands();
         while (1);
-        ProcessHandler.server.wait();
+        /*ProcessHandler.server.wait();
         for (size_t i = 0; i < commands.size(); ++i) {
             std::cout << i << std::endl;
             std::cout << "avant le send" << std::endl;
             sleep(10);
             //ProcessHandler.server.send(plazza::network::Packet::OK, ProcessHandler.server);
             std::cout << "apres le send" << std::endl;
-        }
+        }*/
     }
     return 0;
 }
