@@ -5,7 +5,7 @@
 ## Login   <bougon_p@epitech.net>
 ##
 ## Started on  Sat Apr 15 00:37:20 2017 bougon_p
-## Last update Wed Apr 26 17:35:22 2017 bougon_p
+## Last update Fri Apr 28 23:31:52 2017 bougon_p
 ##
 
 ## Include colors and basic commands
@@ -52,9 +52,9 @@ SOCKET		=	$(SOCKET_DIR)ASocket.cpp	\
 
 NETWORK_DIR	=	network/
 
-NETWORK		=	$(NETWORK_DIR)Packet.cpp	\
+NETWORK		=	$(NETWORK_DIR)StatusCode.cpp 	\
+			$(NETWORK_DIR)Packet.cpp	\
 			$(NETWORK_DIR)PacketHeader.cpp 	\
-			$(NETWORK_DIR)StatusCode.cpp 	\
 			$(NETWORK_DIR)Client.cpp 	\
 			$(NETWORK_DIR)Server.cpp 	\
 # Cipher sources
