@@ -21,7 +21,7 @@ void plazza::network::Server::run()
 {
     if (_running || _thread.joinable())
     {
-        Logger::log(Logger::Warning, "Server is already running");
+        Logger::log(Logger::WARNING, "Server is already running");
         return;
     }
     // todo check out thread launching
@@ -44,12 +44,12 @@ void plazza::network::Server::_core()
             case -1:
                 //error on poll
 
-                Logger::log(Logger::Error, "Error occurred on poll");
+                Logger::log(Logger::ERROR, "Error occurred on poll");
                 _running = false;
                 break;
             case 0:
                 //time out
-                Logger::log(Logger::Warning, "Time out on server");
+                Logger::log(Logger::WARNING, "Time out on server");
                 _running = false;
                 break;
             default:

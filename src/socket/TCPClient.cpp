@@ -28,7 +28,7 @@ plazza::network::Packet plazza::network::TCPClient::receive(sock_t socket)
         data += buf;
     }
     inputPacket.deserialize(data);
-    Logger::log(Logger::Debug, inputPacket.serialize());
+    Logger::log(Logger::DEBUG, inputPacket.serialize());
     return std::move(inputPacket);
 }
 
@@ -54,7 +54,7 @@ void plazza::network::TCPClient::run()
 {
     if (_running || _thread.joinable())
     {
-        Logger::log(Logger::Warning, "Client is already running");
+        Logger::log(Logger::WARNING, "Client is already running");
         return;
     }
     // todo check out thread launching

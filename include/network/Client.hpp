@@ -17,15 +17,14 @@ namespace plazza
     {
         class Client : public TCPClient, public Singleton<Client>
         {
+            friend class Singleton<Client>;
         private:
             Client(uint16_t port, const std::string &hostname);
             Client(Client const &other) = delete;
             Client &operator=(Client const &other) = delete;
-
-        public:
-            // Use getInstance to create / get instance you should NEVER use ctor or errors may occurs
             Client();
 
+        public:
             // Use this method as the constructor
             void Init(uint16_t port, std::string const &host);
             virtual ~Client();
