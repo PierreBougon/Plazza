@@ -29,22 +29,21 @@ namespace plazza
             void stop();
 
         private:
+            void    _core();
+            void    handleEvents(pollfd *listEvent);
+            void    checkIncomingConnections();
+            Packet  processPacket(Packet const &packet);
+            void    refreshEvents(pollfd *listEvents);
+
+        private:
             std::atomic<bool>   _running;
             std::thread         _thread;
             std::mutex          _mutex;
 
-        private:
-            void _core();
-            void handleEvents(pollfd *listEvent);
-            void checkIncomingConnections();
-            Packet processPacket(Packet const &packet);
-
-
             // Static member data
             /// Timeout is set to 2 minutes
-            static constexpr size_t          _timeout = 2 * 60 * 10000;
+            static constexpr size_t          _timeout = 1 * 60 * 10000;
 
-            void refreshEvents(pollfd *listEvents);
         };
     }
 }
