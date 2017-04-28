@@ -4,38 +4,43 @@
 
 #include <PlazzaError.hpp>
 #include <iostream>
+#include <tools/Logger.hpp>
 #include "network/Packet.hpp"
 
 namespace plazza
 {
     namespace network
     {
-        const Packet Packet::OK(StatusCode::OK);
-        const Packet Packet::BAD_REQUEST = Packet(StatusCode::BAD_REQUEST);
-        const Packet Packet::INTERNAL_SERVER_ERROR = Packet(StatusCode::INTERNAL_SERVER_ERROR);
-        const Packet Packet::ACCEPTED = Packet(StatusCode::ACCEPTED);
-        const Packet Packet::FORBIDDEN = Packet(StatusCode::FORBIDDEN);
+        const Packet Packet::OK                     = Packet(StatusCode::OK);
+        const Packet Packet::BAD_REQUEST            = Packet(StatusCode::BAD_REQUEST);
+        const Packet Packet::INTERNAL_SERVER_ERROR  = Packet(StatusCode::INTERNAL_SERVER_ERROR);
+        const Packet Packet::ACCEPTED               = Packet(StatusCode::ACCEPTED);
+        const Packet Packet::FORBIDDEN              = Packet(StatusCode::FORBIDDEN);
+        const Packet Packet::NOTHING                = Packet(StatusCode::NOTHING);
     }
 }
 
 plazza::network::Packet::Packet()
         : header(), statusCode(network::StatusCode::OK), data("")
 {
+    std::cerr << "ctor base" << std::endl;
 }
 
-plazza::network::Packet::Packet(const plazza::network::StatusCode &statusCode, std::string _data)
-        :statusCode(statusCode), data(_data)
+plazza::network::Packet::Packet(const plazza::network::StatusCode &_statusCode, std::string _data)
+        : header(), statusCode(_statusCode), data(_data)
 {
+    std::cerr << "ctor nrm :: status code : " << _statusCode << std::endl;
 }
 
 plazza::network::Packet::Packet(const plazza::network::Packet &other)
         : header(other.header), statusCode(other.statusCode), data(other.data)
 {
-
+    std::cerr << "ctor cpy" << std::endl;
 }
 
 plazza::network::Packet &plazza::network::Packet::operator=(const plazza::network::Packet &other)
 {
+    std::cerr << "ope cpy" << std::endl;
     header = other.header;
     statusCode = other.statusCode;
     data = other.data;
@@ -60,23 +65,47 @@ std::string plazza::network::Packet::serialize() const
 
 bool plazza::network::Packet::deserialize(std::string const &serialized)
 {
-    std::string copy = serialized;
+    try
+    {
+        std::string copy = serialized;
 
-    std::string first = copy.substr(0, copy.find(";"));
-    std::string second = first.substr(copy.find("=") + 1, first.size());
-    copy.erase(0, copy.find(";") + 1);
+        std::string first = copy.substr(0, copy.find(";"));
+        std::string second = first.substr(copy.find("=") + 1, first.size());
+        copy.erase(0, copy.find(";") + 1);
 
-    if (header.MAGIC_NUMBER != std::stoi(second))
-        return (false);
-    first = copy.substr(0, copy.find(";"));
-    second = first.substr(copy.find("=") + 1, first.size());
-    copy.erase(0, copy.find(";") + 1);
-    statusCode.code = std::stoi(second);
-    first = copy.substr(0, copy.find(";"));
-    second = first.substr(copy.find("=") + 1, first.size());
-    copy.erase(0, copy.find(";") + 1);
-    data = second;
+        if (header.MAGIC_NUMBER != std::stoi(second))
+            return (false);
+        first = copy.substr(0, copy.find(";"));
+        second = first.substr(copy.find("=") + 1, first.size());
+        copy.erase(0, copy.find(";") + 1);
+        statusCode.code = std::stoi(second);
+        first = copy.substr(0, copy.find(";"));
+        second = first.substr(copy.find("=") + 1, first.size());
+        copy.erase(0, copy.find(";") + 1);
+        data = second;
+    }
+    catch (std::exception const &e)
+    {
+        Logger::log(Logger::WARNING, e.what());
+        statusCode = StatusCode::CORRUPTED;
+        return false;
+    }
     return (true);
+}
+
+bool plazza::network::Packet::isCorrupted() const
+{
+    return statusCode == StatusCode::CORRUPTED;
+}
+
+bool plazza::network::Packet::isRequest() const
+{
+    return statusCode >= 700;
+}
+
+bool plazza::network::Packet::isResponse() const
+{
+    return statusCode < 700;
 }
 
 
