@@ -151,7 +151,7 @@ void plazza::network::Server::wait()
     _mutex.unlock();
 */
     while (_running)
-        usleep(100000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100000));
 }
 
 void plazza::network::Server::stop()

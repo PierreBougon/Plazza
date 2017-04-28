@@ -6,6 +6,7 @@
 #include <cstring>
 #include <tools/Logger.hpp>
 #include <iostream>
+#include <zconf.h>
 #include "socket/TCPClient.hpp"
 
 plazza::network::TCPClient::TCPClient(uint16_t port, const std::string &hostname) : ASocket(port, hostname)
@@ -82,5 +83,19 @@ void plazza::network::TCPClient::_core()
 
 plazza::network::TCPClient::~TCPClient()
 {
+}
+
+void plazza::network::TCPClient::stop()
+{
+    if (!_thread.joinable())
+        return;
+    _running = false;
+    _thread.join();
+}
+
+void plazza::network::TCPClient::wait()
+{
+    while (_running)
+        std::this_thread::sleep_for(std::chrono::milliseconds(100000));
 }
 
