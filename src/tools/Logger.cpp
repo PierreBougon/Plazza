@@ -7,7 +7,7 @@
 #include <fstream>
 #include "tools/Logger.hpp"
 
-#ifdef DEBUG
+#ifdef _DEBUG
 bool Debug::DEBUG_MODE = true;
 #else
 bool Debug::DEBUG_MODE = false;
