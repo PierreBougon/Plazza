@@ -125,3 +125,7 @@ int plazza::network::TCPServer::findClient(plazza::network::sock_t socket) const
         return -1;
     return static_cast<int>(it - _clientList.begin());
 }
+size_t plazza::network::TCPServer::getCurrentNumberOfClient() const {
+    return _currentClient;
+}
+

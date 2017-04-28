@@ -31,9 +31,10 @@ namespace plazza
             void    send(const network::Packet &packet, sock_t socket) override;
             Packet  receive(sock_t socket) override;
 
-            bool addClient();
-            bool removeClient(size_t pos);
-            bool removeClient(sock_t socket);
+            bool    addClient();
+            bool    removeClient(size_t pos);
+            bool    removeClient(sock_t socket);
+            size_t  getCurrentNumberOfClient() const;
 
         protected:
             size_t                  _maxClient;

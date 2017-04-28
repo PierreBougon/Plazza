@@ -5,16 +5,16 @@
 #ifndef CPP_PLAZZA_WORKER_HPP
 #define CPP_PLAZZA_WORKER_HPP
 
-#include "ThreadPool.hpp"
+#include "Thread.hpp"
 
 namespace plazza {
 		class Worker {
 		public:
-			Worker(ThreadPool &s, size_t index);
+			Worker(Thread &s, size_t index);
 			void operator()();
 		private:
 			size_t		workerIndex;
-			ThreadPool &PoolRef;
+			Thread		&threadRef;
 		};
 }
 

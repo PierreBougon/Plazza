@@ -67,6 +67,3 @@ void Logger::closeFile() {
     if (outFile.is_open())
         outFile.close();
 }
-
-
-
