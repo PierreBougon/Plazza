@@ -5,23 +5,27 @@
 #include <unistd.h>
 #include <cstring>
 #include <exceptions/SocketError.hpp>
+#include <tools/Logger.hpp>
+#include <iostream>
 #include "socket/ASocket.hpp"
 
 plazza::network::ASocket::ASocket(uint16_t _port, const std::string &_hostname)
         : _socket(-1), _port(_port), _hostname(_hostname), _servAddr()
 {
-    std::memset((char *)&_servAddr, 0, sizeof(_servAddr));
     init();
 }
 
 void plazza::network::ASocket::init()
 {
+    std::memset((char *)&_servAddr, 0, sizeof(_servAddr));
     _socket = ::socket(AF_INET, SOCK_STREAM, 0);
     if (_socket < 0)
         throw network::SocketError("Cannot create socket");
     _servAddr.sin_family = AF_INET;
     _servAddr.sin_port = htons(_port);
     _servAddr.sin_addr.s_addr = INADDR_ANY;
+
+    std::cerr << _port << std::endl;
 }
 
 plazza::network::sock_t plazza::network::ASocket::getSocket() const
