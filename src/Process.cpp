@@ -13,14 +13,20 @@ plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Cli
 	client.connect();
 	client.bind(std::bind((&plazza::Process::addNewTask), this, std::placeholders::_1));
 	client.run();
-	std::function<void (const plazza::network::Packet&)> function;
-	sleep(10);
-	
+    sleep(1);
+    network::Packet outputPacket;
+    outputPacket.statusCode = 200;
+    outputPacket.data = "CECI EST UN PENIS";
+    client.send(outputPacket, client.getSocket());
+    sleep(10);
+    // TODO
+	//client.stop();
 }
 
 plazza::Process::~Process() {}
 
 void plazza::Process::addNewTask(const plazza::network::Packet &packet) {
+/*
 	std::string data;
 	
 	std::cout << "Je suis dans addNewTask" << std::endl;
@@ -33,4 +39,5 @@ void plazza::Process::addNewTask(const plazza::network::Packet &packet) {
 	std::string second = packet.data.substr(packet.data.find(" ") + 1, packet.data.size());
 	command cmd(first, static_cast<plazza::Information>(std::stoi(second)));
 	threadPool.enqueue(cmd);
+*/
 }
