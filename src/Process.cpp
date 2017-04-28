@@ -13,9 +13,7 @@ plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Cli
 	client.connect();
 	client.bind(std::bind((&plazza::Process::addNewTask), this, std::placeholders::_1));
 	client.run();
-	std::function<void (const plazza::network::Packet&)> function;
 	sleep(10);
-	
 }
 
 plazza::Process::~Process() {}

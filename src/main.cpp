@@ -55,7 +55,6 @@ int main(int ac, char **av) {
             }
         std::cout << isClient << " " << server << " " << port << std::endl;
     }
-    //Parser correctment
     if (isClient) {
         plazza::Process ChildProcess(nbThreads);
     } else {

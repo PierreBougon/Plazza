@@ -15,6 +15,7 @@ namespace plazza {
 		~ProcessHandler();
 	//TODO PRIVATE SERVER
 		plazza::network::Server server;
+		
 	};
 }
 

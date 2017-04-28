@@ -30,9 +30,10 @@ namespace plazza
             bool addClient();
             bool removeClient(size_t pos);
             bool removeClient(sock_t socket);
+            size_t getCurrentNumberOfClient() const;
 
             virtual void run() = 0;
-
+    
         protected:
             size_t                  _maxClient;
             size_t                  _currentClient;
