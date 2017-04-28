@@ -89,7 +89,6 @@ void plazza::network::Server::handleEvents(pollfd *listEvent)
         }
         else
         {
-            Logger::log(Logger::DEBUG, "Handling an event of data to receive");
             inputPacket = receive(listEvent[i].fd);
             outputPacket = processPacket(inputPacket);
             if (outputPacket.isResponse())

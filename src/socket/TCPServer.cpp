@@ -51,7 +51,6 @@ void plazza::network::TCPServer::send(const network::Packet &packet, sock_t sock
     {
         removeClient(socket);
     }
-    Logger::log(Logger::DEBUG, "J'AI SEND MON MACHIN");
 }
 
 plazza::network::Packet plazza::network::TCPServer::receive(sock_t socket)
@@ -101,7 +100,6 @@ bool plazza::network::TCPServer::removeClient(size_t pos)
     if (_currentClient == 0 || pos > _currentClient)
         return false;
     --_currentClient;
-    Logger::log(Logger::DEBUG, "Removing client num " + std::to_string(pos));
     ::close(_clientList[pos]);
     _clientList.erase(_clientList.begin() + pos);
     Logger::log(Logger::DEBUG, "Removing client");
@@ -125,7 +123,9 @@ int plazza::network::TCPServer::findClient(plazza::network::sock_t socket) const
         return -1;
     return static_cast<int>(it - _clientList.begin());
 }
-size_t plazza::network::TCPServer::getCurrentNumberOfClient() const {
+
+size_t plazza::network::TCPServer::getCurrentNumberOfClient() const
+{
     return _currentClient;
 }
 

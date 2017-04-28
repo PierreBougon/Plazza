@@ -23,24 +23,20 @@ namespace plazza
 plazza::network::Packet::Packet()
         : header(), statusCode(network::StatusCode::OK), data("")
 {
-    std::cerr << "ctor base" << std::endl;
 }
 
 plazza::network::Packet::Packet(const plazza::network::StatusCode &_statusCode, std::string _data)
         : header(), statusCode(_statusCode), data(_data)
 {
-    std::cerr << "ctor nrm :: status code : " << _statusCode << std::endl;
 }
 
 plazza::network::Packet::Packet(const plazza::network::Packet &other)
         : header(other.header), statusCode(other.statusCode), data(other.data)
 {
-    std::cerr << "ctor cpy" << std::endl;
 }
 
 plazza::network::Packet &plazza::network::Packet::operator=(const plazza::network::Packet &other)
 {
-    std::cerr << "ope cpy" << std::endl;
     header = other.header;
     statusCode = other.statusCode;
     data = other.data;

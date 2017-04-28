@@ -9,7 +9,7 @@
 #include <network/Packet.hpp>
 #include "ASocket.hpp"
 
-#define MAX_NUMBER_OF_CLIENT 4096
+#define MAX_NUMBER_OF_CLIENT 512
 #define MAX_BACKLOG_CLIENT 3
 
 namespace plazza
