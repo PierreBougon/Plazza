@@ -8,26 +8,30 @@
 #include <sys/socket.h>
 #include <algorithm>
 #include <tools/Logger.hpp>
+#include <iostream>
 #include "exceptions/SocketError.hpp"
 #include "socket/TCPServer.hpp"
 
 plazza::network::TCPServer::TCPServer(uint16_t port, size_t maxClient)
-        : ASocket(port), _maxClient(maxClient), _currentClient(0)
+        : ASocket(port, "localhost"), _maxClient(maxClient + 1), _currentClient(0)
 {
     initServer();
 }
 
 plazza::network::TCPServer::TCPServer(size_t maxClient)
-        : ASocket(4242), _maxClient(maxClient), _currentClient(0)
+        : ASocket(4242, "localhost"), _maxClient(maxClient + 1), _currentClient(0)
 {
     initServer();
 }
 
 void plazza::network::TCPServer::initServer()
 {
-    if (bind(_socket, (sockaddr *)(&_servAddr), sizeof(_servAddr)) == -1)
+    int opt = 1;
+
+    ::setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    if (::bind(_socket, (sockaddr *)(&_servAddr), sizeof(_servAddr)) == -1)
         throw network::SocketError("Cannot bind the socket");
-    listen(_socket, static_cast<int>(_maxClient));
+    ::listen(_socket, static_cast<int>(_maxClient));
 }
 
 plazza::network::TCPServer::~TCPServer()
@@ -42,38 +46,34 @@ void plazza::network::TCPServer::send(const network::Packet &packet, sock_t sock
 {
     std::string data = packet.serialize();
 
+    Logger::log(Logger::DEBUG, "Sending: " + data);
     if (::send(socket, data.c_str(), data.size(), 0) == -1)
     {
         removeClient(socket);
     }
+    Logger::log(Logger::DEBUG, "J'AI SEND MON MACHIN");
 }
 
 plazza::network::Packet plazza::network::TCPServer::receive(sock_t socket)
 {
-    bool            completemode = false;
     network::Packet inputPacket;
     std::string     data;
     char            buf[BUFFER_SIZE];
     ssize_t         ret;
 
-    while (true)
+    ret = ::recv(socket, buf, BUFFER_SIZE, 0);
+    if (ret == -1)
+        throw SocketError("Cannot receive");
+    else if (ret == 0)
     {
-        ret = ::recv(socket, buf, BUFFER_SIZE, 0);
-        if (ret == -1)
-            throw SocketError("Cannot receive");
-        else if (ret == 0 && !completemode)
-        {
-            // Client disconnected
-            removeClient(socket);
-            break;
-        }
-        else if (ret == 0)
-            break;
-        completemode = true;
-        data += buf;
+        // Client disconnected
+        removeClient(socket);
+        inputPacket.statusCode = StatusCode::DISCONNECTED;
+        return std::move(inputPacket);
     }
+    data += buf;
     inputPacket.deserialize(data);
-    Logger::log(Logger::DEBUG, inputPacket.serialize());
+    Logger::log(Logger::DEBUG, "Receiving: " + inputPacket.serialize());
     return std::move(inputPacket);
 }
 
@@ -83,15 +83,16 @@ bool plazza::network::TCPServer::addClient()
     socklen_t   clientSize;
     sock_t      clientSocket;
 
-    if (_maxClient >= _currentClient)
+    if (_maxClient - 1 <= _currentClient)
         return false;
     clientSize = sizeof(clientAddr);
     clientSocket = accept(_socket, (sockaddr *)(&clientAddr), &clientSize);
     if (clientSocket == -1)
         return false;
     _clientList.push_back(clientSocket);
-    send(network::Packet::ACCEPTED, clientSocket);
     ++_currentClient;
+    Logger::log(Logger::DEBUG, "New client connected to the server");
+    send(network::Packet::ACCEPTED, clientSocket);
     return true;
 }
 
@@ -100,8 +101,10 @@ bool plazza::network::TCPServer::removeClient(size_t pos)
     if (_currentClient == 0 || pos > _currentClient)
         return false;
     --_currentClient;
-    close(_clientList[pos]);
+    Logger::log(Logger::DEBUG, "Removing client num " + std::to_string(pos));
+    ::close(_clientList[pos]);
     _clientList.erase(_clientList.begin() + pos);
+    Logger::log(Logger::DEBUG, "Removing client");
     return true;
 }
 
