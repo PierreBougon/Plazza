@@ -17,15 +17,6 @@
 #ifndef UI
 
 int main(int ac, char **av) {
-
-    plazza::network::Packet test;
-
-    std::cerr << test.statusCode << std::endl;
-    test = plazza::network::Packet::OK;
-    std::cerr << test.statusCode << std::endl;
-
-
-
     bool isClient = false;
     std::size_t nbThreads;
 
