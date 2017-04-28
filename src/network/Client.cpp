@@ -16,6 +16,7 @@ void plazza::network::Client::Init(uint16_t port, std::string const &host)
 {
     _port = port;
     _hostname = host;
+    init();
 }
 
 plazza::network::Client::~Client()
