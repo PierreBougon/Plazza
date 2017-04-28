@@ -31,7 +31,7 @@ void plazza::network::TCPServer::initServer()
     ::setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     if (::bind(_socket, (sockaddr *)(&_servAddr), sizeof(_servAddr)) == -1)
         throw network::SocketError("Cannot bind the socket");
-    ::listen(_socket, static_cast<int>(_maxClient));
+    ::listen(_socket, MAX_BACKLOG_CLIENT);
 }
 
 plazza::network::TCPServer::~TCPServer()

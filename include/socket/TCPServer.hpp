@@ -5,11 +5,12 @@
 #ifndef CPP_PLAZZA_TCPSERVER_HPP_
 #define CPP_PLAZZA_TCPSERVER_HPP_
 
-#define MAX_NUMBER_OF_CLIENT 3
-
 #include <vector>
 #include <network/Packet.hpp>
 #include "ASocket.hpp"
+
+#define MAX_NUMBER_OF_CLIENT 4096
+#define MAX_BACKLOG_CLIENT 3
 
 namespace plazza
 {
