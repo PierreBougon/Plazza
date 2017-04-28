@@ -32,6 +32,7 @@ SRC_ALL	    	=	FileParser.cpp \
 			ProcessHandler.cpp \
 			Process.cpp \
 			PlazzaError.cpp \
+			Thread.cpp  \
 
 EXCEPT_DIR	=	exceptions/
 

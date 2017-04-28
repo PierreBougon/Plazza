@@ -11,18 +11,18 @@
 void plazza::Worker::operator()() {
 	command task;
 	while (true) {
-		std::unique_lock<std::mutex> lock(PoolRef.getQueueMutex());
-		PoolRef.getAreThreadsFree().at(this->workerIndex) = true;
-		while (!PoolRef.shouldStop() && !PoolRef.hasWork()) {
-			PoolRef.getConditionVariable().wait(lock);
-		}
-		if (PoolRef.shouldStop()) //
+		threadRef.setIsFree(true);
+		threadRef.lock();
+		//while (!threadRef.shouldStop() && !threadRef.hasWork()) {
+		//	threadRef.getConditionVariable().wait(lock);
+		//}
+		if (threadRef.shouldStop()) //
 			return;
-		task = PoolRef.getFrontTask();
-		PoolRef.getAreThreadsFree().at(this->workerIndex) = false;
-		lock.unlock();
+		task = threadRef.getWork();
+		threadRef.unlock();
 		sleep(1);
+		threadRef.setIsFree(false);
 	}
 }
 
-plazza::Worker::Worker(plazza::ThreadPool &s, size_t index) : workerIndex(index), PoolRef(s) {}
+plazza::Worker::Worker(plazza::Thread &s, size_t index) : workerIndex(index), threadRef(s) {}

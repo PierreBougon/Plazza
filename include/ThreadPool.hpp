@@ -5,17 +5,18 @@
 #ifndef CPP_PLAZZA_THREADPOOL_HPP
 #define CPP_PLAZZA_THREADPOOL_HPP
 
+#include <atomic>
 #include <thread>
 #include <vector>
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include "IMutex.hpp"
-#include "IConditionVariable.hpp"
-#include "IMutex.hpp"
 #include "CmdParser.hpp"
+#include "Thread.hpp"
+
 
 namespace plazza {
+	class Thread;
 	class ThreadPool {
 	public:
 		//CTOR DTOR
@@ -32,14 +33,14 @@ namespace plazza {
 		bool shouldStop() const;
 		
 		command getFrontTask();
-		std::vector<bool, std::allocator<bool>> &getAreThreadsFree();
+		const std::vector<std::atomic<bool>> &getAreThreadsFree() const;
 		bool hasWork() const;
 		
 		//Queueing
 		void enqueue(command line);
 	private:
-		std::vector<bool> areThreadsFree;
-		std::vector<std::thread> ThreadList;
+		std::vector<std::atomic<bool>> areThreadsFree;
+		std::vector<Thread*> ThreadList;
 		std::queue<command> tasks;
 		std::mutex queue_mutex;
 		std::condition_variable conditionVariable;
