@@ -144,8 +144,14 @@ plazza::network::Server::~Server()
 
 void plazza::network::Server::wait()
 {
+
+/*
+// Seemed to be better method but atm this doesn't work
     _mutex.lock();
     _mutex.unlock();
+*/
+    while (_running)
+        usleep(100000);
 }
 
 void plazza::network::Server::stop()
