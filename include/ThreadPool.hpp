@@ -33,7 +33,7 @@ namespace plazza {
 		bool shouldStop() const;
 		
 		command getFrontTask();
-		const std::vector<std::atomic<bool>> &getAreThreadsFree() const;
+		size_t numberOfFreeThread() const;
 		bool hasWork() const;
 		
 		//Queueing

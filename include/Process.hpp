@@ -16,11 +16,10 @@ namespace plazza {
 		Process(size_t numberOfThreads);
 		~Process();
 		
-		void	addNewTask(const plazza::network::Packet &packet);
+		void	handleNewPackets(const plazza::network::Packet &packet);
 	private:
 		network::Client			&client;
 		ThreadPool				threadPool;
-		FileParser				fileParser;
 		std::vector<command>	tasks;
 	};
 }

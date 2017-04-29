@@ -54,12 +54,15 @@ namespace plazza
             static const StatusCode INTERNAL_SERVER_ERROR;
             static const StatusCode GATEWAY_TIMEOUT;
             static const StatusCode NOT_IMPLEMENTED;
-
+    
+            //QUERY
+            static const StatusCode QUERY;
             // OTHER
             static const StatusCode CORRUPTED;
             static const StatusCode DISCONNECTED;
             static const StatusCode NOTHING;
 
+            
         };
     }
 }

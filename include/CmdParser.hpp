@@ -30,7 +30,7 @@ namespace plazza {
     struct command {
         command(std::string const &file = "", Information information = NONE) : file(file), information(information) {}
 
-        std::string toString() {
+        std::string toString() const {
             std::string string;
 
             string += file;

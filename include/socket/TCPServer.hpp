@@ -8,6 +8,7 @@
 #include <vector>
 #include <network/Packet.hpp>
 #include <atomic>
+#include <functional>
 #include "ASocket.hpp"
 
 #define MAX_NUMBER_OF_CLIENT 512
@@ -28,8 +29,10 @@ namespace plazza
 
             virtual void run() = 0;
             size_t  getCurrentNumberOfClient() const;
-
-            void    send(const network::Packet &packet, sock_t socket) override;
+			const std::vector<sock_t> &getClientList() const;
+			void bind(std::function<void(const Packet &, size_t idClient)> const &onReceive) {_onReceive = onReceive;}
+	
+			void    send(const network::Packet &packet, sock_t socket) override;
 
         protected:
             Packet  receive(sock_t socket) override;
@@ -39,12 +42,13 @@ namespace plazza
             bool    removeClient(sock_t socket);
 
         protected:
-            size_t                  _maxClient;
-            size_t                  _currentClient;
-            std::atomic<bool>       _needRefresh;
-            std::vector<sock_t>     _clientList;
+            size_t								_maxClient;
+            size_t								_currentClient;
+            std::atomic<bool>					_needRefresh;
+            std::vector<sock_t>     			_clientList;
+			std::function<void(const Packet &, size_t idClient)>	_onReceive;
 
-        private:
+		private:
             void initServer();
             int findClient(sock_t socket) const;
         };

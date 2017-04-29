@@ -130,4 +130,7 @@ size_t plazza::network::TCPServer::getCurrentNumberOfClient() const
 {
     return _currentClient;
 }
+const std::vector<plazza::network::sock_t> &plazza::network::TCPServer::getClientList() const {
+    return _clientList;
+}
 

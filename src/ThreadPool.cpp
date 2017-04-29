@@ -61,7 +61,11 @@ size_t plazza::ThreadPool::getNumberOfThreads() const {
 bool plazza::ThreadPool::hasWork() const {
 	return (tasks.size() != 0);
 }
-
-const std::vector<std::atomic<bool>> &plazza::ThreadPool::getAreThreadsFree() const {
-	return areThreadsFree;
+size_t plazza::ThreadPool::numberOfFreeThread() const {
+	size_t i = 0;
+	for (auto it = areThreadsFree.begin(); it < areThreadsFree.end(); it++) {
+		if (*it == true)
+			i++;
+	}
+	return (i);
 }

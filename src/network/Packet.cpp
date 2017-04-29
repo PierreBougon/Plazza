@@ -16,6 +16,7 @@ namespace plazza
         const Packet Packet::INTERNAL_SERVER_ERROR  = Packet(StatusCode::INTERNAL_SERVER_ERROR);
         const Packet Packet::ACCEPTED               = Packet(StatusCode::ACCEPTED);
         const Packet Packet::FORBIDDEN              = Packet(StatusCode::FORBIDDEN);
+        const Packet Packet::QUERY                  = Packet(StatusCode::QUERY);
         const Packet Packet::NOTHING                = Packet(StatusCode::NOTHING);
     }
 }
@@ -102,6 +103,9 @@ bool plazza::network::Packet::isRequest() const
 bool plazza::network::Packet::isResponse() const
 {
     return statusCode < 700;
+}
+bool plazza::network::Packet::isQuery() const {
+	return statusCode >= 600 && statusCode < 700;
 }
 
 

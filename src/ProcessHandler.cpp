@@ -4,38 +4,58 @@
 
 #include <network/Server.hpp>
 #include <iostream>
+#include <vector>
 #include <unistd.h>
 #include <cstring>
+#include <algorithm>
 #include "ProcessHandler.hpp"
 
 
 plazza::ProcessHandler::ProcessHandler(size_t numberOfThreads, char *string)
 		: server(MAX_NUMBER_OF_CLIENT), numberOfThreads(numberOfThreads), fileName(string){
 	server.run();
+	server.bind(std::bind((&plazza::ProcessHandler::handleNewPackets), this, std::placeholders::_1, std::placeholders::_2));
 	std::cout << "server" << std::endl;
+}
+
+void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &packet, size_t idClient) {
+	 if (packet.isResponse()) {
+		 threadOccupancy.at(idClient) = std::stoul(packet.data);
+	 }
 }
 
 plazza::ProcessHandler::~ProcessHandler() {
 
 }
 
-std::vector<size_t> plazza::ProcessHandler::getProcessOccupancy() const {
-	std::vector<size_t> ret;
-	
-	for (size_t i = 0; i < server.getCurrentNumberOfClient(); i++) {
-		ret.push_back(1);
-		//Call tout les process et leur demander si ils ont du boulot
+void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) {
+	for (auto it = commands.begin(); it < commands.end(); it++) {
+		if (areProcessesFull()) {
+			spawnANewProcess();
+			threadOccupancy.push_back(0);
+		}
+		auto lessBusyThread = std::min_element(threadOccupancy.begin(), threadOccupancy.end());
+		size_t value = *(std::find(threadOccupancy.begin(), threadOccupancy.end(), (*lessBusyThread)));
+		sendTask(*it, value);
 	}
-	return ret;
 }
 
-bool plazza::ProcessHandler::areProcessesFull() const {
-	std::vector<size_t> processesThreadOccupancy = getProcessOccupancy();
-	for (size_t i = 0; i < processesThreadOccupancy.size(); i++) {
-		if (processesThreadOccupancy.at(i) < numberOfThreads)
-			return false;
+void plazza::ProcessHandler::sendTask(const plazza::command command, size_t clientNumber) {
+	network::Packet packet;
+	
+	if (server.getClientList().empty()) {
+		return;
 	}
-	return true;
+	std::cout << "send task" << clientNumber << " " << server.getCurrentNumberOfClient() << std::endl;
+	packet.data = "data";
+	packet.statusCode = network::StatusCode::QUERY;
+	server.send(packet, server.getClientList().at(clientNumber));
+}
+
+void plazza::ProcessHandler::queryProcessOccupancy() {
+	for (auto it = server.getClientList().begin(); it < server.getClientList().end(); it++) {
+		server.send(network::Packet::QUERY, *it);
+	}
 }
 
 void plazza::ProcessHandler::spawnANewProcess() {
@@ -56,4 +76,11 @@ void plazza::ProcessHandler::spawnANewProcess() {
 	}
 	childProcessList.push_back(tmp);
 	
+}
+bool plazza::ProcessHandler::areProcessesFull() const {
+	for (std::size_t i = 0; i < threadOccupancy.size(); ++i) {
+		if (threadOccupancy.at(i) != 0)
+			return (false);
+	}
+	return (true);
 }

@@ -25,6 +25,7 @@ namespace plazza
             std::string     serialize() const override;
             bool            deserialize(std::string const &serialized) override;
 
+			bool isQuery() const;
             bool isCorrupted() const;
             bool isRequest() const;
             bool isResponse() const;
@@ -41,7 +42,9 @@ namespace plazza
 
             static const Packet ACCEPTED;
             static const Packet FORBIDDEN;
-
+    
+            static const Packet QUERY;
+    
             static const Packet NOTHING;
 
         };

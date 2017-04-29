@@ -26,6 +26,9 @@ namespace plazza
         const StatusCode StatusCode::GATEWAY_TIMEOUT        = StatusCode(501);
         const StatusCode StatusCode::NOT_IMPLEMENTED        = StatusCode(502);
 
+        // QUERY
+        const StatusCode StatusCode::QUERY                  = StatusCode(600);
+    
         // OTHER
         const StatusCode StatusCode::CORRUPTED              = StatusCode(700);
         const StatusCode StatusCode::DISCONNECTED           = StatusCode(701);

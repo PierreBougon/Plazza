@@ -17,13 +17,17 @@ namespace plazza {
 		//TODO PRIVATE SERVER
 	    bool areProcessesFull() const;
 		void spawnANewProcess();
+		void feed(const std::vector<plazza::command> &commands);
+		void sendTask(const command command, size_t clientNumber);
 		
 		plazza::network::Server server;
 		size_t numberOfThreads;
 	private:
+		std::vector<size_t>	threadOccupancy;
 		char 				*fileName;
 		std::vector<pid_t>	childProcessList;
-		std::vector<size_t>	getProcessOccupancy() const;
+		void				queryProcessOccupancy();
+		void handleNewPackets(const plazza::network::Packet &, size_t clientNumber);
 	};
 }
 
