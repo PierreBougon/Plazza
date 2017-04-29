@@ -18,16 +18,20 @@ namespace plazza
         struct Packet : public ISerializable
         {
             Packet();
-            Packet(StatusCode const &statusCode, std::string _data = "");
+            Packet(StatusCode const &_statusCode, std::string _data = "");
             Packet(Packet const &other);
             Packet &operator=(Packet const &other);
+
+            std::string     serialize() const override;
+            bool            deserialize(std::string const &serialized) override;
+
+            bool isCorrupted() const;
+            bool isRequest() const;
+            bool isResponse() const;
 
             network::PacketHeader           header;
             StatusCode                      statusCode;
             std::string                     data;
-
-            std::string     serialize() const override;
-            bool            deserialize(std::string const &serialized) override;
 
 
             // Basic packet
@@ -37,6 +41,9 @@ namespace plazza
 
             static const Packet ACCEPTED;
             static const Packet FORBIDDEN;
+
+            static const Packet NOTHING;
+
         };
     }
 }

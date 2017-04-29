@@ -22,7 +22,7 @@ ifeq ($(RELEASE), YES)
 CXXFLAGS	+=	-Werror
 else
 ifeq ($(DEBUG), YES)
-CXXFLAGS	+=	-D DEBUG -g
+CXXFLAGS	+=	-D _DEBUG -g
 endif
 endif
 ifeq ($(DLL), YES)

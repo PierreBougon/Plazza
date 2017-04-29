@@ -16,28 +16,33 @@ namespace Debug
 
 class Logger : public Singleton<Logger>
 {
+private:
+
     friend class Singleton<Logger>;
 
-    std::ofstream outFile;
+    Logger();
     Logger(const Logger&) = delete;
     virtual ~Logger();
-    Logger();
 
 public:
     enum Level
     {
-        DEBUG,
+        DEBUG = 0,
         INFO,
         WARNING,
         ERROR
     };
 
-    void setFile(std::string const &file);
-    void closeFile();
-    static void log(Level lvl, std::string msg, bool abort = false);
-    void log(std::string msg, Level lvl = INFO);
-    void logFile(std::string msg, Level lvl = INFO);
+    void        setFile(std::string const &file);
+    void        closeFile();
+    void        log(std::string msg, Level lvl = INFO);
+    void        logFile(std::string msg, Level lvl = INFO);
     std::string toString(Level lvl);
+
+    static void log(Level lvl, std::string msg, bool abort = false);
+
+private:
+    std::ofstream outFile;
 };
 
 

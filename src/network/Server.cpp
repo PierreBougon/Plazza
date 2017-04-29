@@ -4,6 +4,7 @@
 
 #include <unistd.h>
 #include <poll.h>
+#include <iostream>
 #include "tools/Logger.hpp"
 #include "exceptions/ServerError.hpp"
 #include "network/Server.hpp"
@@ -26,6 +27,7 @@ void plazza::network::Server::run()
     }
     // todo check out thread launching
 
+    _running = true;
     _mutex.lock();
     _thread = std::thread(&Server::_core, this);
 }
@@ -35,10 +37,12 @@ void plazza::network::Server::_core()
     int ret = 0;
     pollfd listEvent[_maxClient];
 
+    Logger::log(Logger::DEBUG, "Launching core server");
     while (_running)
     {
         refreshEvents(listEvent);
         ret = poll(listEvent, _maxClient, _timeout);
+        //Logger::log(Logger::DEBUG, "poll() catched something" + std::to_string(ret));
         switch (ret)
         {
             case -1:
@@ -48,6 +52,7 @@ void plazza::network::Server::_core()
                 _running = false;
                 break;
             case 0:
+                // TODO what is timeouted
                 //time out
                 Logger::log(Logger::WARNING, "Time out on server");
                 _running = false;
@@ -66,14 +71,28 @@ void plazza::network::Server::handleEvents(pollfd *listEvent)
     network::Packet inputPacket;
     network::Packet outputPacket;
 
-    checkIncomingConnections();
-    for (size_t i = 0; i < _maxClient; ++i)
+    for (size_t i = 0; i < _currentClient + 1; ++i)
     {
-        if (listEvent[i].revents & POLLIN)
+        if (listEvent[i].revents == 0)
+            continue;
+
+        if (listEvent[i].revents != POLLIN)
+        {
+            // Error not requested event
+            _running = false;
+            break;
+        }
+
+        if (listEvent[i].fd == _socket)
+        {
+            checkIncomingConnections();
+        }
+        else
         {
             inputPacket = receive(listEvent[i].fd);
             outputPacket = processPacket(inputPacket);
-            send(outputPacket, listEvent[i].fd);
+            if (outputPacket.isResponse())
+                send(outputPacket, listEvent[i].fd);
         }
     }
 
@@ -81,37 +100,58 @@ void plazza::network::Server::handleEvents(pollfd *listEvent)
 
 void plazza::network::Server::checkIncomingConnections()
 {
-    while (addClient());
+    // TODO multiple client addition ?
+    addClient();
 }
 
 plazza::network::Packet plazza::network::Server::processPacket(const plazza::network::Packet &packet)
 {
+    plazza::network::Packet outputPacket;
     //TODO
-    return plazza::network::Packet();
+    if (!packet.isRequest())
+    {
+        outputPacket = Packet::NOTHING;
+        return std::move(outputPacket);
+    }
+    return std::move(outputPacket);
 }
 
 void plazza::network::Server::refreshEvents(pollfd *listEvents)
 {
+    size_t i = 1;
+
     // TODO opti
-    for (size_t i = 0; i < _maxClient; ++i)
+    listEvents[0].fd = _socket;
+    listEvents[0].events = POLLIN;
+    for (size_t clientPos = 0; clientPos < _maxClient; ++clientPos)
     {
-        if (i < _clientList.size())
-            listEvents[i].fd = _clientList[i];
+        if (clientPos < _currentClient)
+        {
+            listEvents[i].fd = _clientList[clientPos];
+        }
         else
+        {
             listEvents[i].fd = -1;
+        }
         listEvents[i].events = POLLIN;
+        ++i;
     }
 }
 
 plazza::network::Server::~Server()
 {
-    stop();
 }
 
 void plazza::network::Server::wait()
 {
+
+/*
+// Seemed to be better method but atm this doesn't work
     _mutex.lock();
     _mutex.unlock();
+*/
+    while (_running)
+        std::this_thread::sleep_for(std::chrono::milliseconds(100000));
 }
 
 void plazza::network::Server::stop()

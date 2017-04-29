@@ -20,7 +20,7 @@ namespace plazza
         class ASocket
         {
         public:
-            ASocket(uint16_t _port = 4242, const std::string &_hostname = "localhost");
+            ASocket(uint16_t _port, const std::string &_hostname);
             ASocket(const ASocket &other) = delete;
             ASocket() = delete;
 
@@ -34,7 +34,7 @@ namespace plazza
             virtual Packet receive(sock_t socket) = 0;
 
         public:
-            static constexpr size_t BUFFER_SIZE = 1024;
+            static constexpr size_t BUFFER_SIZE = 4096;
 
         protected:
             sock_t          _socket;
@@ -43,7 +43,7 @@ namespace plazza
             sockaddr_in     _servAddr;
             hostent         *_server;
 
-        private:
+        protected:
             void init();
         };
     }

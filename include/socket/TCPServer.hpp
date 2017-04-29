@@ -5,11 +5,12 @@
 #ifndef CPP_PLAZZA_TCPSERVER_HPP_
 #define CPP_PLAZZA_TCPSERVER_HPP_
 
-#define MAX_NUMBER_OF_CLIENT 1024
-
 #include <vector>
 #include <network/Packet.hpp>
 #include "ASocket.hpp"
+
+#define MAX_NUMBER_OF_CLIENT 512
+#define MAX_BACKLOG_CLIENT 3
 
 namespace plazza
 {
@@ -24,16 +25,17 @@ namespace plazza
 
             virtual ~TCPServer();
 
-            void send(const network::Packet &packet, sock_t socket) override;
-            Packet receive(sock_t socket) override;
-
-            bool addClient();
-            bool removeClient(size_t pos);
-            bool removeClient(sock_t socket);
-            size_t getCurrentNumberOfClient() const;
-
             virtual void run() = 0;
-    
+
+        protected:
+            void    send(const network::Packet &packet, sock_t socket) override;
+            Packet  receive(sock_t socket) override;
+
+            bool    addClient();
+            bool    removeClient(size_t pos);
+            bool    removeClient(sock_t socket);
+            size_t  getCurrentNumberOfClient() const;
+
         protected:
             size_t                  _maxClient;
             size_t                  _currentClient;

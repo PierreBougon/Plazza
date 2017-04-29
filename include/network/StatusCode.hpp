@@ -1,3 +1,4 @@
+
 //
 // Created by Pierre Bougon on 24/04/17.
 //
@@ -14,16 +15,21 @@ namespace plazza
     {
         struct StatusCode
         {
-            StatusCode(int _code = 200);
-            StatusCode() = delete;
+            StatusCode(int _code);
+            StatusCode();
             StatusCode(StatusCode const &other);
 
             int code;
 
 
-
             // Operators
-            StatusCode &operator=(const network::StatusCode &statusCode);
+            StatusCode &operator=(const network::StatusCode &other);
+            bool operator==(const StatusCode &rhs) const;
+            bool operator!=(const StatusCode &rhs) const;
+            bool operator<(const StatusCode &rhs) const;
+            bool operator>(const StatusCode &rhs) const;
+            bool operator<=(const StatusCode &rhs) const;
+            bool operator>=(const StatusCode &rhs) const;
 
             /***************************************************************************************
             * Static basic definitions based on http status code method with our own implementation
@@ -48,11 +54,16 @@ namespace plazza
             static const StatusCode INTERNAL_SERVER_ERROR;
             static const StatusCode GATEWAY_TIMEOUT;
             static const StatusCode NOT_IMPLEMENTED;
+
+            // OTHER
+            static const StatusCode CORRUPTED;
+            static const StatusCode DISCONNECTED;
+            static const StatusCode NOTHING;
+
         };
     }
-
-    std::ostream &operator<<(std::ostream &os, const network::StatusCode &code);
 }
 
+std::ostream &operator<<(std::ostream &os, const plazza::network::StatusCode &code);
 
 #endif // !CPP_PLAZZA_STATUSCODE_HPP_
