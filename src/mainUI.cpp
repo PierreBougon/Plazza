@@ -23,13 +23,10 @@ int main(int ac, char **av)
     int option;
 
     try {
-
-
-        if (ac != 2 || std::stoi(av[1]) <= 0) {
+        if (ac < 2 || std::stoi(av[1]) <= 0) {
             std::cerr << "usage : ./plazza nb_thread_per_process" << std::endl;
             return (1);
         }
-
         nbThreads = std::stoul(av[1]);
         if (ac > 2) {
             while ((option = getopt_long(ac, av, "cs:p:", long_options, NULL)) != -1)
