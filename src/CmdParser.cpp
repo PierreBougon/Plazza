@@ -173,14 +173,15 @@ std::vector<plazza::command> plazza::CmdParser::getCommands() {
 }
 
 plazza::Information plazza::CmdParser::convertCmd(std::string const &cmd) {
-	if (cmd == "IP_ADDRESS")
+	if (cmd == "IP_ADDRESS" || cmd == "0")
 		return IP_ADDRESS;
-	else if (cmd == "EMAIL_ADDRESS")
+	else if (cmd == "EMAIL_ADDRESS" || cmd == "1")
 		return EMAIL_ADDRESS;
-	else if (cmd == "PHONE_NUMBER")
+	else if (cmd == "PHONE_NUMBER" || cmd == "2")
 		return PHONE_NUMBER;
 	return NONE;
 }
+
 plazza::command &plazza::command::operator=(const plazza::command &cpy) {
 	file = cpy.file;
 	information = cpy.information;

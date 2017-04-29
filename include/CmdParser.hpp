@@ -12,6 +12,8 @@
 
 namespace plazza {
 
+    struct command;
+
     enum ASTNodeType {
         ROOT,
         CMD,
@@ -25,22 +27,6 @@ namespace plazza {
         EMAIL_ADDRESS,
         IP_ADDRESS,
         NONE,
-    };
-
-    struct command {
-        command(std::string const &file = "", Information information = NONE) : file(file), information(information) {}
-
-        std::string toString() {
-            std::string string;
-
-            string += file;
-            string += " ";
-            string += std::to_string(information);
-            return (std::move(string));
-        }
-        std::string file;
-        Information information;
-        plazza::command &operator=(const plazza::command &cpy);
     };
 
     struct ast_node {
@@ -60,7 +46,6 @@ namespace plazza {
         void addNodeFile(std::unique_ptr<ast_node> &root);
         void checkCmdIntegrity(ast_node *node);
         std::string trim(std::string const &str);
-        Information convertCmd(std::string const &cmd);
         void _getCommand(ast_node *root, std::vector<command> &cmd);
 
     public:
@@ -73,6 +58,26 @@ namespace plazza {
         void dumpTree(ast_node *node);
         size_t getNbCmd();
         std::vector<command> getCommands();
+        static Information convertCmd(std::string const &cmd);
+
+    };
+
+    struct command {
+        command(std::string const &file = "", Information information = NONE) : file(file), information(information) {}
+        command(std::string const &cmd) : file(cmd.substr(0, cmd.find(" "))), information(CmdParser::convertCmd(cmd.substr(cmd.find(" ") + 1, cmd.size()))) {
+        }
+
+        std::string toString() {
+            std::string string;
+
+            string += file;
+            string += " ";
+            string += std::to_string(information);
+            return (std::move(string));
+        }
+        std::string file;
+        Information information;
+        plazza::command &operator=(const plazza::command &cpy);
     };
 }
 
