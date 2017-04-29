@@ -7,6 +7,7 @@
 
 #include "IProcessHandler.hpp"
 #include "CmdParser.hpp"
+#include "network/Server.hpp"
 
 namespace plazza {
 	class ProcessHandler : public IProcessHandler {
@@ -18,12 +19,13 @@ namespace plazza {
 	    bool areProcessesFull() const;
 		void spawnANewProcess();
 		
-		plazza::network::Server server;
+		network::Server server;
 		size_t numberOfThreads;
+		std::vector<size_t>	getProcessOccupancy() const;
+
 	private:
 		char 				*fileName;
 		std::vector<pid_t>	childProcessList;
-		std::vector<size_t>	getProcessOccupancy() const;
 	};
 }
 

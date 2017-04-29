@@ -13,9 +13,15 @@ plazza::PlazzaUI::PlazzaUI(int ac, char **av) : app(ac, av), buttonAddFile("Add 
                                                 btnExecute("Execute", &mainWindow),
                                                 cmdLine(&mainWindow), cmdLineLabel("Enter File Path :", &mainWindow),
                                                 scrollAreaLabel("Added Files :", &mainWindow),
-                                                scrollAreaWidget(new QWidget()), scrollArea(&mainWindow) {
+                                                scrollAreaWidget(new QWidget()), scrollArea(&mainWindow),
+                                                scrollAreaWidgetThread(new QWidget()), scrollAreaThread(&mainWindow),
+                                                processHandler(std::stoul(av[1]), av[0]),
+                                                nbThreadsMax(std::stoul(av[1])),
+                                                timer(new QTimer()) {
 
     scrollAreaWidget->setLayout(&scrollArealayout);
+    scrollAreaWidgetThread->setLayout(&scrollArealayoutThread);
+
     mainWindow.setFixedSize(800, 800);
     cmdLineLabel.move(0, 5);
     scrollAreaLabel.move(0, cmdLine.pos().y() + cmdLine.height() + 10);
@@ -29,6 +35,12 @@ plazza::PlazzaUI::PlazzaUI(int ac, char **av) : app(ac, av), buttonAddFile("Add 
     btnExecute.move(cmdLineLabel.width() + 5 + cmdLine.width() + 10, scrollArea.pos().y() + scrollArea.height() + 10);
     QObject::connect(&btnExecute, &QPushButton::clicked, [this] { execute(); });
     mainWindow.show();
+
+    scrollAreaThread.setFixedSize(750, 340);
+    scrollAreaThread.move(20, scrollArea.pos().y() + scrollArea.height() + btnExecute.height() + 20);
+    scrollAreaThread.setWidgetResizable(true);
+    timer->setInterval(1000);
+    QObject::connect(timer, &QTimer::timeout, [this] { execute(); });
 }
 
 const QApplication &plazza::PlazzaUI::getApp() const {
@@ -62,8 +74,38 @@ void plazza::PlazzaUI::addFile() {
 }
 
 void plazza::PlazzaUI::execute() {
-    for (size_t i = 0; i < files.size(); ++i) {
+    std::vector<command> cmds;
 
-        std::cout << files[i].getLabel().text().toStdString() << " " << files[i].getPhone().isChecked() << std::endl;
+    for (size_t i = 0; i < files.size(); ++i) {
+        if (files[i].getEmail().isChecked())
+            cmds.push_back(command(files[i].getLabel().text().toStdString(), EMAIL_ADDRESS));
+        if (files[i].getPhone().isChecked())
+            cmds.push_back(command(files[i].getLabel().text().toStdString(), PHONE_NUMBER));
+        if (files[i].getIp().isChecked())
+            cmds.push_back(command(files[i].getLabel().text().toStdString(), IP_ADDRESS));
     }
+
+    processHandler.feed(cmds);
+    QLayoutItem *item = NULL;
+    while ((item = scrollArealayout.takeAt(0)) != 0)
+        delete item->widget();
+    files.clear();
+}
+
+void plazza::PlazzaUI::getProcessInfos() {
+
+    QWidget *widget = new QWidget();
+    QHBoxLayout *hlayout = new QHBoxLayout(widget);
+
+    for (size_t i = 0; i < processHandler.getProcessOccupancy().size(); ++i) {
+
+        QLabel *process = new QLabel("Process " + QString::fromStdString(std::to_string(i)) + " : ");
+        hlayout->addWidget(process);
+        QLabel *threads = new QLabel(
+                QString::fromStdString(std::to_string(processHandler.getProcessOccupancy()[i])) + " / " +
+                QString::fromStdString(std::to_string(nbThreadsMax)) + " working threads");
+        hlayout->addWidget(threads);
+    }
+    scrollArealayoutThread.addWidget(widget);
+    scrollAreaThread.setWidget(scrollAreaWidgetThread);
 }

@@ -9,6 +9,7 @@
 #include "ThreadPool.hpp"
 #include "IProcess.hpp"
 #include "CmdParser.hpp"
+#include "network/Client.hpp"
 
 namespace plazza {
 	class Process : public IProcess {

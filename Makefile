@@ -20,7 +20,6 @@ PROJECT_NAME	=	Plazza
 # Main sources
 
 MAIN	    	=	main.cpp \
-	                CmdParser.cpp \
 
 MAIN_UI		=	mainUI.cpp \
 			PlazzaUI.cpp \
@@ -33,6 +32,7 @@ SRC_ALL	    	=	FileParser.cpp \
 			Process.cpp \
 			PlazzaError.cpp \
 			Thread.cpp  \
+            CmdParser.cpp \
 
 EXCEPT_DIR	=	exceptions/
 
