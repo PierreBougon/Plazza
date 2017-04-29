@@ -11,11 +11,19 @@
 namespace plazza {
 	class ProcessHandler : public IProcessHandler {
 	public:
-		ProcessHandler(bool isClient, size_t numberOfThreads);
+		ProcessHandler(bool isClient, size_t numberOfThreads, char *string);
 		~ProcessHandler();
-	//TODO PRIVATE SERVER
-		plazza::network::Server server;
 		
+		//TODO PRIVATE SERVER
+	    bool areProcessesFull() const;
+		void spawnANewProcess();
+		
+		plazza::network::Server server;
+		size_t numberOfThreads;
+	private:
+		char 				*fileName;
+		std::vector<pid_t>	childProcessList;
+		std::vector<size_t>	getProcessOccupancy() const;
 	};
 }
 

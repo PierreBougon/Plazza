@@ -9,6 +9,7 @@
 #include "unistd.h"
 
 plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Client::getInstance()), threadPool(numberOfProcesses){
+	std::cout << "je suis new thread" << std::endl;
 	client.Init(4242, "127.0.0.1");
 	client.connect();
 	client.bind(std::bind((&plazza::Process::addNewTask), this, std::placeholders::_1));
