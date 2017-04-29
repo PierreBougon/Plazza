@@ -13,7 +13,7 @@ plazza::network::Server::Server() : TCPServer(), _running(false)
 {
 }
 
-plazza::network::Server::Server(size_t maxClient) : TCPServer(maxClient), _running(false), _needRefresh(true)
+plazza::network::Server::Server(size_t maxClient) : TCPServer(maxClient), _running(false)
 {
 
 }
