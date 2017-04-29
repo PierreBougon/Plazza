@@ -59,7 +59,7 @@ int main(int ac, char **av) {
 	if (isClient) {
 		plazza::Process ChildProcess(nbThreads);
 	} else {
-		plazza::ProcessHandler ProcessHandler(isClient, nbThreads, av[0]);
+		plazza::ProcessHandler ProcessHandler(nbThreads, av[0]);
 		plazza::CmdParser cmdParser;
 		ProcessHandler.spawnANewProcess();
 		ProcessHandler.spawnANewProcess();

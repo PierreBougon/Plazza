@@ -22,7 +22,8 @@ namespace plazza
             TCPServer(uint16_t _port, size_t maxClient = 5);
             TCPServer(const TCPServer &other) = delete;
             TCPServer(size_t maxClient = MAX_NUMBER_OF_CLIENT);
-
+    
+            size_t  getCurrentNumberOfClient() const;
             virtual ~TCPServer();
 
             virtual void run() = 0;
@@ -34,7 +35,6 @@ namespace plazza
             bool    addClient();
             bool    removeClient(size_t pos);
             bool    removeClient(sock_t socket);
-            size_t  getCurrentNumberOfClient() const;
 
         protected:
             size_t                  _maxClient;

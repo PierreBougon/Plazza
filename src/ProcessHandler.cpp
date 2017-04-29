@@ -9,7 +9,7 @@
 #include "ProcessHandler.hpp"
 
 
-plazza::ProcessHandler::ProcessHandler(bool isClient, size_t numberOfThreads, char *string)
+plazza::ProcessHandler::ProcessHandler(size_t numberOfThreads, char *string)
 		: server(MAX_NUMBER_OF_CLIENT), numberOfThreads(numberOfThreads), fileName(string){
 	server.run();
 	std::cout << "server" << std::endl;

@@ -11,7 +11,7 @@
 namespace plazza {
 	class ProcessHandler : public IProcessHandler {
 	public:
-		ProcessHandler(bool isClient, size_t numberOfThreads, char *string);
+		ProcessHandler(size_t numberOfThreads, char *string);
 		~ProcessHandler();
 		
 		//TODO PRIVATE SERVER
