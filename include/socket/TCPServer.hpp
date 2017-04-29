@@ -29,8 +29,9 @@ namespace plazza
             virtual void run() = 0;
             size_t  getCurrentNumberOfClient() const;
 
-        protected:
             void    send(const network::Packet &packet, sock_t socket) override;
+
+        protected:
             Packet  receive(sock_t socket) override;
 
             bool    addClient();
