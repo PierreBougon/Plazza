@@ -43,7 +43,7 @@ void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) 
 void plazza::ProcessHandler::sendTask(const plazza::command command, size_t clientNumber) {
 	network::Packet packet;
 	
-	if (server.getClientList().empty()) {
+	if (server.getClientList().empty() || clientNumber > server.getCurrentNumberOfClient()) {
 		return;
 	}
 	std::cout << "send task" << clientNumber << " " << server.getCurrentNumberOfClient() << std::endl;
