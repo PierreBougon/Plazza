@@ -77,24 +77,6 @@ namespace plazza {
         static Information convertCmd(std::string const &cmd);
 
     };
-
-    struct command {
-        command(std::string const &file = "", Information information = NONE) : file(file), information(information) {}
-        command(std::string const &cmd) : file(cmd.substr(0, cmd.find(" "))), information(CmdParser::convertCmd(cmd.substr(cmd.find(" ") + 1, cmd.size()))) {
-        }
-
-        std::string toString() {
-            std::string string;
-
-            string += file;
-            string += " ";
-            string += std::to_string(information);
-            return (std::move(string));
-        }
-        std::string file;
-        Information information;
-        plazza::command &operator=(const plazza::command &cpy);
-    };
 }
 
 #endif //CPP_PLAZZA_CMDPARSER_HPP
