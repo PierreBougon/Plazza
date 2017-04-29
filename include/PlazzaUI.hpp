@@ -14,8 +14,10 @@
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QScrollArea>
+#include <QtCore/QTimer>
 #include <memory>
 #include "UIAddedFile.hpp"
+#include "ProcessHandler.hpp"
 
 namespace plazza {
 
@@ -31,10 +33,19 @@ namespace plazza {
         QWidget *scrollAreaWidget;
         QScrollArea scrollArea;
         QVBoxLayout scrollArealayout;
+        QWidget *scrollAreaWidgetThread;
+        QScrollArea scrollAreaThread;
+        QVBoxLayout scrollArealayoutThread;
         std::vector<UIAddedFile> files;
+        ProcessHandler processHandler;
+        size_t nbThreadsMax;
+        QTimer *timer;
+
+
         PlazzaUI() = delete;
         void addFile();
         void execute();
+        void getProcessInfos();
 
     public:
         virtual ~PlazzaUI();

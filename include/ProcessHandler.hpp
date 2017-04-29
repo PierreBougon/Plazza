@@ -7,6 +7,7 @@
 
 #include "IProcessHandler.hpp"
 #include "CmdParser.hpp"
+#include "network/Server.hpp"
 
 namespace plazza {
 	class ProcessHandler : public IProcessHandler {
@@ -20,8 +21,10 @@ namespace plazza {
 		void feed(const std::vector<plazza::command> &commands);
 		void sendTask(const command command, size_t clientNumber);
 		
-		plazza::network::Server server;
+		network::Server server;
 		size_t numberOfThreads;
+		std::vector<size_t>	getProcessOccupancy() const;
+
 	private:
 		std::vector<size_t>	threadOccupancy;
 		char 				*fileName;

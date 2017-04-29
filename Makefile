@@ -20,7 +20,6 @@ PROJECT_NAME	=	Plazza
 # Main sources
 
 MAIN	    	=	main.cpp \
-	                CmdParser.cpp \
 
 MAIN_UI		=	mainUI.cpp \
 			PlazzaUI.cpp \
@@ -33,6 +32,7 @@ SRC_ALL	    	=	FileParser.cpp \
 			Process.cpp \
 			PlazzaError.cpp \
 			Thread.cpp  \
+            CmdParser.cpp \
 
 EXCEPT_DIR	=	exceptions/
 
@@ -58,6 +58,8 @@ NETWORK		=	$(NETWORK_DIR)StatusCode.cpp 	\
 			$(NETWORK_DIR)PacketHeader.cpp 	\
 			$(NETWORK_DIR)Client.cpp 	\
 			$(NETWORK_DIR)Server.cpp 	\
+			$(NETWORK_DIR)StaticSend.cpp 	\
+
 # Cipher sources
 
 CIPHER_DIR	=	cipher/
