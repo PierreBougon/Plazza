@@ -13,13 +13,13 @@
 #include "socket/TCPServer.hpp"
 
 plazza::network::TCPServer::TCPServer(uint16_t port, size_t maxClient)
-        : ASocket(port, "localhost"), _maxClient(maxClient + 1), _currentClient(0)
+        : ASocket(port, "localhost"), _maxClient(maxClient + 1), _currentClient(0), _needRefresh(true)
 {
     initServer();
 }
 
 plazza::network::TCPServer::TCPServer(size_t maxClient)
-        : ASocket(4242, "localhost"), _maxClient(maxClient + 1), _currentClient(0)
+        : ASocket(4242, "localhost"), _maxClient(maxClient + 1), _currentClient(0), _needRefresh(true)
 {
     initServer();
 }
@@ -92,6 +92,7 @@ bool plazza::network::TCPServer::addClient()
     ++_currentClient;
     Logger::log(Logger::DEBUG, "New client connected to the server");
     send(network::Packet::ACCEPTED, clientSocket);
+    _needRefresh = true;
     return true;
 }
 
@@ -103,6 +104,7 @@ bool plazza::network::TCPServer::removeClient(size_t pos)
     ::close(_clientList[pos]);
     _clientList.erase(_clientList.begin() + pos);
     Logger::log(Logger::DEBUG, "Removing client");
+    _needRefresh = true;
     return true;
 }
 

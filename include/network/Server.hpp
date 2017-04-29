@@ -39,7 +39,6 @@ namespace plazza
             std::atomic<bool>   _running;
             std::thread         _thread;
             std::mutex          _mutex;
-
             // Static member data
             /// Timeout is set to 2 minutes
             static constexpr size_t          _timeout = 5 * 60 * 10000;

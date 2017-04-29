@@ -13,7 +13,7 @@ plazza::network::Server::Server() : TCPServer(), _running(false)
 {
 }
 
-plazza::network::Server::Server(size_t maxClient) : TCPServer(maxClient), _running(false)
+plazza::network::Server::Server(size_t maxClient) : TCPServer(maxClient), _running(false), _needRefresh(true)
 {
 
 }
@@ -121,6 +121,8 @@ void plazza::network::Server::refreshEvents(pollfd *listEvents)
     size_t i = 1;
 
     // TODO opti
+    if (!_needRefresh)
+        return;
     listEvents[0].fd = _socket;
     listEvents[0].events = POLLIN;
     for (size_t clientPos = 0; clientPos < _maxClient; ++clientPos)
@@ -136,6 +138,7 @@ void plazza::network::Server::refreshEvents(pollfd *listEvents)
         listEvents[i].events = POLLIN;
         ++i;
     }
+    _needRefresh = false;
 }
 
 plazza::network::Server::~Server()
