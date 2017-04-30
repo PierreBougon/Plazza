@@ -14,10 +14,6 @@ plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Cli
 	client.connect();
 	client.bind(std::bind((&plazza::Process::handleNewPackets), this, std::placeholders::_1));
 	client.run();
-	network::Packet outputPacket;
-	outputPacket.statusCode = 200;
-	outputPacket.data = "CECI EST UN PENIS";
-	client.send(outputPacket, client.getSocket());
 	// TODO
 }
 

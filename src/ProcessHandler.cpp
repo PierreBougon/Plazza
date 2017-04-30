@@ -21,22 +21,17 @@ plazza::ProcessHandler::ProcessHandler(size_t numberOfThreads, char *string)
 
 void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &packet, size_t idClient) {
 	std::cout << "ProcessHandler HandleNewPackets" << std::endl;
-	if (packet.isThreadCount()) {
-		std::cout << "IDclient " << idClient << " threadoccupancy " << threadOccupancy.size() << std::endl;
-		threadOccupancy.at(idClient) = std::stoul(packet.data);
-	}
 
     if (packet.statusCode == network::StatusCode::RESULT)
     {
 		Logger::getInstance().log(packet.data, Logger::NONE);
 		Logger::getInstance().logFile(packet.data, Logger::INFO);
     }
-	if (packet.isResponse())
+    else if (packet.isThreadCount())
     {
-/*
-		 threadOccupancy.at(idClient) = std::stoul(packet.data);
-*/
-	 }
+        std::cout << "IDclient " << idClient << " threadoccupancy " << threadOccupancy.size() << std::endl;
+        threadOccupancy.at(idClient) = std::stoul(packet.data);
+    }
 }
 
 plazza::ProcessHandler::~ProcessHandler() {
@@ -59,8 +54,8 @@ void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) 
 void plazza::ProcessHandler::sendTask(const plazza::command command, long clientNumber) {
 	network::Packet packet;
 	
-	std::cout << "Client " << clientNumber << " " << server.getCurrentNumberOfClient() << " ClientNB "
-			  << server.getClientList().size() << " " << server.getClientList().empty() << std::endl;
+    std::cout << "Client " << clientNumber << " " << server.getCurrentNumberOfClient() << " ClientNB "
+              << server.getClientList().size() << " " << server.getClientList().empty() << std::endl;
 	if (server.getClientList().empty() || clientNumber > server.getCurrentNumberOfClient()) {
 		return;
 	}
