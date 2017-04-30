@@ -17,6 +17,7 @@ namespace plazza {
 		Process(size_t numberOfThreads);
 		~Process();
 		
+		bool	shouldQuit() const;
 		void	handleNewPackets(const plazza::network::Packet &packet);
 	private:
 		network::Client			&client;

@@ -40,6 +40,8 @@ void Logger::log(Logger::Level lvl, std::string msg, bool abort)
             if (abort)
                 std::abort();
             break;
+        case Logger::NONE:
+            break;
     }
 }
 

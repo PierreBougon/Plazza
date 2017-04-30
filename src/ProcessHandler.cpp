@@ -29,7 +29,7 @@ void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &pac
     if (packet.statusCode == network::StatusCode::RESULT)
     {
 		Logger::getInstance().log(packet.data, Logger::NONE);
-		Logger::getInstance().log(packet.data, Logger::INFO);
+		Logger::getInstance().logFile(packet.data, Logger::INFO);
     }
 	if (packet.isResponse())
     {
