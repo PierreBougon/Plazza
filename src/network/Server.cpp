@@ -62,6 +62,8 @@ void plazza::network::Server::_core()
                 handleEvents(listEvent);
                 break;
         }
+        Logger::log(Logger::DEBUG, "core loop");
+
     }
     Logger::log(Logger::DEBUG, "sortie du core, _running = false");
     _mutex.unlock();
@@ -167,6 +169,6 @@ void plazza::network::Server::stop()
     if (!_thread.joinable())
         return;
     _running = false;
-//    _thread.join();
+    _thread.join();
 }
 
