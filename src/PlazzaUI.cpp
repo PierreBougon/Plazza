@@ -97,17 +97,17 @@ void plazza::PlazzaUI::getProcessInfos() {
     while ((item = scrollArealayoutThread.takeAt(0)) != 0)
         delete item->widget();
 
-    QWidget *widget = new QWidget();
-    QHBoxLayout *hlayout = new QHBoxLayout(widget);
 
     for (size_t i = 0; i < processHandler.getProcessOccupancy().size(); ++i) {
+        QWidget *widget = new QWidget();
+        QHBoxLayout *hlayout = new QHBoxLayout(widget);
         QLabel *process = new QLabel("Process " + QString::fromStdString(std::to_string(i)) + " : ");
         hlayout->addWidget(process);
         QLabel *threads = new QLabel(
                     QString::fromStdString(std::to_string(nbThreadsMax - processHandler.getProcessOccupancy()[i])) + " / " +
                     QString::fromStdString(std::to_string(nbThreadsMax)) + " working threads");
             hlayout->addWidget(threads);
+        scrollArealayoutThread.addWidget(widget);
     }
-    scrollArealayoutThread.addWidget(widget);
     scrollAreaThread.setWidget(scrollAreaWidgetThread);
 }
