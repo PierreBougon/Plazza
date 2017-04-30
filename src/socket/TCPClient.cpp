@@ -35,16 +35,31 @@ plazza::network::Packet plazza::network::TCPClient::receive(sock_t socket)
 
 void plazza::network::TCPClient::send(const plazza::network::Packet &packet, plazza::network::sock_t socket)
 {
-    std::string data = packet.serialize();
+    std::string data;
 
-    Logger::log(Logger::DEBUG, "Client Sending: " + packet.serialize());
-    if (::send(socket, data.c_str(), data.size(), 0) == -1)
-        throw network::SocketError("Cannot send to the socket");
+    if (!packet.isTooLarge())
+    {
+        data = packet.serialize();
+        Logger::log(Logger::DEBUG, "Client Sending: " + data);
+        if (::send(socket, data.c_str(), data.size(), 0) == -1)
+            throw network::SocketError("Cannot send to the socket");
+    }
+    else
+    {
+        std::vector<Packet> listPacket = packet.dividePacket();
+        for (std::vector<Packet>::iterator it = listPacket.begin(); it != listPacket.end(); ++it)
+        {
+            data = it->serialize();
+            Logger::log(Logger::DEBUG, "Client Sending: " + data);
+            if (::send(socket, data.c_str(), data.size(), 0) == -1)
+                throw network::SocketError("Cannot send to the socket");
+        }
+    }
 }
 
 void plazza::network::TCPClient::connect()
 {
-	std::cout << "Connect" << std::endl;
+	Logger::log(Logger::DEBUG, "Connect");
     _server = ::gethostbyname(_hostname.c_str());
     if (!_server)
         throw network::SocketError("No such host");
@@ -57,7 +72,7 @@ void plazza::network::TCPClient::connect()
 
 void plazza::network::TCPClient::run()
 {
-	std::cout << "client running" << std::endl;
+	Logger::log(Logger::DEBUG, "client running");
 	if (_running || _thread.joinable())
     {
         Logger::log(Logger::WARNING, "Client is already running");

@@ -30,8 +30,8 @@ namespace plazza
             uint16_t            getPort() const;
             const std::string   &getHostname() const;
 
-            virtual void send(const network::Packet &packet, sock_t socket) = 0;
-            virtual Packet receive(sock_t socket) = 0;
+            virtual void    send(const network::Packet &packet, sock_t socket) = 0;
+            virtual Packet  receive(sock_t socket) = 0;
 
         public:
             static constexpr size_t BUFFER_SIZE = 4096;

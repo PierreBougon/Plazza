@@ -7,6 +7,7 @@
 
 
 #include <cstddef>
+#include <vector>
 #include "StatusCode.hpp"
 #include "PacketHeader.hpp"
 #include "ISerializable.hpp"
@@ -29,6 +30,10 @@ namespace plazza
             bool isCorrupted() const;
             bool isRequest() const;
             bool isResponse() const;
+            bool isTooLarge() const;
+
+            std::vector<Packet> dividePacket() const;
+            size_t              getDataSize() const;
 
             network::PacketHeader           header;
             StatusCode                      statusCode;
@@ -47,6 +52,7 @@ namespace plazza
     
             static const Packet NOTHING;
 
+            size_t getMaxDataSize() const;
         };
     }
 }

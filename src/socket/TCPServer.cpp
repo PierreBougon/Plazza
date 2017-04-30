@@ -44,12 +44,25 @@ plazza::network::TCPServer::~TCPServer()
 
 void plazza::network::TCPServer::send(const network::Packet &packet, sock_t socket)
 {
-    std::string data = packet.serialize();
+    std::string data;
 
-    Logger::log(Logger::DEBUG, "Server Sending: " + data);
-    if (::send(socket, data.c_str(), data.size(), 0) == -1)
+    if (!packet.isTooLarge())
     {
-        removeClient(socket);
+        data = packet.serialize();
+        Logger::log(Logger::DEBUG, "Server Sending: " + data);
+        if (::send(socket, data.c_str(), data.size(), 0) == -1)
+            removeClient(socket);
+    }
+    else
+    {
+        std::vector<Packet> listPacket = packet.dividePacket();
+        for (std::vector<Packet>::iterator it = listPacket.begin(); it != listPacket.end(); ++it)
+        {
+            data = it->serialize();
+            Logger::log(Logger::DEBUG, "Server Sending: " + data);
+            if (::send(socket, data.c_str(), data.size(), 0) == -1)
+                removeClient(socket);
+        }
     }
 }
 
@@ -82,14 +95,16 @@ bool plazza::network::TCPServer::addClient()
     socklen_t   clientSize;
     sock_t      clientSocket;
 
-    if (_maxClient - 1 <= _currentClient) {
-        std::cout << "Max client reached" << std::endl;
+    if (_maxClient - 1 <= _currentClient)
+    {
+        Logger::log(Logger::WARNING, "Max client reached");
         return false;
     }
     clientSize = sizeof(clientAddr);
     clientSocket = accept(_socket, (sockaddr *)(&clientAddr), &clientSize);
-    if (clientSocket == -1) {
-        std::cout << "client socket is fucked" << std::endl;
+    if (clientSocket == -1)
+    {
+        Logger::log(Logger::WARNING, "Error on socket");
         return false;
     }
     _clientList.push_back(clientSocket);
@@ -134,7 +149,8 @@ size_t plazza::network::TCPServer::getCurrentNumberOfClient() const
 {
     return _currentClient;
 }
-const std::vector<plazza::network::sock_t> &plazza::network::TCPServer::getClientList() const {
+
+const std::vector<plazza::network::sock_t> &plazza::network::TCPServer::getClientList() const
+{
     return _clientList;
 }
-

@@ -93,6 +93,8 @@ void plazza::network::Server::handleEvents(pollfd *listEvent)
             outputPacket = processPacket(inputPacket);
             //if (outputPacket.isResponse())
             //    send(outputPacket, listEvent[i].fd);
+            //else
+            _onReceive(inputPacket, i);
         }
     }
 
@@ -109,8 +111,6 @@ plazza::network::Packet plazza::network::Server::processPacket(const plazza::net
 {
     plazza::network::Packet outputPacket;
     std::cout << "new packet on server" << std::endl;
-	//TODO
-    _onReceive(packet, 1);
     if (!packet.isRequest())
     {
         outputPacket = Packet::NOTHING;
@@ -150,12 +150,6 @@ plazza::network::Server::~Server()
 
 void plazza::network::Server::wait()
 {
-
-/*
-// Seemed to be better method but atm this doesn't work
-    _mutex.lock();
-    _mutex.unlock();
-*/
     while (_running)
         std::this_thread::sleep_for(std::chrono::milliseconds(100000));
 }
