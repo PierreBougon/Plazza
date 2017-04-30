@@ -43,6 +43,7 @@ namespace plazza
             static const StatusCode CREATED;
             static const StatusCode ACCEPTED;
             static const StatusCode IN_PROGRESS;
+            static const StatusCode THREAD_COUNT;
 
             // Client Error
             static const StatusCode BAD_REQUEST;
@@ -57,7 +58,8 @@ namespace plazza
     
             //QUERY
             static const StatusCode QUERY;
-            // OTHER
+            static const StatusCode TASK;
+			// OTHER
             static const StatusCode CORRUPTED;
             static const StatusCode DISCONNECTED;
             static const StatusCode NOTHING;

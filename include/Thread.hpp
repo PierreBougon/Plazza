@@ -30,6 +30,7 @@ namespace plazza {
 		bool _isLocked;
 		std::unique_lock<std::mutex> _lock;
 		ThreadPool	&threadPool;
+		size_t threadId;
 		std::thread	thread;
 		std::atomic<bool> _isFree;
 	};

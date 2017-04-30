@@ -94,7 +94,7 @@ void plazza::network::Server::handleEvents(pollfd *listEvent)
             //if (outputPacket.isResponse())
             //    send(outputPacket, listEvent[i].fd);
             //else
-            _onReceive(inputPacket, i);
+            _onReceive(inputPacket, i - 1);
         }
     }
 
@@ -110,7 +110,6 @@ void plazza::network::Server::checkIncomingConnections()
 plazza::network::Packet plazza::network::Server::processPacket(const plazza::network::Packet &packet)
 {
     plazza::network::Packet outputPacket;
-    std::cout << "new packet on server" << std::endl;
     if (!packet.isRequest())
     {
         outputPacket = Packet::NOTHING;

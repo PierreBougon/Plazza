@@ -53,19 +53,18 @@ int main(int ac, char **av) {
                     default:
                         abort();
                 }
-            std::cout << "is client is server " << isClient << " " << server << " " << port << std::endl;
+            std::cout << "isClient " << isClient << " " << server << " " << port << std::endl;
         }
         if (isClient) {
-			std::cout << "new client process" << std::endl;
 			plazza::Process ChildProcess(nbThreads);
- 			std::cout << "after constructor" << std::endl;
 			while(1);
         } else {
            plazza::ProcessHandler ProcessHandler(nbThreads, av[0]);
             plazza::CmdParser cmdParser;
 			for(std::vector<plazza::command> commandList;;) {
-				commandList = cmdParser.getCommands();
-				ProcessHandler.feed(commandList);
+				ProcessHandler.queryProcessOccupancy();
+                commandList = cmdParser.getCommands();
+                ProcessHandler.feed(commandList);
 			}
             //for(std::vector<plazza::command> commandList;;) {
             //	commandList = cmdParser.getCommands();

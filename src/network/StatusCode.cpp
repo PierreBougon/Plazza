@@ -14,6 +14,7 @@ namespace plazza
         const StatusCode StatusCode::CREATED                = StatusCode(201);
         const StatusCode StatusCode::ACCEPTED               = StatusCode(202);
         const StatusCode StatusCode::IN_PROGRESS            = StatusCode(209);
+        const StatusCode StatusCode::THREAD_COUNT           = StatusCode(210);
 
         // Client Error
         const StatusCode StatusCode::BAD_REQUEST            = StatusCode(400);
@@ -28,6 +29,7 @@ namespace plazza
 
         // QUERY
         const StatusCode StatusCode::QUERY                  = StatusCode(600);
+		const StatusCode StatusCode::TASK					= StatusCode(601);
     
         // OTHER
         const StatusCode StatusCode::CORRUPTED              = StatusCode(700);

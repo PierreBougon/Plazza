@@ -8,7 +8,10 @@
 
 
 plazza::ThreadPool::ThreadPool(size_t numberOfThreads) : areThreadsFree(numberOfThreads), stop(false) {
-	for(size_t i = 0; i < numberOfThreads; ++i) {
+	for (size_t i = 0; i < areThreadsFree.size(); i++) {
+		areThreadsFree.at(i) = true;
+	}
+	for (size_t i = 0; i < numberOfThreads; ++i) {
 		ThreadList.push_back(new Thread(*this, i));
 	}
 }
@@ -24,6 +27,7 @@ plazza::ThreadPool::~ThreadPool() {
 
 void plazza::ThreadPool::enqueue(command line) {
 	std::unique_lock<std::mutex> lock(queue_mutex);
+	std::cout << "enqueue " << line.toString() << std::endl;
 	tasks.push(line);
 	lock.unlock();
 	conditionVariable.notify_one();
@@ -63,8 +67,10 @@ bool plazza::ThreadPool::hasWork() const {
 }
 size_t plazza::ThreadPool::numberOfFreeThread() const {
 	size_t i = 0;
-	for (auto it = areThreadsFree.begin(); it < areThreadsFree.end(); it++) {
-		if (*it == true)
+	std::cout << "Number of free treads" << std::endl;
+	for (auto it = ThreadList.begin(); it < ThreadList.end(); it++) {
+		std::cout << "Worker n*" << i << " is " << std::boolalpha << (*it)->isFree() << std::endl;
+		if ((*it)->isFree())
 			i++;
 	}
 	return (i);

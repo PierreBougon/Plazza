@@ -24,7 +24,9 @@ void plazza::Worker::operator()() {
 			return;
 		task = threadRef.getWork();
 		threadRef.unlock();
-		
+		threadRef.setIsFree(false);
+		while(1);
+		std::cout << "task in workder n*" << workerIndex << " " <<  task.toString() << std::endl;
 //		fileParser.reset();
 //		fileParser.open(task.file);
 //		if (task.information == PHONE_NUMBER) {
@@ -40,7 +42,6 @@ void plazza::Worker::operator()() {
 //			res.insert(res.end(), find.begin(), find.end());
 //		}
 //        StaticSend::sendResult(res);
-		threadRef.setIsFree(false);
 	}
 }
 

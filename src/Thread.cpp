@@ -2,11 +2,12 @@
 // Created by peau_c on 4/27/17.
 //
 
+#include <iostream>
 #include "Thread.hpp"
 #include "ThreadPool.hpp"
 #include "Worker.hpp"
 
-plazza::Thread::Thread(ThreadPool &threadPool, size_t threadId) : threadPool(threadPool) {
+plazza::Thread::Thread(ThreadPool &threadPool, size_t threadId) : threadPool(threadPool), threadId(threadId) {
 	thread = std::thread(Worker(*this, threadId));
 }
 
@@ -15,7 +16,7 @@ plazza::Thread::~Thread() {
 }
 
 bool plazza::Thread::isFree() const {
-	return false;
+	return _isFree;
 }
 
 void plazza::Thread::wait() {
@@ -26,6 +27,7 @@ void plazza::Thread::join() {
 	thread.join();
 }
 void plazza::Thread::setIsFree(bool newState) {
+	std::cout << "Worker n*" << threadId  << " is " << std::boolalpha << newState << std::endl;
 	_isFree = newState;
 }
 

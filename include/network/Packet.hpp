@@ -31,6 +31,8 @@ namespace plazza
             bool isRequest() const;
             bool isResponse() const;
             bool isTooLarge() const;
+			bool isTask() const;
+			bool isThreadCount() const;
 
             std::vector<Packet> dividePacket() const;
             size_t              getDataSize() const;
@@ -45,6 +47,7 @@ namespace plazza
             static const Packet BAD_REQUEST;
             static const Packet INTERNAL_SERVER_ERROR;
 
+			static const Packet THREAD_COUNT;
             static const Packet ACCEPTED;
             static const Packet FORBIDDEN;
     
@@ -53,7 +56,7 @@ namespace plazza
             static const Packet NOTHING;
 
             size_t getMaxDataSize() const;
-        };
+		};
     }
 }
 

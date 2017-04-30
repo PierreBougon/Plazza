@@ -20,6 +20,7 @@ namespace plazza {
 		void spawnANewProcess();
 		void feed(const std::vector<plazza::command> &commands);
 		void sendTask(const command command, long clientNumber);
+		void				queryProcessOccupancy();
 		
 		network::Server server;
 		size_t numberOfThreads;
@@ -29,7 +30,6 @@ namespace plazza {
 		std::vector<size_t>	threadOccupancy;
 		char 				*fileName;
 		std::vector<pid_t>	childProcessList;
-		void				queryProcessOccupancy();
 		void handleNewPackets(const plazza::network::Packet &, size_t clientNumber);
 	};
 }
