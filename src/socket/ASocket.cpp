@@ -24,8 +24,6 @@ void plazza::network::ASocket::init()
     _servAddr.sin_family = AF_INET;
     _servAddr.sin_port = htons(_port);
     _servAddr.sin_addr.s_addr = INADDR_ANY;
-
-    std::cerr << _port << std::endl;
 }
 
 plazza::network::sock_t plazza::network::ASocket::getSocket() const

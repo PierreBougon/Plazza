@@ -47,7 +47,6 @@ void plazza::network::Server::_core()
         {
             case -1:
                 //error on poll
-
                 Logger::log(Logger::ERROR, "Error occurred on poll");
                 _running = false;
                 break;

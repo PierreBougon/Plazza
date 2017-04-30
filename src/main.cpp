@@ -47,6 +47,7 @@ int main(int ac, char **av) {
 						break;
 					case 'p':
 						port = std::stoi(optarg);
+                        (void)port;
 						break;
 					case '?':
 						break;
