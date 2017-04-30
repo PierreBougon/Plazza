@@ -9,6 +9,7 @@
 
 plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Client::getInstance()),
 													 threadPool(numberOfProcesses) {
+    baseTime = std::chrono::steady_clock::now();
 	std::cerr << "Process CTOR" << std::endl;
 	client.Init(4242, "127.0.0.1");
 	client.connect();
@@ -54,4 +55,23 @@ void plazza::Process::handleNewPackets(const plazza::network::Packet &packet) {
 		}
 	}
 	
+}
+
+bool plazza::Process::isTimeout()
+{
+    if (threadPool.numberOfFreeThread() == threadPool.getNumberOfThreads())
+    {
+        std::chrono::duration<double> timeElapsed =
+                std::chrono::duration_cast<std::chrono::duration<double>>
+                        (std::chrono::steady_clock::now() - baseTime);
+        std::cout << timeElapsed.count() << std::endl;
+        // There s not a single thread which is working
+        return timeElapsed.count() >= std::chrono::seconds(7).count();
+    }
+    else
+    {
+        // There is at least 1 thread working
+        baseTime = std::chrono::steady_clock::now();
+    }
+    return false;
 }

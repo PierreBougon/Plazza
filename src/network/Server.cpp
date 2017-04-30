@@ -165,6 +165,7 @@ void plazza::network::Server::stop()
     if (!_thread.joinable())
         return;
     _running = false;
+    ::shutdown(_socket, SHUT_RD);
     _thread.join();
 }
 
