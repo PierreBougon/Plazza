@@ -64,9 +64,8 @@ bool plazza::Process::isTimeout()
         std::chrono::duration<double> timeElapsed =
                 std::chrono::duration_cast<std::chrono::duration<double>>
                         (std::chrono::steady_clock::now() - baseTime);
-        std::cout << timeElapsed.count() << std::endl;
         // There s not a single thread which is working
-        return timeElapsed.count() >= std::chrono::seconds(7).count();
+        return timeElapsed.count() >= std::chrono::seconds(5).count();
     }
     else
     {
