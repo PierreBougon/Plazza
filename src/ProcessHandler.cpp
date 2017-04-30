@@ -13,15 +13,12 @@
 
 plazza::ProcessHandler::ProcessHandler(size_t numberOfThreads, char *string)
 		: server(MAX_NUMBER_OF_CLIENT), numberOfThreads(numberOfThreads), fileName(string) {
-	std::cout << "server process" << std::endl;
 	server.run();
 	server.bind(
 			std::bind((&plazza::ProcessHandler::handleNewPackets), this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &packet, size_t idClient) {
-	std::cout << "ProcessHandler HandleNewPackets" << std::endl;
-
     if (packet.statusCode == network::StatusCode::RESULT)
     {
 		Logger::getInstance().log(packet.data, Logger::NONE);
@@ -29,7 +26,6 @@ void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &pac
     }
     else if (packet.isThreadCount())
     {
-        std::cout << "IDclient " << idClient << " threadoccupancy " << threadOccupancy.size() << std::endl;
         threadOccupancy.at(idClient) = std::stoul(packet.data);
     }
 }
@@ -44,7 +40,6 @@ size_t plazza::ProcessHandler::getRemainingSize() const {
 	for (size_t i = 0; i < threadOccupancy.size(); ++i) {
 		ret += threadOccupancy.at(i);
 	}
-	std::cout << "remaining size = " << ret << std::endl;
 	return (ret);
 }
 
@@ -64,7 +59,6 @@ size_t plazza::ProcessHandler::getLeastBusyThread() const {
 
 void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) {
 	while (getRemainingSize() < commands.size()) {
-		std::cout << "Spawning a new process" << std::endl;
 		spawnANewProcess();
 		threadOccupancy.push_back(numberOfThreads);
 		sleep(1);
@@ -72,9 +66,7 @@ void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) 
 	for(auto it = commands.begin(); it < commands.end(); it++) {
 		size_t idLeastBusyThread = getLeastBusyThread();
 		sendTask(*it, idLeastBusyThread);
-		std::cout << "Threadoccupency process " << it - commands.begin() << " " << idLeastBusyThread << std::endl;
 		threadOccupancy.at((static_cast<unsigned long>(it - commands.begin()))) -= 1;
-		std::cout << "Threadoccupency " << idLeastBusyThread << std::endl;
 		getRemainingSize();
 	}
 }
@@ -82,8 +74,6 @@ void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) 
 void plazza::ProcessHandler::sendTask(const plazza::command command, long clientNumber) {
 	network::Packet packet;
 	
-	std::cout << "ActualClient " << clientNumber + 1 << " TotalClient "
-			  << server.getClientList().size() << std::endl;
 	if (server.getClientList().empty() || (unsigned long)clientNumber > server.getCurrentNumberOfClient()) {
 		return;
 	}

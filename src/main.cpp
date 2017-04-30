@@ -58,8 +58,9 @@ int main(int ac, char **av) {
 			plazza::Process ChildProcess(nbThreads);
 			while (!ChildProcess.shouldQuit())
             {
-                if (ChildProcess.isTimeout())
-                    break;
+                if (ChildProcess.isTimeout()) {
+					break;
+				}
             }
 		} else {
 			Logger::getInstance().setFile("logFile.txt");

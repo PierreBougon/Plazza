@@ -10,7 +10,6 @@
 plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Client::getInstance()),
 													 threadPool(numberOfProcesses) {
     baseTime = std::chrono::steady_clock::now();
-	std::cerr << "Process CTOR" << std::endl;
 	client.Init(4242, "127.0.0.1");
 	client.connect();
 	client.bind(std::bind((&plazza::Process::handleNewPackets), this, std::placeholders::_1));
@@ -20,6 +19,7 @@ plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Cli
 
 plazza::Process::~Process() {
 	client.stop();
+	threadPool.setStop(true);
 }
 
 bool plazza::Process::shouldQuit() const {
@@ -31,12 +31,9 @@ void plazza::Process::handleNewPackets(const plazza::network::Packet &packet) {
 	
 	if (packet.isQuery()) {
 		if (packet.isTask()) {
-			std::cout << "isTask" << std::endl;
 			std::string first = packet.data.substr(0, packet.data.find(" "));
 			std::string second = packet.data.substr(packet.data.find(" ") + 1, packet.data.size());
-			std::cout << "first |" << first << "| second |" << second << "|" << std::endl;
 			command cmd(first, static_cast<plazza::Information>(std::stoi(second)));
-			std::cout << first << std::endl;
 			threadPool.enqueue(cmd);
 		} else {
 			std::stringstream stringstream;

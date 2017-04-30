@@ -73,7 +73,6 @@ void plazza::network::TCPClient::connect()
         throw network::SocketError("No such host");
     //TODO
     ::bcopy((char *)_server->h_addr_list[0], (char *)&_servAddr.sin_addr.s_addr, static_cast<size_t >(_server->h_length));
-    std::cerr << "sock: " << _socket << "_servaddr: " << _servAddr.sin_port << " " << _servAddr.sin_family << " " << _servAddr.sin_addr.s_addr << std::endl;
     if (::connect(_socket, (sockaddr *)(&_servAddr), sizeof(_servAddr)) == -1)
         throw network::SocketError("Cannot connect to server");
 }

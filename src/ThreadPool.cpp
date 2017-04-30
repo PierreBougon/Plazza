@@ -20,14 +20,15 @@ plazza::ThreadPool::~ThreadPool() {
 	stop = true;
 	conditionVariable.notify_all();
 	
+	
 	for(size_t i = 0; i < ThreadList.size(); ++i) {
+		std::cout << i << std::endl;
 		ThreadList[i]->join();
 	}
 }
 
 void plazza::ThreadPool::enqueue(command line) {
 	std::unique_lock<std::mutex> lock(queue_mutex);
-	std::cout << "enqueue " << line.toString() << std::endl;
 	tasks.push(line);
 	lock.unlock();
 	conditionVariable.notify_one();
@@ -68,9 +69,7 @@ bool plazza::ThreadPool::hasWork() const {
 
 size_t plazza::ThreadPool::numberOfFreeThread() const {
 	size_t i = 0;
-	//std::cout << "Number of free treads" << std::endl;
 	for (auto it = ThreadList.begin(); it < ThreadList.end(); it++) {
-		//std::cout << "Worker n*" << i << " is " << std::boolalpha << (*it)->isFree() << std::endl;
 		if ((*it)->isFree())
 			i++;
 	}

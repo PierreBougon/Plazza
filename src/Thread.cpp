@@ -27,7 +27,6 @@ void plazza::Thread::join() {
 	thread.join();
 }
 void plazza::Thread::setIsFree(bool newState) {
-	std::cout << "Worker n*" << threadId  << " is " << std::boolalpha << newState << std::endl;
 	_isFree = newState;
 }
 

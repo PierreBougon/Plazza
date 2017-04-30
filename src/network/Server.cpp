@@ -106,8 +106,6 @@ void plazza::network::Server::handleEvents(pollfd *listEvent)
 
 void plazza::network::Server::checkIncomingConnections()
 {
-	std::cout << "New server client" << std::endl;
-    // TODO multiple client addition ?
     addClient();
 }
 
@@ -118,7 +116,6 @@ void plazza::network::Server::checkIncomingConnections()
 plazza::network::Packet plazza::network::Server::processPacket(const plazza::network::Packet &packet)
 {
     plazza::network::Packet outputPacket;
-    std::cout << "new packet on server" << std::endl;
     if (!packet.isQuery() && !packet.isSpecific())
     {
         // Actually we don't do anything

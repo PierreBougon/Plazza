@@ -159,9 +159,6 @@ std::vector<plazza::command> plazza::CmdParser::getCommands() {
                 _getCommand(root->children[i].get(), cmd);
             }
         }
-        /*for (int j = 0; j < cmd.size(); ++j) {
-            std::cout << " FUUUUUCK " << cmd[j].file << " " << cmd[j].information << std::endl;
-        }*/
     }
     catch (CmdParserError const &err) {
         std::cout << err.what() << std::endl;

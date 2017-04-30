@@ -20,13 +20,13 @@ void plazza::Worker::operator()() {
 			threadRef.setIsFree(true);
 			threadRef.wait();
 		}
-		if (threadRef.shouldStop()) //
+		if (threadRef.shouldStop())
+		{
 			return;
+		}
 		threadRef.setIsFree(false);
 		task = threadRef.getWork();
 		threadRef.unlock();
-//		while(1);
-		std::cout << "task in workder n*" << workerIndex << " " <<  task.toString() << std::endl;
 		fileParser.reset();
 		fileParser.open(task.file);
         if (task.information == PHONE_NUMBER) {
