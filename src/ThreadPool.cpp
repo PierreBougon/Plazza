@@ -17,7 +17,6 @@ plazza::ThreadPool::ThreadPool(size_t numberOfThreads) : areThreadsFree(numberOf
 }
 
 plazza::ThreadPool::~ThreadPool() {
-	std::cerr << "~ThreadPool" << std::endl;
 	stop = true;
 	conditionVariable.notify_all();
 	

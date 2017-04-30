@@ -58,6 +58,12 @@ size_t plazza::ProcessHandler::getLeastBusyThread() const {
 }
 
 void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) {
+	if (server.getCurrentNumberOfClient() != threadOccupancy.size()) {
+		threadOccupancy = std::vector<size_t>(server.getCurrentNumberOfClient());
+		for (size_t i = 0; i < threadOccupancy.size(); i++) {
+			threadOccupancy[i] = 0;
+		}
+	}
 	while (getRemainingSize() < commands.size()) {
 		spawnANewProcess();
 		threadOccupancy.push_back(numberOfThreads);
@@ -101,7 +107,6 @@ void plazza::ProcessHandler::spawnANewProcess() {
 		tab[3] = strdup("-p");
 		tab[4] = strdup(std::to_string(server.getPort()).c_str());
 		tab[5] = nullptr;
-		std::cout << tab << std::endl;
         if (!tab[0] || !tab[1] || !tab[2] || !tab[3] || !tab[4])
             throw std::bad_alloc();
         execvp(fileName, tab);
