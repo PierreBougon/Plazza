@@ -5,6 +5,8 @@
 #include <PlazzaError.hpp>
 #include <iostream>
 #include <tools/Logger.hpp>
+#include <socket/ASocket.hpp>
+#include <cmath>
 #include "network/Packet.hpp"
 
 namespace plazza
@@ -110,6 +112,38 @@ bool plazza::network::Packet::isResponse() const
 }
 bool plazza::network::Packet::isQuery() const {
 	return statusCode >= 600 && statusCode < 700;
+}
+
+bool plazza::network::Packet::isTooLarge() const
+{
+    return serialize().size() > ASocket::BUFFER_SIZE;
+}
+
+std::vector<plazza::network::Packet> plazza::network::Packet::dividePacket() const
+{
+    Packet basePacket = *this;
+    std::vector<Packet> listPacket;
+    size_t nbPacket = static_cast<size_t>(std::ceil(getDataSize() / getMaxDataSize()));
+    size_t offset = 0;
+
+    for (size_t i = 0; i < nbPacket; ++i)
+    {
+        basePacket.data = this->data.substr(offset, getMaxDataSize());
+        listPacket.emplace_back(basePacket);
+        offset += getMaxDataSize();
+    }
+
+    return std::move(listPacket);
+}
+
+size_t plazza::network::Packet::getDataSize() const
+{
+    return serialize().size() - serialize().find_last_of("=") + 1;
+}
+
+size_t plazza::network::Packet::getMaxDataSize() const
+{
+    return ASocket::BUFFER_SIZE - serialize().find_last_of("=") + 1;
 }
 
 

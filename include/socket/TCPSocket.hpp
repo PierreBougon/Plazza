@@ -12,7 +12,6 @@ namespace plazza
     {
         class TCPSocket
         {
-
         };
     }
 }

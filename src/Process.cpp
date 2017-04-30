@@ -30,9 +30,8 @@ plazza::Process::~Process() {
 void plazza::Process::handleNewPackets(const plazza::network::Packet &packet) {
 	std::string data;
 	
-	plazza::network::Packet toot = packet;
 	std::cout << "Je suis dans handleNewPackets" << std::endl;
-	std::cout << "Deserialised data" << toot.data << std::endl;
+	std::cout << "data" << packet.data << std::endl;
 	sleep(3);
 	if (packet.isQuery()) {
 		std::stringstream stringstream;

@@ -2,8 +2,8 @@
 // Created by Pierre Bougon on 03/02/17.
 //
 
-#ifndef ARCADE_LOGGER_HPP_
-#define ARCADE_LOGGER_HPP_
+#ifndef PLAZZA_LOGGER_HPP_
+#define PLAZZA_LOGGER_HPP_
 
 #include <fstream>
 #include <string>
@@ -46,4 +46,4 @@ private:
 };
 
 
-#endif // !ARCADE_LOGGER_HPP_
+#endif // !PLAZZA_LOGGER_HPP_
