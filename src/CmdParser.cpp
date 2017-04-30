@@ -176,6 +176,7 @@ plazza::Information plazza::CmdParser::convertCmd(std::string const &cmd) {
     return NONE;
 }
 
+
 plazza::command &plazza::command::operator=(const plazza::command &cpy) {
     file = cpy.file;
     information = cpy.information;
