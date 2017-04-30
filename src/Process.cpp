@@ -25,6 +25,10 @@ plazza::Process::~Process() {
 	client.stop();
 }
 
+bool plazza::Process::shouldQuit() const {
+	return (threadPool.shouldStop());
+}
+
 void plazza::Process::handleNewPackets(const plazza::network::Packet &packet) {
 	std::string data;
 	

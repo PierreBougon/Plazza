@@ -57,7 +57,7 @@ int main(int ac, char **av) {
 		}
 		if (isClient) {
 			plazza::Process ChildProcess(nbThreads);
-			while (1);
+			while (ChildProcess.shouldQuit());
 		} else {
 			Logger::getInstance().setFile("logFile.txt");
 			plazza::ProcessHandler ProcessHandler(nbThreads, av[0]);
