@@ -23,6 +23,7 @@ namespace plazza {
 
     class PlazzaUI {
 
+        size_t nbThreadsMax;
         QApplication app;
         QMainWindow mainWindow;
         QPushButton buttonAddFile;
@@ -37,8 +38,6 @@ namespace plazza {
         QScrollArea scrollAreaThread;
         QVBoxLayout scrollArealayoutThread;
         std::vector<UIAddedFile> files;
-        ProcessHandler processHandler;
-        size_t nbThreadsMax;
         QTimer *timer;
 
 
@@ -48,6 +47,8 @@ namespace plazza {
         void getProcessInfos();
 
     public:
+        ProcessHandler processHandler;
+
         virtual ~PlazzaUI();
         PlazzaUI(int ac, char **av);
         const QApplication &getApp() const;

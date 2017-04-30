@@ -51,7 +51,9 @@ int main(int ac, char **av)
             plazza::Process ChildProcess(nbThreads);
         } else {
             plazza::PlazzaUI ui(ac, av);
-            return ui.getApp().exec();
+            ui.getApp().exec();
+            ui.processHandler.server.stop();
+            return 0;
         }
     } catch (const std::exception &err) {
         std::cerr << err.what() << std::endl;
