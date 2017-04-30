@@ -60,18 +60,19 @@ int main(int ac, char **av) {
 			while (!ChildProcess.shouldQuit());
 		} else {
 			Logger::getInstance().setFile("logFile.txt");
-			plazza::ProcessHandler ProcessHandler(nbThreads, av[0]);
+			plazza::ProcessHandler processHandler(nbThreads, av[0]);
 			plazza::CmdParser cmdParser;
             std::string buffer;
 
             while (getline(std::cin, buffer)) {
                 cmdParser.reset();
                 cmdParser.feed(buffer);
-                ProcessHandler.queryProcessOccupancy();
+                processHandler.queryProcessOccupancy();
                 std::vector<plazza::command> cmds = cmdParser.getCommands();
-                ProcessHandler.feed(cmds);
+                processHandler.feed(cmds);
             }
             Logger::getInstance().closeFile();
+            processHandler.server.stop();
 		}
 	} catch (std::exception const &err) {
 		std::cerr << err.what() << std::endl;
