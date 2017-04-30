@@ -64,17 +64,21 @@ bool plazza::network::Packet::deserialize(std::string const &serialized)
 {
     try
     {
+        Logger::log(Logger::DEBUG, "deserialize");
+
         std::string copy = serialized;
 
         std::string first = copy.substr(0, copy.find(";"));
         std::string second = first.substr(copy.find("=") + 1, first.size());
         copy.erase(0, copy.find(";") + 1);
 
+        Logger::log(Logger::DEBUG, "deserialize magic nbr : " + second);
         if (header.MAGIC_NUMBER != std::stoi(second))
             return (false);
         first = copy.substr(0, copy.find(";"));
         second = first.substr(copy.find("=") + 1, first.size());
         copy.erase(0, copy.find(";") + 1);
+        Logger::log(Logger::DEBUG, "deserialize statusCode : " + second);
         statusCode.code = std::stoi(second);
         first = copy.substr(0, copy.find(";"));
         second = first.substr(copy.find("=") + 1, first.size());
@@ -85,7 +89,7 @@ bool plazza::network::Packet::deserialize(std::string const &serialized)
     {
         Logger::log(Logger::WARNING, e.what());
         statusCode = StatusCode::CORRUPTED;
-        return false;
+        return (false);
     }
     return (true);
 }

@@ -9,6 +9,9 @@ namespace plazza
 {
     namespace network
     {
+
+        const StatusCode StatusCode::RESULT                 = StatusCode(100);
+
         // Success
         const StatusCode StatusCode::OK                     = StatusCode(200);
         const StatusCode StatusCode::CREATED                = StatusCode(201);
@@ -33,7 +36,6 @@ namespace plazza
         const StatusCode StatusCode::CORRUPTED              = StatusCode(700);
         const StatusCode StatusCode::DISCONNECTED           = StatusCode(701);
         const StatusCode StatusCode::NOTHING                = StatusCode(702);
-
 
     }
 }

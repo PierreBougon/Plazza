@@ -75,7 +75,6 @@ namespace plazza {
         size_t getNbCmd();
         std::vector<command> getCommands();
         static Information convertCmd(std::string const &cmd);
-
     };
 }
 
