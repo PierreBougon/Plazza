@@ -45,5 +45,4 @@ void plazza::Worker::operator()() {
 }
 
 plazza::Worker::Worker(plazza::Thread &s, size_t index) : workerIndex(index), threadRef(s) {
-	std::cout << "Worker index" << workerIndex << std::endl;
 }

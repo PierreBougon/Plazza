@@ -89,3 +89,6 @@ bool plazza::ProcessHandler::areProcessesFull() const {
 	}
 	return (true);
 }
+std::vector<size_t> plazza::ProcessHandler::getProcessOccupancy() const {
+	return threadOccupancy;
+}
