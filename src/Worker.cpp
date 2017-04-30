@@ -21,9 +21,7 @@ void plazza::Worker::operator()() {
 			threadRef.wait();
 		}
 		if (threadRef.shouldStop())
-		{
-			return;
-		}
+			exit(1);
 		threadRef.setIsFree(false);
 		task = threadRef.getWork();
 		threadRef.unlock();
