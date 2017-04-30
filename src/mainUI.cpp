@@ -46,6 +46,7 @@ int main(int ac, char **av)
                         abort();
                 }
         }
+        (void)port;
         if (isClient) {
             plazza::Process ChildProcess(nbThreads);
         } else {

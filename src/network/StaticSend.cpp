@@ -10,6 +10,7 @@ std::string plazza::StaticSend::sendResult(std::vector<std::string> const &vecto
 
     for (size_t i = 0; i < vector.size(); ++i) {
         data += vector[i];
+        if (i != vector.size() - 1)
         data += "\n";
     }
     network::Client::getInstance().send(network::Packet(network::StatusCode::RESULT, data), network::Client::getInstance().getSocket());
