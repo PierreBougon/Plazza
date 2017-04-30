@@ -53,7 +53,6 @@ int main(int ac, char **av) {
 					default:
 						abort();
 				}
-			std::cout << "isClient " << isClient << " " << server << " " << port << std::endl;
 		}
 		if (isClient) {
 			plazza::Process ChildProcess(nbThreads);

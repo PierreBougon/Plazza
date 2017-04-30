@@ -43,28 +43,55 @@ plazza::ProcessHandler::~ProcessHandler() {
 
 }
 
-void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) {
-	for(auto it = commands.begin(); it < commands.end(); it++) {
-		if (areProcessesFull()) {
-			std::cout << "Spawning a new process" << std::endl;
-			spawnANewProcess();
-			threadOccupancy.push_back(numberOfThreads);
-			sleep(1);
+size_t plazza::ProcessHandler::getRemainingSize() const {
+	size_t ret = 0;
+	
+	for (size_t i = 0; i < threadOccupancy.size(); ++i) {
+		ret += threadOccupancy.at(i);
+	}
+	std::cout << "remaining size = " << ret << std::endl;
+	return (ret);
+}
+
+size_t plazza::ProcessHandler::getLeastBusyThread() const {
+	size_t min = threadOccupancy[0];
+	size_t ret = 0;
+	
+	for (size_t i = 0; i < threadOccupancy.size(); i++) {
+		if (min < threadOccupancy.at(i)) {
+			min = threadOccupancy.at(i);
+			ret = i;
 		}
-		auto lessBusyThread = std::min_element(threadOccupancy.begin(), threadOccupancy.end());
-		sendTask(*it, lessBusyThread - threadOccupancy.begin());
+	}
+	
+	return (ret);
+}
+
+void plazza::ProcessHandler::feed(const std::vector<plazza::command> &commands) {
+	while (getRemainingSize() < commands.size()) {
+		std::cout << "Spawning a new process" << std::endl;
+		spawnANewProcess();
+		threadOccupancy.push_back(numberOfThreads);
+		sleep(1);
+	}
+	for(auto it = commands.begin(); it < commands.end(); it++) {
+		size_t idLeastBusyThread = getLeastBusyThread();
+		sendTask(*it, idLeastBusyThread);
+		std::cout << "Threadoccupency process " << it - commands.begin() << " " << idLeastBusyThread << std::endl;
+		threadOccupancy.at((static_cast<unsigned long>(it - commands.begin()))) -= 1;
+		std::cout << "Threadoccupency " << idLeastBusyThread << std::endl;
+		getRemainingSize();
 	}
 }
 
 void plazza::ProcessHandler::sendTask(const plazza::command command, long clientNumber) {
 	network::Packet packet;
 	
-	std::cout << "Client " << clientNumber << " " << server.getCurrentNumberOfClient() << " ClientNB "
-			  << server.getClientList().size() << " " << server.getClientList().empty() << std::endl;
-	if (server.getClientList().empty() || clientNumber > server.getCurrentNumberOfClient()) {
+	std::cout << "ActualClient " << clientNumber + 1 << " TotalClient "
+			  << server.getClientList().size() << std::endl;
+	if (server.getClientList().empty() || (unsigned long)clientNumber > server.getCurrentNumberOfClient()) {
 		return;
 	}
-	std::cout << "send task" << clientNumber << " " << server.getCurrentNumberOfClient() << std::endl;
 	packet.data = command.toString();
 	packet.statusCode = network::StatusCode::TASK;
 	server.send(packet, server.getClientList().at((unsigned long) clientNumber));

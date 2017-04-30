@@ -31,6 +31,8 @@ namespace plazza {
 		char 				*fileName;
 		std::vector<pid_t>	childProcessList;
 		void handleNewPackets(const plazza::network::Packet &, size_t clientNumber);
+		size_t getRemainingSize() const;
+		size_t getLeastBusyThread() const;
 	};
 }
 
