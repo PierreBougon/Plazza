@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <algorithm>
+#include <tools/Logger.hpp>
 #include "ProcessHandler.hpp"
 
 
@@ -20,6 +21,11 @@ plazza::ProcessHandler::ProcessHandler(size_t numberOfThreads, char *string)
 
 void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &packet, size_t idClient) {
 	std::cout << "ProcessHandler HandleNewPackets" << std::endl;
+
+    if (packet.statusCode == network::StatusCode::RESULT)
+    {
+        Logger::getInstance().log(packet.data, Logger::INFO);
+    }
 	if (packet.isResponse()) {
 /*
 		 threadOccupancy.at(idClient) = std::stoul(packet.data);
