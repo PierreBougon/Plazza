@@ -28,7 +28,8 @@ namespace plazza
 
 			bool isQuery() const;
             bool isCorrupted() const;
-            bool isRequest() const;
+            bool isSpecific() const;
+            bool isOther() const;
             bool isResponse() const;
             bool isTooLarge() const;
 

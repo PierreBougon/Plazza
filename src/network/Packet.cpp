@@ -101,17 +101,23 @@ bool plazza::network::Packet::isCorrupted() const
     return statusCode == StatusCode::CORRUPTED;
 }
 
-bool plazza::network::Packet::isRequest() const
+bool plazza::network::Packet::isOther() const
 {
-    return statusCode >= 700;
+    return statusCode >= 700 && statusCode < 800;
 }
 
 bool plazza::network::Packet::isResponse() const
 {
-    return statusCode < 700;
+    return statusCode >= 200 && statusCode < 700;
 }
+
 bool plazza::network::Packet::isQuery() const {
 	return statusCode >= 600 && statusCode < 700;
+}
+
+bool plazza::network::Packet::isSpecific() const
+{
+    return statusCode >= 100 && statusCode < 200;
 }
 
 bool plazza::network::Packet::isTooLarge() const

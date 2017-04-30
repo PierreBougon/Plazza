@@ -36,7 +36,6 @@ namespace plazza
         const StatusCode StatusCode::CORRUPTED              = StatusCode(700);
         const StatusCode StatusCode::DISCONNECTED           = StatusCode(701);
         const StatusCode StatusCode::NOTHING                = StatusCode(702);
-
     }
 }
 

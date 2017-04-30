@@ -26,7 +26,8 @@ void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &pac
     {
         Logger::getInstance().log(packet.data, Logger::INFO);
     }
-	if (packet.isResponse()) {
+	if (packet.isResponse())
+    {
 /*
 		 threadOccupancy.at(idClient) = std::stoul(packet.data);
 */
@@ -87,10 +88,13 @@ void plazza::ProcessHandler::spawnANewProcess() {
 		tab[4] = strdup(std::to_string(server.getPort()).c_str());
 		tab[5] = nullptr;
 		std::cout << tab << std::endl;
-		execvp(fileName, tab);
+        if (!tab[0] || !tab[1] || !tab[2] || !tab[3] || !tab[4])
+            throw std::bad_alloc();
+        execvp(fileName, tab);
 	}
 	childProcessList.push_back(tmp);
 }
+
 bool plazza::ProcessHandler::areProcessesFull() const {
 	for (std::size_t i = 0; i < threadOccupancy.size(); ++i) {
 		if (threadOccupancy.at(i) != 0)
