@@ -53,7 +53,6 @@ size_t plazza::ProcessHandler::getLeastBusyThread() const {
 			ret = i;
 		}
 	}
-	
 	return (ret);
 }
 
@@ -102,7 +101,7 @@ void plazza::ProcessHandler::spawnANewProcess() {
 	if (tmp == 0) {
 		char **tab = new char *[6];
 		tab[0] = strdup(fileName);
-		tab[1] = strdup(std::to_string(numberOfThreads).c_str());
+		tab[1] = strdup(std::to_string(1).c_str());
 		tab[2] = strdup("-c");
 		tab[3] = strdup("-p");
 		tab[4] = strdup(std::to_string(server.getPort()).c_str());

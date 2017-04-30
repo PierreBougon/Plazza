@@ -22,7 +22,6 @@ plazza::ThreadPool::~ThreadPool() {
 	
 	
 	for(size_t i = 0; i < ThreadList.size(); ++i) {
-		std::cout << i << std::endl;
 		ThreadList[i]->join();
 	}
 }
