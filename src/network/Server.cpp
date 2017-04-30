@@ -91,10 +91,10 @@ void plazza::network::Server::handleEvents(pollfd *listEvent)
         {
             inputPacket = receive(listEvent[i].fd);
             outputPacket = processPacket(inputPacket);
-            //if (outputPacket.isResponse())
-            //    send(outputPacket, listEvent[i].fd);
-            //else
-            _onReceive(inputPacket, i - 1);
+            if (outputPacket.isResponse())
+                send(outputPacket, listEvent[i].fd);
+            else
+                _onReceive(inputPacket, i - 1);
         }
     }
 
@@ -107,14 +107,21 @@ void plazza::network::Server::checkIncomingConnections()
     addClient();
 }
 
+/**
+ * Basic packet processing from server which will handle
+ * basic responses as corrupted packets and no query requests
+ */
 plazza::network::Packet plazza::network::Server::processPacket(const plazza::network::Packet &packet)
 {
     plazza::network::Packet outputPacket;
-    if (!packet.isRequest())
+    std::cout << "new packet on server" << std::endl;
+    if (!packet.isQuery() && !packet.isSpecific())
     {
+        // Actually we don't do anything
         outputPacket = Packet::NOTHING;
         return std::move(outputPacket);
     }
+    outputPacket = Packet::NOTHING;
     return std::move(outputPacket);
 }
 

@@ -67,17 +67,21 @@ bool plazza::network::Packet::deserialize(std::string const &serialized)
 {
     try
     {
+        Logger::log(Logger::DEBUG, "deserialize");
+
         std::string copy = serialized;
 
         std::string first = copy.substr(0, copy.find(";"));
         std::string second = first.substr(copy.find("=") + 1, first.size());
         copy.erase(0, copy.find(";") + 1);
 
+        Logger::log(Logger::DEBUG, "deserialize magic nbr : " + second);
         if (header.MAGIC_NUMBER != std::stoi(second))
             return (false);
         first = copy.substr(0, copy.find(";"));
         second = first.substr(copy.find("=") + 1, first.size());
         copy.erase(0, copy.find(";") + 1);
+        Logger::log(Logger::DEBUG, "deserialize statusCode : " + second);
         statusCode.code = std::stoi(second);
         first = copy.substr(0, copy.find(";"));
         second = first.substr(copy.find("=") + 1, first.size());
@@ -88,7 +92,7 @@ bool plazza::network::Packet::deserialize(std::string const &serialized)
     {
         Logger::log(Logger::WARNING, e.what());
         statusCode = StatusCode::CORRUPTED;
-        return false;
+        return (false);
     }
     return (true);
 }
@@ -98,15 +102,16 @@ bool plazza::network::Packet::isCorrupted() const
     return statusCode == StatusCode::CORRUPTED;
 }
 
-bool plazza::network::Packet::isRequest() const
+bool plazza::network::Packet::isOther() const
 {
-    return statusCode >= 700;
+    return statusCode >= 700 && statusCode < 800;
 }
 
 bool plazza::network::Packet::isResponse() const
 {
-    return statusCode < 700;
+    return statusCode >= 200 && statusCode < 700;
 }
+
 bool plazza::network::Packet::isQuery() const {
 	return statusCode >= 600 && statusCode < 700;
 }
@@ -117,6 +122,11 @@ bool plazza::network::Packet::isThreadCount() const {
 
 bool plazza::network::Packet::isTask() const {
 	return  statusCode == 601;
+}
+
+bool plazza::network::Packet::isSpecific() const
+{
+    return statusCode >= 100 && statusCode < 200;
 }
 
 bool plazza::network::Packet::isTooLarge() const

@@ -12,6 +12,6 @@ std::string plazza::StaticSend::sendResult(std::vector<std::string> const &vecto
         data += vector[i];
         data += "\n";
     }
-    network::Client::getInstance().send(network::Packet(network::StatusCode::OK, data), network::Client::getInstance().getSocket());
+    network::Client::getInstance().send(network::Packet(network::StatusCode::RESULT, data), network::Client::getInstance().getSocket());
     return (std::move(data));
 }

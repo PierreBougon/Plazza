@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <algorithm>
+#include <tools/Logger.hpp>
 #include "ProcessHandler.hpp"
 
 
@@ -24,6 +25,17 @@ void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &pac
 		std::cout << "IDclient " << idClient << " threadoccupancy " << threadOccupancy.size() << std::endl;
 		threadOccupancy.at(idClient) = std::stoul(packet.data);
 	}
+
+    if (packet.statusCode == network::StatusCode::RESULT)
+    {
+        Logger::getInstance().log(packet.data, Logger::INFO);
+    }
+	if (packet.isResponse())
+    {
+/*
+		 threadOccupancy.at(idClient) = std::stoul(packet.data);
+*/
+	 }
 }
 
 plazza::ProcessHandler::~ProcessHandler() {
@@ -77,7 +89,9 @@ void plazza::ProcessHandler::spawnANewProcess() {
 		tab[4] = strdup(std::to_string(server.getPort()).c_str());
 		tab[5] = nullptr;
 		std::cout << tab << std::endl;
-		execvp(fileName, tab);
+        if (!tab[0] || !tab[1] || !tab[2] || !tab[3] || !tab[4])
+            throw std::bad_alloc();
+        execvp(fileName, tab);
 	}
 	childProcessList.push_back(tmp);
 }

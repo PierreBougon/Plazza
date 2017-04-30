@@ -39,8 +39,9 @@ plazza::PlazzaUI::PlazzaUI(int ac, char **av) : app(ac, av), buttonAddFile("Add 
     scrollAreaThread.setFixedSize(750, 340);
     scrollAreaThread.move(20, scrollArea.pos().y() + scrollArea.height() + btnExecute.height() + 20);
     scrollAreaThread.setWidgetResizable(true);
-    timer->setInterval(1000);
-    QObject::connect(timer, &QTimer::timeout, [this] { execute(); });
+    timer->setInterval(100);
+    QObject::connect(timer, &QTimer::timeout, [this] { getProcessInfos(); });
+    timer->start(100);
 }
 
 const QApplication &plazza::PlazzaUI::getApp() const {
@@ -93,6 +94,10 @@ void plazza::PlazzaUI::execute() {
 }
 
 void plazza::PlazzaUI::getProcessInfos() {
+
+    QLayoutItem *item = NULL;
+    while ((item = scrollArealayoutThread.takeAt(0)) != 0)
+        delete item->widget();
 
     QWidget *widget = new QWidget();
     QHBoxLayout *hlayout = new QHBoxLayout(widget);
