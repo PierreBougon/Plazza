@@ -9,15 +9,13 @@ plazza::PlazzaUI::~PlazzaUI() {
 
 }
 
-plazza::PlazzaUI::PlazzaUI(int ac, char **av) : app(ac, av), buttonAddFile("Add File", &mainWindow),
+plazza::PlazzaUI::PlazzaUI(int ac, char **av) : nbThreadsMax(std::stoul(av[1])), app(ac, av), buttonAddFile("Add File", &mainWindow),
                                                 btnExecute("Execute", &mainWindow),
                                                 cmdLine(&mainWindow), cmdLineLabel("Enter File Path :", &mainWindow),
                                                 scrollAreaLabel("Added Files :", &mainWindow),
                                                 scrollAreaWidget(new QWidget()), scrollArea(&mainWindow),
                                                 scrollAreaWidgetThread(new QWidget()), scrollAreaThread(&mainWindow),
-                                                processHandler(std::stoul(av[1]), av[0]),
-                                                nbThreadsMax(std::stoul(av[1])),
-                                                timer(new QTimer()) {
+                                                timer(new QTimer()), processHandler(nbThreadsMax, av[0]) {
 
     scrollAreaWidget->setLayout(&scrollArealayout);
     scrollAreaWidgetThread->setLayout(&scrollArealayoutThread);
@@ -39,9 +37,9 @@ plazza::PlazzaUI::PlazzaUI(int ac, char **av) : app(ac, av), buttonAddFile("Add 
     scrollAreaThread.setFixedSize(750, 340);
     scrollAreaThread.move(20, scrollArea.pos().y() + scrollArea.height() + btnExecute.height() + 20);
     scrollAreaThread.setWidgetResizable(true);
-    timer->setInterval(100);
+    timer->setInterval(10);
     QObject::connect(timer, &QTimer::timeout, [this] { getProcessInfos(); });
-    timer->start(100);
+    timer->start(10);
 }
 
 const QApplication &plazza::PlazzaUI::getApp() const {
@@ -103,13 +101,12 @@ void plazza::PlazzaUI::getProcessInfos() {
     QHBoxLayout *hlayout = new QHBoxLayout(widget);
 
     for (size_t i = 0; i < processHandler.getProcessOccupancy().size(); ++i) {
-
         QLabel *process = new QLabel("Process " + QString::fromStdString(std::to_string(i)) + " : ");
         hlayout->addWidget(process);
         QLabel *threads = new QLabel(
-                QString::fromStdString(std::to_string(processHandler.getProcessOccupancy()[i])) + " / " +
-                QString::fromStdString(std::to_string(nbThreadsMax)) + " working threads");
-        hlayout->addWidget(threads);
+                    QString::fromStdString(std::to_string(nbThreadsMax - processHandler.getProcessOccupancy()[i])) + " / " +
+                    QString::fromStdString(std::to_string(nbThreadsMax)) + " working threads");
+            hlayout->addWidget(threads);
     }
     scrollArealayoutThread.addWidget(widget);
     scrollAreaThread.setWidget(scrollAreaWidgetThread);
