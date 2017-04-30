@@ -46,7 +46,7 @@ void plazza::Process::handleNewPackets(const plazza::network::Packet &packet) {
 			client.send(packetToSend, client.getSocket());
 		}
 	}
-	if (packet.isRequest()) {
+	if (packet.isOther()) {
 		if (tasks.size() == threadPool.getNumberOfThreads() * 2) {
 			plazza::network::Packet outputPacket(plazza::network::StatusCode::INTERNAL_SERVER_ERROR);
 			plazza::network::Client::getInstance().send(outputPacket,
