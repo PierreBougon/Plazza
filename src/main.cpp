@@ -31,7 +31,6 @@ int main(int ac, char **av) {
     int option;
 
     try {
-        std::cout << "av1 " << av[1] << std::endl;
         if (ac < 2 || std::stoi(av[1]) <= 0) {
             std::cerr << "usage : ./plazza nb_thread_per_process" << std::endl;
             return (1);
@@ -54,12 +53,15 @@ int main(int ac, char **av) {
                     default:
                         abort();
                 }
-            std::cout << isClient << " " << server << " " << port << std::endl;
+            std::cout << "is client is server " << isClient << " " << server << " " << port << std::endl;
         }
         if (isClient) {
-            plazza::Process ChildProcess(nbThreads);
+			std::cout << "new client process" << std::endl;
+			plazza::Process ChildProcess(nbThreads);
+ 			std::cout << "after constructor" << std::endl;
+			while(1);
         } else {
-            plazza::ProcessHandler ProcessHandler(nbThreads, av[0]);
+           plazza::ProcessHandler ProcessHandler(nbThreads, av[0]);
             plazza::CmdParser cmdParser;
 			for(std::vector<plazza::command> commandList;;) {
 				commandList = cmdParser.getCommands();

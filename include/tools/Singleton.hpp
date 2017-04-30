@@ -5,6 +5,8 @@
 #ifndef CPP_PLAZZA_SINGLETON_HPP_
 #define CPP_PLAZZA_SINGLETON_HPP_
 
+#include <iostream>
+
 template <typename T>
 class Singleton
 {

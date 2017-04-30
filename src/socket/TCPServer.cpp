@@ -82,12 +82,16 @@ bool plazza::network::TCPServer::addClient()
     socklen_t   clientSize;
     sock_t      clientSocket;
 
-    if (_maxClient - 1 <= _currentClient)
+    if (_maxClient - 1 <= _currentClient) {
+        std::cout << "Max client reached" << std::endl;
         return false;
+    }
     clientSize = sizeof(clientAddr);
     clientSocket = accept(_socket, (sockaddr *)(&clientAddr), &clientSize);
-    if (clientSocket == -1)
+    if (clientSocket == -1) {
+        std::cout << "client socket is fucked" << std::endl;
         return false;
+    }
     _clientList.push_back(clientSocket);
     ++_currentClient;
     Logger::log(Logger::DEBUG, "New client connected to the server");

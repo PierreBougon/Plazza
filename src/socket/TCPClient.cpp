@@ -37,13 +37,14 @@ void plazza::network::TCPClient::send(const plazza::network::Packet &packet, pla
 {
     std::string data = packet.serialize();
 
-    Logger::log(Logger::DEBUG, "Sending: " + packet.serialize());
+    Logger::log(Logger::DEBUG, "Client Sending: " + packet.serialize());
     if (::send(socket, data.c_str(), data.size(), 0) == -1)
         throw network::SocketError("Cannot send to the socket");
 }
 
 void plazza::network::TCPClient::connect()
 {
+	std::cout << "Connect" << std::endl;
     _server = ::gethostbyname(_hostname.c_str());
     if (!_server)
         throw network::SocketError("No such host");
@@ -56,7 +57,8 @@ void plazza::network::TCPClient::connect()
 
 void plazza::network::TCPClient::run()
 {
-    if (_running || _thread.joinable())
+	std::cout << "client running" << std::endl;
+	if (_running || _thread.joinable())
     {
         Logger::log(Logger::WARNING, "Client is already running");
         return;

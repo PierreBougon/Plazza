@@ -19,7 +19,7 @@ namespace plazza {
 	    bool areProcessesFull() const;
 		void spawnANewProcess();
 		void feed(const std::vector<plazza::command> &commands);
-		void sendTask(const command command, size_t clientNumber);
+		void sendTask(const command command, long clientNumber);
 		
 		network::Server server;
 		size_t numberOfThreads;

@@ -5,7 +5,7 @@
 ## Login   <bougon_p@epitech.net>
 ##
 ## Started on  Sat Apr 15 00:37:20 2017 bougon_p
-## Last update Fri Apr 28 23:31:52 2017 bougon_p
+## Last update Sun Apr 30 11:09:24 2017 
 ##
 
 ## Include colors and basic commands
@@ -32,7 +32,7 @@ SRC_ALL	    	=	FileParser.cpp \
 			Process.cpp \
 			PlazzaError.cpp \
 			Thread.cpp  \
-            CmdParser.cpp \
+	                CmdParser.cpp \
 
 EXCEPT_DIR	=	exceptions/
 

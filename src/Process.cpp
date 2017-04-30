@@ -6,13 +6,12 @@
 #include <iostream>
 #include "sstream"
 #include "Process.hpp"
-#include "CmdParser.hpp"
-#include "unistd.h"
 
 plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Client::getInstance()),
 													 threadPool(numberOfProcesses) {
-	std::cout << "je suis new thread" << std::endl;
+	std::cerr << "je suis new thread" << std::endl;
 	client.Init(4242, "127.0.0.1");
+	std::cerr << "client trying to connect" << std::endl;
 	client.connect();
 	client.bind(std::bind((&plazza::Process::handleNewPackets), this, std::placeholders::_1));
 	client.run();
@@ -21,10 +20,12 @@ plazza::Process::Process(size_t numberOfProcesses) : client(plazza::network::Cli
 	outputPacket.data = "CECI EST UN PENIS";
 	client.send(outputPacket, client.getSocket());
 	// TODO
-	//client.stop();
 }
 
-plazza::Process::~Process() {}
+plazza::Process::~Process() {
+	client.stop();
+	std::cout << "Destructor process" << std::endl;
+}
 
 void plazza::Process::handleNewPackets(const plazza::network::Packet &packet) {
 	std::string data;
