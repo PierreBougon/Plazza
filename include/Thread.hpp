@@ -24,13 +24,14 @@ namespace plazza {
 		void unlock();
 		bool isFree() const override;
 		void setIsFree(bool newState);
+		void wait();
+		bool hasWork() const;
 	private:
 		bool _isLocked;
 		std::unique_lock<std::mutex> _lock;
 		ThreadPool	&threadPool;
 		std::thread	thread;
 		std::atomic<bool> _isFree;
-		bool hasWork() const;
 	};
 	
 }

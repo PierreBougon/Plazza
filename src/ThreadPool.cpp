@@ -8,9 +8,11 @@
 
 
 plazza::ThreadPool::ThreadPool(size_t numberOfThreads) : areThreadsFree(numberOfThreads), stop(false) {
+	std::cout << "Tpool ctor" << std::endl;
 	for(size_t i = 0; i < numberOfThreads; ++i) {
 		ThreadList.push_back(new Thread(*this, i));
 	}
+	std::cout << "end of tpool ctor" << std::endl;
 }
 
 plazza::ThreadPool::~ThreadPool() {

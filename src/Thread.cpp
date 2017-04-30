@@ -18,6 +18,10 @@ bool plazza::Thread::isFree() const {
 	return false;
 }
 
+void plazza::Thread::wait() {
+	threadPool.getConditionVariable().wait(_lock);
+}
+
 void plazza::Thread::join() {
 	thread.join();
 }
