@@ -61,12 +61,17 @@ int main(int ac, char **av) {
  			std::cout << "after constructor" << std::endl;
 			while(1);
         } else {
-           plazza::ProcessHandler ProcessHandler(nbThreads, av[0]);
+            Logger::getInstance().setFile("logFile.txt");
+            plazza::ProcessHandler ProcessHandler(nbThreads, av[0]);
             plazza::CmdParser cmdParser;
+
 			for(std::vector<plazza::command> commandList;;) {
 				commandList = cmdParser.getCommands();
 				ProcessHandler.feed(commandList);
 			}
+            Logger::getInstance().closeFile();
+
+            Logger::
             //for(std::vector<plazza::command> commandList;;) {
             //	commandList = cmdParser.getCommands();
 

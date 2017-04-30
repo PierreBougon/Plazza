@@ -30,7 +30,8 @@ public:
         DEBUG = 0,
         INFO,
         WARNING,
-        ERROR
+        ERROR,
+        NONE
     };
 
     void        setFile(std::string const &file);

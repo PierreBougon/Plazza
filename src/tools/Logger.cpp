@@ -44,7 +44,10 @@ void Logger::log(Logger::Level lvl, std::string msg, bool abort)
 }
 
 void Logger::log(std::string msg, Logger::Level lvl) {
-    std::cout << toString(lvl) << ": " << msg << std::endl;
+    if (lvl == Logger::Level::NONE)
+        std::cout << msg << std::endl;
+    else
+        std::cout << toString(lvl) << ": " << msg << std::endl;
 }
 
 void Logger::logFile(std::string msg, Logger::Level lvl) {
@@ -53,7 +56,7 @@ void Logger::logFile(std::string msg, Logger::Level lvl) {
 }
 
 std::string Logger::toString(Logger::Level lvl) {
-    static const char* const buffer[] = {  "DEBUG", "INFO", "WARNING", "ERROR" };
+    static const char* const buffer[] = {  "DEBUG", "INFO", "WARNING", "ERROR", "" };
     return buffer[lvl];
 }
 
