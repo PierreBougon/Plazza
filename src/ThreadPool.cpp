@@ -65,11 +65,12 @@ size_t plazza::ThreadPool::getNumberOfThreads() const {
 bool plazza::ThreadPool::hasWork() const {
 	return (tasks.size() != 0);
 }
+
 size_t plazza::ThreadPool::numberOfFreeThread() const {
 	size_t i = 0;
-	std::cout << "Number of free treads" << std::endl;
+	//std::cout << "Number of free treads" << std::endl;
 	for (auto it = ThreadList.begin(); it < ThreadList.end(); it++) {
-		std::cout << "Worker n*" << i << " is " << std::boolalpha << (*it)->isFree() << std::endl;
+		//std::cout << "Worker n*" << i << " is " << std::boolalpha << (*it)->isFree() << std::endl;
 		if ((*it)->isFree())
 			i++;
 	}

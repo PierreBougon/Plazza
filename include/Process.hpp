@@ -19,10 +19,15 @@ namespace plazza {
 		
 		bool	shouldQuit() const;
 		void	handleNewPackets(const plazza::network::Packet &packet);
+
+		bool isTimeout();
+
 	private:
 		network::Client			&client;
 		ThreadPool				threadPool;
 		std::vector<command>	tasks;
+
+		std::chrono::steady_clock::time_point       baseTime;
 	};
 }
 

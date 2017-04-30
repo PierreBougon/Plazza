@@ -8,6 +8,7 @@
 
 #include <mutex>
 #include <thread>
+#include <atomic>
 #include "ASocket.hpp"
 
 namespace plazza
@@ -30,7 +31,7 @@ namespace plazza
             Packet  receive(sock_t socket) override;
 
         protected:
-            bool                                _running;
+            std::atomic<bool>                   _running;
             std::thread                         _thread;
             std::mutex                          _mutex;
             std::function<void(const Packet &)> _onReceive;

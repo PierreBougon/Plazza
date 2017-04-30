@@ -56,7 +56,11 @@ int main(int ac, char **av) {
 		}
 		if (isClient) {
 			plazza::Process ChildProcess(nbThreads);
-			while (!ChildProcess.shouldQuit());
+			while (!ChildProcess.shouldQuit())
+            {
+                if (ChildProcess.isTimeout())
+                    break;
+            }
 		} else {
 			Logger::getInstance().setFile("logFile.txt");
 			plazza::ProcessHandler processHandler(nbThreads, av[0]);

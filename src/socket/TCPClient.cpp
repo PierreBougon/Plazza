@@ -6,7 +6,10 @@
 #include <cstring>
 #include <tools/Logger.hpp>
 #include <iostream>
-#include <zconf.h>
+#include <bits/sigthread.h>
+#include <bits/signum.h>
+#include <signal.h>
+#include <csignal>
 #include "socket/TCPClient.hpp"
 
 plazza::network::TCPClient::TCPClient(uint16_t port, const std::string &hostname) : ASocket(port, hostname)
@@ -20,13 +23,18 @@ plazza::network::Packet plazza::network::TCPClient::receive(sock_t socket)
     char            buf[BUFFER_SIZE];
     ssize_t         ret;
 
-        ret = ::recv(socket, buf, BUFFER_SIZE, 0);
-        if (ret == -1)
-            throw SocketError("Cannot receive");
-        else if (ret == 0)
-            inputPacket.statusCode = StatusCode::CORRUPTED;
-        else
-            data += buf;
+    ret = ::recv(socket, buf, BUFFER_SIZE, 0);
+    if (ret == -1 && errno == EINTR)
+    {
+        // Stopping Client
+        inputPacket.statusCode = StatusCode::NOTHING;
+    }
+    else if (ret == -1)
+        throw SocketError("Cannot receive");
+    else if (ret == 0)
+        inputPacket.statusCode = StatusCode::CORRUPTED;
+    else
+        data += buf;
 
     inputPacket.deserialize(data);
     Logger::log(Logger::DEBUG, "Client Receiving: " + inputPacket.serialize());
@@ -92,7 +100,7 @@ void plazza::network::TCPClient::_core()
     while (_running)
     {
         packet = receive(_socket);
-        if (!packet.isCorrupted())
+        if (!packet.isCorrupted() && packet.statusCode != StatusCode::NOTHING)
             _onReceive(packet);
     }
     _mutex.unlock();
@@ -107,7 +115,9 @@ void plazza::network::TCPClient::stop()
     if (!_thread.joinable())
         return;
     _running = false;
+    ::shutdown(_socket, SHUT_RD);
     _thread.join();
+    Logger::log(Logger::DEBUG, "Stop client");
 }
 
 void plazza::network::TCPClient::wait()
