@@ -151,17 +151,21 @@ std::vector<plazza::command> plazza::CmdParser::getCommands() {
     std::string buffer;
     std::vector<plazza::command> cmd;
 
-    std::unique_ptr<plazza::ast_node> root = parse();
-    checkIntegrity(root.get());
-    if (root) {
-        for (size_t i = 0; i < root->children.size(); ++i) {
-            _getCommand(root->children[i].get(), cmd);
+    try {
+        std::unique_ptr<plazza::ast_node> root = parse();
+        checkIntegrity(root.get());
+        if (root) {
+            for (size_t i = 0; i < root->children.size(); ++i) {
+                _getCommand(root->children[i].get(), cmd);
+            }
         }
+        /*for (int j = 0; j < cmd.size(); ++j) {
+            std::cout << " FUUUUUCK " << cmd[j].file << " " << cmd[j].information << std::endl;
+        }*/
     }
-
-    /*for (int j = 0; j < cmd.size(); ++j) {
-        std::cout << " FUUUUUCK " << cmd[j].file << " " << cmd[j].information << std::endl;
-    }*/
+    catch (CmdParserError const &err) {
+        std::cout << err.what() << std::endl;
+    }
     return cmd;
 }
 
