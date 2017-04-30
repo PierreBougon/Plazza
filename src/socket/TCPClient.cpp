@@ -29,7 +29,7 @@ plazza::network::Packet plazza::network::TCPClient::receive(sock_t socket)
             data += buf;
 
     inputPacket.deserialize(data);
-    Logger::log(Logger::DEBUG, "Receiving: " + inputPacket.serialize());
+    Logger::log(Logger::DEBUG, "Client Receiving: " + inputPacket.serialize());
     return std::move(inputPacket);
 }
 

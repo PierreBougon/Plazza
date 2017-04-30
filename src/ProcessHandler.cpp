@@ -19,7 +19,8 @@ plazza::ProcessHandler::ProcessHandler(size_t numberOfThreads, char *string)
 }
 
 void plazza::ProcessHandler::handleNewPackets(const plazza::network::Packet &packet, size_t idClient) {
-	 if (packet.isResponse()) {
+	std::cout << "ProcessHandler HandleNewPackets" << std::endl;
+	if (packet.isResponse()) {
 		 threadOccupancy.at(idClient) = std::stoul(packet.data);
 	 }
 }

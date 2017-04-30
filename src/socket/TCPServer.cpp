@@ -46,7 +46,7 @@ void plazza::network::TCPServer::send(const network::Packet &packet, sock_t sock
 {
     std::string data = packet.serialize();
 
-    Logger::log(Logger::DEBUG, "Sending: " + data);
+    Logger::log(Logger::DEBUG, "Server Sending: " + data);
     if (::send(socket, data.c_str(), data.size(), 0) == -1)
     {
         removeClient(socket);
@@ -72,7 +72,7 @@ plazza::network::Packet plazza::network::TCPServer::receive(sock_t socket)
     }
     data += buf;
     inputPacket.deserialize(data);
-    Logger::log(Logger::DEBUG, "Receiving: " + inputPacket.serialize());
+    Logger::log(Logger::DEBUG, "Server Receiving: " + inputPacket.serialize());
     return std::move(inputPacket);
 }
 
